@@ -1,0 +1,496 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2422869C1ED5523300009DC5 /* libNISDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2422869B1ED5523300009DC5 /* libNISDK.a */; };
+		2472E01D1ED2DEEC0009E753 /* SimpleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2472E01C1ED2DEEC0009E753 /* SimpleView.swift */; };
+		2472E01F1ED2E0280009E753 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2472E01E1ED2E0280009E753 /* SimpleViewController.swift */; };
+		24886EF61ECBE0070046A0CD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24886EF51ECBE0070046A0CD /* Extension.swift */; };
+		24886EF81ECC2EE40046A0CD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 24886EF71ECC2EE40046A0CD /* libz.tbd */; };
+		24886EFA1ECC381A0046A0CD /* books_2016_02 in Resources */ = {isa = PBXBuildFile; fileRef = 24886EF91ECC381A0046A0CD /* books_2016_02 */; };
+		2490C28F1ECD91E80046203D /* BTLEStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2490C28E1ECD91E80046203D /* BTLEStoryboard.storyboard */; };
+		2490C2911ECD92290046203D /* BluetoothController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2490C2901ECD92290046203D /* BluetoothController.swift */; };
+		249127D61ECA9D3000CD3647 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249127D51ECA9D3000CD3647 /* AppDelegate.swift */; };
+		249127DD1ECA9D3000CD3647 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249127DC1ECA9D3000CD3647 /* Assets.xcassets */; };
+		249127E01ECA9D3000CD3647 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 249127DE1ECA9D3000CD3647 /* LaunchScreen.storyboard */; };
+		2491280A1ECA9E3E00CD3647 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 249128091ECA9E3E00CD3647 /* CoreGraphics.framework */; };
+		2491281B1ECAA7B700CD3647 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2491281A1ECAA7B700CD3647 /* Main.storyboard */; };
+		2491281D1ECAA91100CD3647 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2491281C1ECAA91100CD3647 /* UIKit.framework */; };
+		2491281F1ECAA91C00CD3647 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2491281E1ECAA91C00CD3647 /* Foundation.framework */; };
+		2491282A1ECAABB400CD3647 /* NJViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128291ECAABB400CD3647 /* NJViewController.swift */; };
+		249128561ECAAC6700CD3647 /* MemoNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128511ECAAC6700CD3647 /* MemoNote.pdf */; };
+		249128571ECAAC6700CD3647 /* NeoPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128521ECAAC6700CD3647 /* NeoPDF.pdf */; };
+		249128581ECAAC6700CD3647 /* PlainNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128531ECAAC6700CD3647 /* PlainNote.pdf */; };
+		249128591ECAAC6700CD3647 /* PocketNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128541ECAAC6700CD3647 /* PocketNote.pdf */; };
+		2491285A1ECAAC6700CD3647 /* SpringNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128551ECAAC6700CD3647 /* SpringNote.pdf */; };
+		249128641ECAAD1500CD3647 /* NJPageCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128631ECAAD1500CD3647 /* NJPageCanvasView.swift */; };
+		249128661ECAAD2D00CD3647 /* NJChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128651ECAAD2D00CD3647 /* NJChangePasswordViewController.swift */; };
+		249128681ECAAD3D00CD3647 /* NJFWUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128671ECAAD3D00CD3647 /* NJFWUpdateViewController.swift */; };
+		2491286A1ECAAD5B00CD3647 /* NJInputPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128691ECAAD5B00CD3647 /* NJInputPasswordViewController.swift */; };
+		2491286C1ECAAD6B00CD3647 /* NJOfflineSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2491286B1ECAAD6B00CD3647 /* NJOfflineSyncViewController.swift */; };
+		2491286E1ECAAD7700CD3647 /* NJPageCanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2491286D1ECAAD7700CD3647 /* NJPageCanvasController.swift */; };
+		249128701ECAAD8400CD3647 /* NJPenAutoPwrOffTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2491286F1ECAAD8400CD3647 /* NJPenAutoPwrOffTimeViewController.swift */; };
+		249128721ECAAD9000CD3647 /* NJPenInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128711ECAAD9000CD3647 /* NJPenInfoViewController.swift */; };
+		249128741ECAAD9B00CD3647 /* NJPenSensorCalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128731ECAAD9B00CD3647 /* NJPenSensorCalViewController.swift */; };
+		249128761ECAADAA00CD3647 /* NJPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128751ECAADAA00CD3647 /* NJPage.swift */; };
+		249128781ECAADBD00CD3647 /* NJStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128771ECAADBD00CD3647 /* NJStroke.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2422869B1ED5523300009DC5 /* libNISDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNISDK.a; path = "NISDK/build/Debug-iphoneos/libNISDK.a"; sourceTree = "<group>"; };
+		2472E01C1ED2DEEC0009E753 /* SimpleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleView.swift; path = View/SimpleView.swift; sourceTree = "<group>"; };
+		2472E01E1ED2E0280009E753 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleViewController.swift; path = Controllers/SimpleViewController.swift; sourceTree = "<group>"; };
+		24886EF51ECBE0070046A0CD /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = Util/Extension.swift; sourceTree = "<group>"; };
+		24886EF71ECC2EE40046A0CD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		24886EF91ECC381A0046A0CD /* books_2016_02 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = books_2016_02; sourceTree = "<group>"; };
+		2490C28E1ECD91E80046203D /* BTLEStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BTLEStoryboard.storyboard; path = BTLE/BTLEStoryboard.storyboard; sourceTree = "<group>"; };
+		2490C2901ECD92290046203D /* BluetoothController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BluetoothController.swift; path = BTLE/BluetoothController.swift; sourceTree = "<group>"; };
+		249127D21ECA9D3000CD3647 /* n2sampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = n2sampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		249127D51ECA9D3000CD3647 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		249127DC1ECA9D3000CD3647 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		249127DF1ECA9D3000CD3647 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		249127E11ECA9D3000CD3647 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		249128091ECA9E3E00CD3647 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2491281A1ECAA7B700CD3647 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		2491281C1ECAA91100CD3647 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2491281E1ECAA91C00CD3647 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		249128251ECAAB4200CD3647 /* n2sampleSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "n2sampleSwift-Bridging-Header.h"; sourceTree = "<group>"; };
+		249128291ECAABB400CD3647 /* NJViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NJViewController.swift; sourceTree = "<group>"; };
+		249128511ECAAC6700CD3647 /* MemoNote.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = MemoNote.pdf; path = background/MemoNote.pdf; sourceTree = "<group>"; };
+		249128521ECAAC6700CD3647 /* NeoPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = NeoPDF.pdf; path = background/NeoPDF.pdf; sourceTree = "<group>"; };
+		249128531ECAAC6700CD3647 /* PlainNote.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = PlainNote.pdf; path = background/PlainNote.pdf; sourceTree = "<group>"; };
+		249128541ECAAC6700CD3647 /* PocketNote.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = PocketNote.pdf; path = background/PocketNote.pdf; sourceTree = "<group>"; };
+		249128551ECAAC6700CD3647 /* SpringNote.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = SpringNote.pdf; path = background/SpringNote.pdf; sourceTree = "<group>"; };
+		249128631ECAAD1500CD3647 /* NJPageCanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJPageCanvasView.swift; path = View/NJPageCanvasView.swift; sourceTree = "<group>"; };
+		249128651ECAAD2D00CD3647 /* NJChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJChangePasswordViewController.swift; path = Controllers/NJChangePasswordViewController.swift; sourceTree = "<group>"; };
+		249128671ECAAD3D00CD3647 /* NJFWUpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJFWUpdateViewController.swift; path = Controllers/NJFWUpdateViewController.swift; sourceTree = "<group>"; };
+		249128691ECAAD5B00CD3647 /* NJInputPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputPasswordViewController.swift; path = Controllers/NJInputPasswordViewController.swift; sourceTree = "<group>"; };
+		2491286B1ECAAD6B00CD3647 /* NJOfflineSyncViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOfflineSyncViewController.swift; path = Controllers/NJOfflineSyncViewController.swift; sourceTree = "<group>"; };
+		2491286D1ECAAD7700CD3647 /* NJPageCanvasController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJPageCanvasController.swift; path = Controllers/NJPageCanvasController.swift; sourceTree = "<group>"; };
+		2491286F1ECAAD8400CD3647 /* NJPenAutoPwrOffTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJPenAutoPwrOffTimeViewController.swift; path = Controllers/NJPenAutoPwrOffTimeViewController.swift; sourceTree = "<group>"; };
+		249128711ECAAD9000CD3647 /* NJPenInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJPenInfoViewController.swift; path = Controllers/NJPenInfoViewController.swift; sourceTree = "<group>"; };
+		249128731ECAAD9B00CD3647 /* NJPenSensorCalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJPenSensorCalViewController.swift; path = Controllers/NJPenSensorCalViewController.swift; sourceTree = "<group>"; };
+		249128751ECAADAA00CD3647 /* NJPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJPage.swift; path = Models/NJPage.swift; sourceTree = "<group>"; };
+		249128771ECAADBD00CD3647 /* NJStroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJStroke.swift; path = Models/NJStroke.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		249127CF1ECA9D3000CD3647 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2422869C1ED5523300009DC5 /* libNISDK.a in Frameworks */,
+				24886EF81ECC2EE40046A0CD /* libz.tbd in Frameworks */,
+				2491281F1ECAA91C00CD3647 /* Foundation.framework in Frameworks */,
+				2491281D1ECAA91100CD3647 /* UIKit.framework in Frameworks */,
+				2491280A1ECA9E3E00CD3647 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		24886EF41ECBDFE10046A0CD /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				24886EF51ECBE0070046A0CD /* Extension.swift */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
+		2490C28D1ECD91D10046203D /* BTLE */ = {
+			isa = PBXGroup;
+			children = (
+				2490C28E1ECD91E80046203D /* BTLEStoryboard.storyboard */,
+				2490C2901ECD92290046203D /* BluetoothController.swift */,
+			);
+			name = BTLE;
+			sourceTree = "<group>";
+		};
+		249127C91ECA9D3000CD3647 = {
+			isa = PBXGroup;
+			children = (
+				249127D41ECA9D3000CD3647 /* n2sampleSwift */,
+				249127D31ECA9D3000CD3647 /* Products */,
+				249128061ECA9E1500CD3647 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		249127D31ECA9D3000CD3647 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				249127D21ECA9D3000CD3647 /* n2sampleSwift.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		249127D41ECA9D3000CD3647 /* n2sampleSwift */ = {
+			isa = PBXGroup;
+			children = (
+				2490C28D1ECD91D10046203D /* BTLE */,
+				2491282C1ECAAC0C00CD3647 /* Models */,
+				2491284C1ECAAC3E00CD3647 /* Views */,
+				249128331ECAAC2400CD3647 /* Controllers */,
+				24886EF41ECBDFE10046A0CD /* Util */,
+				249128501ECAAC5B00CD3647 /* Resource */,
+				249128291ECAABB400CD3647 /* NJViewController.swift */,
+				249127D51ECA9D3000CD3647 /* AppDelegate.swift */,
+				2491281A1ECAA7B700CD3647 /* Main.storyboard */,
+				249127DC1ECA9D3000CD3647 /* Assets.xcassets */,
+				249127DE1ECA9D3000CD3647 /* LaunchScreen.storyboard */,
+				249127E11ECA9D3000CD3647 /* Info.plist */,
+				249128251ECAAB4200CD3647 /* n2sampleSwift-Bridging-Header.h */,
+			);
+			path = n2sampleSwift;
+			sourceTree = "<group>";
+		};
+		249128061ECA9E1500CD3647 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2422869B1ED5523300009DC5 /* libNISDK.a */,
+				24886EF71ECC2EE40046A0CD /* libz.tbd */,
+				2491281E1ECAA91C00CD3647 /* Foundation.framework */,
+				2491281C1ECAA91100CD3647 /* UIKit.framework */,
+				249128091ECA9E3E00CD3647 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2491282C1ECAAC0C00CD3647 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				249128751ECAADAA00CD3647 /* NJPage.swift */,
+				249128771ECAADBD00CD3647 /* NJStroke.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		249128331ECAAC2400CD3647 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2472E01E1ED2E0280009E753 /* SimpleViewController.swift */,
+				2491286D1ECAAD7700CD3647 /* NJPageCanvasController.swift */,
+				249128711ECAAD9000CD3647 /* NJPenInfoViewController.swift */,
+				249128731ECAAD9B00CD3647 /* NJPenSensorCalViewController.swift */,
+				2491286F1ECAAD8400CD3647 /* NJPenAutoPwrOffTimeViewController.swift */,
+				249128651ECAAD2D00CD3647 /* NJChangePasswordViewController.swift */,
+				2491286B1ECAAD6B00CD3647 /* NJOfflineSyncViewController.swift */,
+				249128671ECAAD3D00CD3647 /* NJFWUpdateViewController.swift */,
+				249128691ECAAD5B00CD3647 /* NJInputPasswordViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		2491284C1ECAAC3E00CD3647 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				249128631ECAAD1500CD3647 /* NJPageCanvasView.swift */,
+				2472E01C1ED2DEEC0009E753 /* SimpleView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		249128501ECAAC5B00CD3647 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				24886EF91ECC381A0046A0CD /* books_2016_02 */,
+				249128511ECAAC6700CD3647 /* MemoNote.pdf */,
+				249128521ECAAC6700CD3647 /* NeoPDF.pdf */,
+				249128531ECAAC6700CD3647 /* PlainNote.pdf */,
+				249128541ECAAC6700CD3647 /* PocketNote.pdf */,
+				249128551ECAAC6700CD3647 /* SpringNote.pdf */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		249127D11ECA9D3000CD3647 /* n2sampleSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 249127FA1ECA9D3000CD3647 /* Build configuration list for PBXNativeTarget "n2sampleSwift" */;
+			buildPhases = (
+				249127CE1ECA9D3000CD3647 /* Sources */,
+				249127CF1ECA9D3000CD3647 /* Frameworks */,
+				249127D01ECA9D3000CD3647 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = n2sampleSwift;
+			productName = n2sampleSwift;
+			productReference = 249127D21ECA9D3000CD3647 /* n2sampleSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		249127CA1ECA9D3000CD3647 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Aram Moon";
+				TargetAttributes = {
+					249127D11ECA9D3000CD3647 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = K2APH36C6M;
+						LastSwiftMigration = 0830;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 249127CD1ECA9D3000CD3647 /* Build configuration list for PBXProject "n2sampleSwift" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 249127C91ECA9D3000CD3647;
+			productRefGroup = 249127D31ECA9D3000CD3647 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				249127D11ECA9D3000CD3647 /* n2sampleSwift */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		249127D01ECA9D3000CD3647 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				249128571ECAAC6700CD3647 /* NeoPDF.pdf in Resources */,
+				249127E01ECA9D3000CD3647 /* LaunchScreen.storyboard in Resources */,
+				249128591ECAAC6700CD3647 /* PocketNote.pdf in Resources */,
+				249128581ECAAC6700CD3647 /* PlainNote.pdf in Resources */,
+				249127DD1ECA9D3000CD3647 /* Assets.xcassets in Resources */,
+				2491281B1ECAA7B700CD3647 /* Main.storyboard in Resources */,
+				24886EFA1ECC381A0046A0CD /* books_2016_02 in Resources */,
+				249128561ECAAC6700CD3647 /* MemoNote.pdf in Resources */,
+				2491285A1ECAAC6700CD3647 /* SpringNote.pdf in Resources */,
+				2490C28F1ECD91E80046203D /* BTLEStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		249127CE1ECA9D3000CD3647 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2472E01D1ED2DEEC0009E753 /* SimpleView.swift in Sources */,
+				2491282A1ECAABB400CD3647 /* NJViewController.swift in Sources */,
+				249128701ECAAD8400CD3647 /* NJPenAutoPwrOffTimeViewController.swift in Sources */,
+				249128741ECAAD9B00CD3647 /* NJPenSensorCalViewController.swift in Sources */,
+				249128721ECAAD9000CD3647 /* NJPenInfoViewController.swift in Sources */,
+				2491286A1ECAAD5B00CD3647 /* NJInputPasswordViewController.swift in Sources */,
+				249128661ECAAD2D00CD3647 /* NJChangePasswordViewController.swift in Sources */,
+				249128681ECAAD3D00CD3647 /* NJFWUpdateViewController.swift in Sources */,
+				2491286E1ECAAD7700CD3647 /* NJPageCanvasController.swift in Sources */,
+				249127D61ECA9D3000CD3647 /* AppDelegate.swift in Sources */,
+				24886EF61ECBE0070046A0CD /* Extension.swift in Sources */,
+				249128641ECAAD1500CD3647 /* NJPageCanvasView.swift in Sources */,
+				2491286C1ECAAD6B00CD3647 /* NJOfflineSyncViewController.swift in Sources */,
+				2472E01F1ED2E0280009E753 /* SimpleViewController.swift in Sources */,
+				249128761ECAADAA00CD3647 /* NJPage.swift in Sources */,
+				2490C2911ECD92290046203D /* BluetoothController.swift in Sources */,
+				249128781ECAADBD00CD3647 /* NJStroke.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		249127DE1ECA9D3000CD3647 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				249127DF1ECA9D3000CD3647 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		249127F81ECA9D3000CD3647 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		249127F91ECA9D3000CD3647 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		249127FB1ECA9D3000CD3647 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = K2APH36C6M;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/n2sampleSwift",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = n2sampleSwift/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/NISDK/build/Debug-iphoneos",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.neolab.n2sampleSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "n2sampleSwift/n2sampleSwift-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		249127FC1ECA9D3000CD3647 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = K2APH36C6M;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/n2sampleSwift",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = n2sampleSwift/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/NISDK/build/Debug-iphoneos",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.neolab.n2sampleSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "n2sampleSwift/n2sampleSwift-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		249127CD1ECA9D3000CD3647 /* Build configuration list for PBXProject "n2sampleSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				249127F81ECA9D3000CD3647 /* Debug */,
+				249127F91ECA9D3000CD3647 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		249127FA1ECA9D3000CD3647 /* Build configuration list for PBXNativeTarget "n2sampleSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				249127FB1ECA9D3000CD3647 /* Debug */,
+				249127FC1ECA9D3000CD3647 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 249127CA1ECA9D3000CD3647 /* Project object */;
+}

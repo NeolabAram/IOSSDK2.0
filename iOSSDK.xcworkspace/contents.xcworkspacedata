@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:iOSSDK2.0_NISDK/NISDK.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:iOSSDK2.0_sample_code/n2sample.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:iOSSDK2.0_sample_swift/n2sampleSwift.xcodeproj">
+   </FileRef>
+</Workspace>

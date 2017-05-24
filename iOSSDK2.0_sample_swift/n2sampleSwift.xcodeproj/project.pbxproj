@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2422869F1ED558E100009DC5 /* libNISDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2422869E1ED558E100009DC5 /* libNISDK.a */; };
+		242286A51ED559D500009DC5 /* libNISDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 242286A41ED559D400009DC5 /* libNISDK.a */; };
 		2472E01D1ED2DEEC0009E753 /* SimpleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2472E01C1ED2DEEC0009E753 /* SimpleView.swift */; };
 		2472E01F1ED2E0280009E753 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2472E01E1ED2E0280009E753 /* SimpleViewController.swift */; };
 		24886EF61ECBE0070046A0CD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24886EF51ECBE0070046A0CD /* Extension.swift */; };
@@ -42,8 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2422869B1ED5523300009DC5 /* libNISDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNISDK.a; path = "NISDK/build/Debug-iphoneos/libNISDK.a"; sourceTree = "<group>"; };
-		2422869E1ED558E100009DC5 /* libNISDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNISDK.a; path = "../iOSSDK2.0_NISDK/build/Debug-iphoneos/libNISDK.a"; sourceTree = "<group>"; };
+		242286A41ED559D400009DC5 /* libNISDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNISDK.a; path = "../../../../../Users/aram/Library/Developer/Xcode/DerivedData/iOSSDK-aofxtptitecnvxavgoboogadhcgi/Build/Products/Debug-iphoneos/libNISDK.a"; sourceTree = "<group>"; };
 		2472E01C1ED2DEEC0009E753 /* SimpleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleView.swift; path = View/SimpleView.swift; sourceTree = "<group>"; };
 		2472E01E1ED2E0280009E753 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleViewController.swift; path = Controllers/SimpleViewController.swift; sourceTree = "<group>"; };
 		24886EF51ECBE0070046A0CD /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = Util/Extension.swift; sourceTree = "<group>"; };
@@ -85,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2422869F1ED558E100009DC5 /* libNISDK.a in Frameworks */,
+				242286A51ED559D500009DC5 /* libNISDK.a in Frameworks */,
 				24886EF81ECC2EE40046A0CD /* libz.tbd in Frameworks */,
 				2491281F1ECAA91C00CD3647 /* Foundation.framework in Frameworks */,
 				2491281D1ECAA91100CD3647 /* UIKit.framework in Frameworks */,
@@ -153,8 +152,7 @@
 		249128061ECA9E1500CD3647 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2422869E1ED558E100009DC5 /* libNISDK.a */,
-				2422869B1ED5523300009DC5 /* libNISDK.a */,
+				242286A41ED559D400009DC5 /* libNISDK.a */,
 				24886EF71ECC2EE40046A0CD /* libz.tbd */,
 				2491281E1ECAA91C00CD3647 /* Foundation.framework */,
 				2491281C1ECAA91100CD3647 /* UIKit.framework */,

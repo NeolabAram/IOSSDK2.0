@@ -54,6 +54,7 @@
 		23CD8D161A36D22900677BAF /* NEO1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 23CD8D151A36D22900677BAF /* NEO1.zip */; };
 		23CD8D261A390AAB00677BAF /* NJInputPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CD8D251A390AAB00677BAF /* NJInputPasswordViewController.m */; };
 		23D5B5CD1A3E8A2E00481884 /* NISDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D5B5CC1A3E8A2E00481884 /* NISDK.framework */; };
+		242286A31ED5599400009DC5 /* libNISDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238009851E7B821600040B1C /* libNISDK.a */; };
 		3985C7091DBEF10000A26575 /* PlainNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3985C7081DBEF10000A26575 /* PlainNote.pdf */; };
 		BE66374219CD0CDD00EDD58B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE66374119CD0CDD00EDD58B /* Foundation.framework */; };
 		BE66374419CD0CDD00EDD58B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE66374319CD0CDD00EDD58B /* CoreGraphics.framework */; };
@@ -186,6 +187,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				242286A31ED5599400009DC5 /* libNISDK.a in Frameworks */,
 				239DC5E71A3E914900A93488 /* libz.dylib in Frameworks */,
 				23D5B5CD1A3E8A2E00481884 /* NISDK.framework in Frameworks */,
 				BE66374419CD0CDD00EDD58B /* CoreGraphics.framework in Frameworks */,

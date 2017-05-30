@@ -7,10 +7,9 @@
 //
 
 import Foundation
-import UIKit
 
 class NJChangePasswordViewController: UIViewController {
-    /*
+
     var currentPin: String = ""
     var savedPin: String = ""
     var changeNewPin: String = ""
@@ -196,5 +195,4 @@ class NJChangePasswordViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
- */
 }

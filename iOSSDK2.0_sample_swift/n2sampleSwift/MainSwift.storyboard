@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment version="2048" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -84,10 +85,94 @@
             </objects>
             <point key="canvasLocation" x="819.375" y="308.97887323943661"/>
         </scene>
+        <!--Setting Pen Controller-->
+        <scene sceneID="Z3b-e1-bgM">
+            <objects>
+                <tableViewController storyboardIdentifier="NJSettingPenController" id="p3E-a8-ufq" customClass="NJSettingPenController" customModule="n2sampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="MQh-Eb-UaQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="MrF-5j-qES">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MrF-5j-qES" id="V7T-vi-san">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="p3E-a8-ufq" id="5ei-Of-NS2"/>
+                            <outlet property="delegate" destination="p3E-a8-ufq" id="AbW-FY-PCe"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MHd-rA-sOf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1561" y="308"/>
+        </scene>
+        <!--Power Off Time Controller-->
+        <scene sceneID="Gj2-Aj-Sao">
+            <objects>
+                <tableViewController storyboardIdentifier="NNPowerOffTimeController" id="8vr-bw-ISR" customClass="NNPowerOffTimeController" customModule="n2sampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="0zB-VK-fXN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Wyf-Yp-3OG">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wyf-Yp-3OG" id="cNi-Lp-JhD">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="8vr-bw-ISR" id="hL4-xy-gqx"/>
+                            <outlet property="delegate" destination="8vr-bw-ISR" id="tUj-fS-dXf"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7zj-rO-dg4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2380" y="296"/>
+        </scene>
+        <!--Sensor Controller-->
+        <scene sceneID="Yyv-SJ-5jy">
+            <objects>
+                <tableViewController storyboardIdentifier="NNSensorController" id="hR2-EZ-FB8" customClass="NNSensorController" customModule="n2sampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="LbU-E8-D2M">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="PKt-XO-NmY">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PKt-XO-NmY" id="LEE-7j-W9m">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="hR2-EZ-FB8" id="kaS-tY-Uju"/>
+                            <outlet property="delegate" destination="hR2-EZ-FB8" id="xXr-2H-A5e"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tre-xg-8Ej" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3873" y="23"/>
+        </scene>
         <!--Change Password View Controller-->
         <scene sceneID="LuE-a6-FwL">
             <objects>
-                <viewController storyboardIdentifier="changePWVC" id="XGT-er-RNg" customClass="NJChangePasswordViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="changePWVC" id="XGT-er-RNg" customClass="NJChangePasswordViewController" customModule="n2sampleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RCX-fq-v1Z"/>
                         <viewControllerLayoutGuide type="bottom" id="KA5-yP-mqi"/>
@@ -432,7 +517,7 @@
         <!--Update View Controller-->
         <scene sceneID="eiM-hw-xum">
             <objects>
-                <viewController storyboardIdentifier="FWUpdateVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XdS-mQ-KeE" customClass="NJFWUpdateViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FWUpdateVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XdS-mQ-KeE" customClass="NJFWUpdateViewController" customModule="n2sampleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="N6N-EH-sdK"/>
                         <viewControllerLayoutGuide type="bottom" id="dco-uA-Pdn"/>
@@ -573,7 +658,7 @@
         <!--Input Password View Controller-->
         <scene sceneID="zaw-EQ-yih">
             <objects>
-                <viewController storyboardIdentifier="inputPWVC" id="peZ-4J-ymp" customClass="NJInputPasswordViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="inputPWVC" id="peZ-4J-ymp" customClass="NJInputPasswordViewController" customModule="n2sampleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5qn-Bj-kdD"/>
                         <viewControllerLayoutGuide type="bottom" id="1Nh-wP-6Mm"/>
@@ -918,7 +1003,7 @@
         <!--Offline Sync View Controller-->
         <scene sceneID="i0N-0l-wtu">
             <objects>
-                <viewController storyboardIdentifier="OffSyncVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hS8-Wj-fhK" customClass="NJOfflineSyncViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OffSyncVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hS8-Wj-fhK" customClass="NJOfflineSyncViewController" customModule="n2sampleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dJC-gz-4Pq"/>
                         <viewControllerLayoutGuide type="bottom" id="Uuc-JB-TfK"/>

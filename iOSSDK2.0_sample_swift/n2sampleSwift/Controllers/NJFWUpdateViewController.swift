@@ -9,12 +9,13 @@
 import Foundation
 import UIKit
 
-var kURL_NEOLAB_FW20: String = "http://one.neolab.kr/resource/fw20"
-var kURL_NEOLAB_FW20_JSON: String = "/protocol2.0_firmware.json"
-var kURL_NEOLAB_FW20_F50_JSON: String = "/protocol2.0_firmware_f50.json"
 
-class NJFWUpdateViewController: UIViewController {//,UIAlertViewDelegate, NJFWUpdateDelegate, URLSessionDataDelegate, URLSessionDelegate, URLSessionTaskDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate {
-    /*
+class NJFWUpdateViewController: UIViewController, NJFWUpdateDelegate, URLSessionDataDelegate, URLSessionDelegate, URLSessionTaskDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate {
+
+    let kURL_NEOLAB_FW20: String = "http://one.neolab.kr/resource/fw20"
+    let kURL_NEOLAB_FW20_JSON: String = "/protocol2.0_firmware.json"
+    let kURL_NEOLAB_FW20_F50_JSON: String = "/protocol2.0_firmware_f50.json"
+
     @IBOutlet var indicator: UIActivityIndicatorView!
     @IBOutlet var penVersionLabel: UILabel!
     @IBOutlet var progressView: UIView!
@@ -36,7 +37,7 @@ class NJFWUpdateViewController: UIViewController {//,UIAlertViewDelegate, NJFWUp
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     override func viewDidLoad() {
@@ -70,7 +71,7 @@ class NJFWUpdateViewController: UIViewController {//,UIAlertViewDelegate, NJFWUp
     
     func updatePenFWVerision() {
         let internalFWVersion: String = NJPenCommManager.sharedInstance().getFWVersion()
-        let array: [Any] = internalFWVersion.components(separatedBy: ".")
+        let array: [String] = internalFWVersion.components(separatedBy: ".")
         penFWVersion = "\(array[0]).\(array[1])"
         penVersionLabel.text = "Current Version :   v.\(penFWVersion)"
     }
@@ -80,6 +81,147 @@ class NJFWUpdateViewController: UIViewController {//,UIAlertViewDelegate, NJFWUp
         progressBar.progress = 0.0
     }
     
+    
+    func animateProgressView(_ hide: Bool, with message: String) {
+        if !hide {
+            progressViewLabel.text = message
+        }
+        UIView.animate(withDuration: 0.3, delay: (0.1), options: [.curveLinear, .allowUserInteraction], animations: {(_: Void) -> Void in
+            if !hide {
+                self.progressView.alpha = 1.0
+            }
+            else {
+                self.progressView.alpha = 0.0
+            }
+        }, completion: {(_ finished: Bool) -> Void in
+        })
+    }
+    
+    
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (_ disposition: URLSession.ResponseDisposition) -> Void) {
+        completionHandler(.cancel)
+        completionHandler(.allow)
+        progressBar.progress = 0.0
+        downloadSize = Float(response.expectedContentLength)
+        dataToDownload = Data()
+    }
+    
+    //Step1. Pen Firmware Version Check With Server
+    func requestPage() {
+        var url: String = ""
+        if NJPenCommManager.sharedInstance().isPenSDK2 {
+            let name: String = NJPenCommManager.sharedInstance().deviceName
+            if (name == "NWP-F50") {
+                url = "\(kURL_NEOLAB_FW20)\(kURL_NEOLAB_FW20_F50_JSON)"
+            }
+            else {
+                url = "\(kURL_NEOLAB_FW20)\(kURL_NEOLAB_FW20_JSON)"
+            }
+        }
+
+        animateProgressView(false, with: "Checking firmware version from the server...")
+        indicator.startAnimating()
+        
+        let sessionConfig = URLSessionConfiguration.default
+        let session = URLSession(configuration: sessionConfig)
+        let urlRequest = URLRequest(url: URL(string: url)!)
+        
+        let task = session.dataTask(with: urlRequest) { (data, uRLResponse, error) in
+            if let mdata = data{
+                do{
+                    let json = try JSONSerialization.jsonObject(with: mdata, options: .mutableLeaves) as! [String : Any]
+                    let loc = json["location"] as! String
+                    let ver = json["version"] as! String
+                    self.fwLoc = loc;                    self.fwVerServer = ver
+                    NJPenCommManager.sharedInstance().fwVerServer = self.fwVerServer
+
+                    if isEmpty(self.penFWVersion) || isEmpty(self.fwVerServer) {
+                        return
+                    }
+                    DispatchQueue.main.async() {
+                        self.penVersionLabel.text?.append(" ==> \(ver)")
+                    }
+
+                    print("FW version : \(ver)")
+                    if self.penFWVersion.compare(self.fwVerServer) == .orderedAscending {
+                        DispatchQueue.main.async() {
+                            let alertVC = UIAlertController(title: "Firmware Update", message:  "Would you like to update the firmware?", preferredStyle: .alert)
+                            let OK = UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+                                self.startFirmwareUpdate()
+                            })
+                            alertVC.addAction(OK)
+                            let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                            alertVC.addAction(Cancel)
+                            self.present(alertVC, animated: true, completion: nil)
+                        }
+                    }
+                    else {
+                        DispatchQueue.main.async() {
+                            let alertVC = UIAlertController(title: "", message:  "Pen Firmware version is up-to-date", preferredStyle: .alert)
+                            let OK = UIAlertAction(title: "OK", style: .default, handler: nil)
+                            alertVC.addAction(OK)
+
+                            self.present(alertVC, animated: true, completion: nil)
+                        }
+                    }
+                } catch{
+                    print("Error with Json: \(error)")
+                }
+                
+            }
+            DispatchQueue.main.async() {
+                self.animateProgressView(true, with: "")
+                self.indicator.stopAnimating()
+            }
+        }
+        task.resume()
+    }
+    
+    
+    // Step2 Firmware update OK from alertSheet
+    func startFirmwareUpdate() {
+        print("startFirmwareUpdate")
+        if isEmpty(fwLoc) {
+            print("file location is empty \(fwLoc)")
+            return
+        }
+        print("startFirmawre Updata \(fwLoc)")
+        let sessionConfig = URLSessionConfiguration.default
+        let session = URLSession(configuration: sessionConfig)
+        var urlStr: String = ""
+        if NJPenCommManager.sharedInstance().isPenSDK2 {
+            urlStr = "\(kURL_NEOLAB_FW20)\(fwLoc)"
+        }
+        let urlRequest = URLRequest(url: URL(string: urlStr)!)
+        let task = session.downloadTask(with: urlRequest) { (url, response, error) in
+            if let tempLocalUrl = url, error == nil {
+                // Success
+                if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                    print("Success: \(statusCode)")
+                }
+                
+                do {
+                    let documentsDirectoryPath = URL(fileURLWithPath: NSTemporaryDirectory())
+                    let fileURL: URL = documentsDirectoryPath.appendingPathComponent("NEO1.zip")
+                    try FileManager.default.copyItem(at: tempLocalUrl, to: fileURL)
+                    NJPenCommManager.sharedInstance().sendUpdateFileInfoAtUrl(toPen: fileURL)
+                    self.animateProgressView(false, with: "Start updating pen firmware...")
+                    self.indicator.startAnimating()
+                } catch (let writeError) {
+                    print("error writing file : \(writeError)")
+                }
+                
+            } else {
+                print("Failure:\(String(describing: error))");
+            }
+        }
+        task.resume()
+        progressBar.progress = 0.0
+        animateProgressView(false, with: "Downloading from the server...")
+        indicator.startAnimating()
+    }
+    
+    //MARK: - NJFWUpdateDelegate -
     func fwUpdateDataReceive(_ status: FW_UPDATE_DATA_STATUS, percent: Float) {
         if status == FW_UPDATE_DATA_RECEIVE_END {
             indicator.stopAnimating()
@@ -101,169 +243,8 @@ class NJFWUpdateViewController: UIViewController {//,UIAlertViewDelegate, NJFWUp
                 progressViewLabel.text = String(format: "Updating pen firmware (%2d%%)", Int(percent))
             }
         }
-        
     }
     
-    func animateProgressView(_ hide: Bool, with message: String) {
-        if !hide {
-            progressViewLabel.text = message
-        }
-        UIView.animate(withDuration: 0.3, delay: (0.1), options: [.curveLinear, .allowUserInteraction], animations: {(_: Void) -> Void in
-            if !hide {
-                self.progressView.alpha = 1.0
-            }
-            else {
-                self.progressView.alpha = 0.0
-            }
-        }, completion: {(_ finished: Bool) -> Void in
-        })
-    }
     
-    func startFirmwareUpdate() {
-        let defaultConfigObject = URLSessionConfiguration.default
-        let defaultSession = URLSession(configuration: defaultConfigObject, delegate: self, delegateQueue: OperationQueue.main)
-        if isEmpty(fwLoc) {
-            return
-        }
-        var urlStr: String
-        if NJPenCommManager.sharedInstance().isPenSDK2 {
-            urlStr = "\(kURL_NEOLAB_FW20)\(fwLoc)"
-        }
-        let url = URL(string: urlStr)
-        let dataTask: URLSessionDataTask? = defaultSession.dataTask(with: url!)
-            //defaultSession.dataTask(withURL: url)
-        dataTask?.resume()
-        progressBar.progress = 0.0
-        animateProgressView(false, with: "Downloading from the server...")
-        indicator.startAnimating()
-    }
     
-    func urlSession(session: URLSession, dataTask: URLSessionDataTask, didReceiveResponse response: URLResponse, completionHandler: @escaping (_ disposition: URLSession.ResponseDisposition) -> Void) {
-        completionHandler(NO)
-        completionHandler(NSURLSessionResponseAllow)
-        progressBar.progress = 0.0
-        downloadSize = Float(response.expectedContentLength)
-        dataToDownload = Data()
-    }
-    
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceiveData data: Data) {
-        dataToDownload.append(data)
-        progressBar.progress = dataToDownload!.length / downloadSize
-        if progressBar.progress == 1.0 {
-            indicator.stopAnimating()
-            let documentsDirectoryPath = URL(fileURLWithPath: NSTemporaryDirectory())
-            let fileURL: URL? = documentsDirectoryPath.appendingPathComponent("NEO1.zip")
-            let filePath: String? = fileURL?.path
-            try? dataToDownload?.write(to: filePath, options: .atomic)
-            NJPenCommManager.sharedInstance().sendUpdateFileInfoAtUrl(toPen: fileURL)
-            animateProgressView(false, with: "Start updating pen firmware...")
-            indicator.startAnimating()
-        }
-    }
-    
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        //download 100% complete
-        if error != nil {
-            print("error \(error)")
-            if error?._code == -1009 {
-                let alert = UIAlertView(title: "", message: "There is a problem with a network connection.", delegate: nil, cancelButtonTitle: "OK", otherButtonTitles: "")
-                alert.show()
-            }
-            else {
-                let alert = UIAlertView(title: "", message: "Error occurs. Please try it again.", delegate: nil, cancelButtonTitle: "OK", otherButtonTitles: "")
-                alert.show()
-            }
-            animateProgressView(true, with: nil)
-            indicator.stopAnimating()
-        }
-    }
-    
-    func requestPage() {
-        responseData = Data.subdata
-        var url: String
-        if NJPenCommManager.sharedInstance().isPenSDK2 {
-            let name: String = NJPenCommManager.sharedInstance().deviceName
-            if (name == "NWP-F50") {
-                url = "\(kURL_NEOLAB_FW20)\(kURL_NEOLAB_FW20_F50_JSON)"
-            }
-            else {
-                url = "\(kURL_NEOLAB_FW20)\(kURL_NEOLAB_FW20_JSON)"
-            }
-        }
-        let request = URLRequest(url: URL(string: url)!)
-        connection = NSURLConnection(request: request, delegate: self)
-        animateProgressView(false, with: "Checking firmware version from the server...")
-        indicator.startAnimating()
-    }
-    
-    // MARK:
-    // MARK: -- NSURLConnection Delegate Mehods
-    func connection(_ connection: NSURLConnection, didReceive response: URLResponse) {
-        print("didReceiveResponse")
-        responseData?.count = 0
-    }
-    
-    @objc(connection:didReceiveData:) func connection(_ connection: NSURLConnection, didReceive data: Data) {
-        responseData.append(data)
-    }
-    
-    func connection(_ connection: NSURLConnection, didFailWithError error: Error?) {
-        print("didFailWithError")
-        print("error \(error)")
-        if error?._code == -1009 {
-            let alert = UIAlertView(title: "", message: "There is a problem with a network connection.", delegate: nil, cancelButtonTitle: "OK", otherButtonTitles: "")
-            alert.show()
-        }
-        else {
-            let alert = UIAlertView(title: "", message: "Error occurs. Please try it again.", delegate: nil, cancelButtonTitle: "OK", otherButtonTitles: "")
-            alert.show()
-        }
-        animateProgressView(true, with: nil)
-        indicator.stopAnimating()
-    }
-    
-    func connectionDidFinishLoading(_ connection: NSURLConnection) {
-        print("connectionDidFinishLoading")
-        let e: Error? = nil
-        let json: [AnyHashable: Any]? = try? JSONSerialization.jsonObject(withData: responseData, options: NSJSONReadingMutableLeaves)
-        let loc: String? = (json?["location"] as? String)
-        let ver: String? = (json?["version"] as? String)
-        fwLoc = loc!
-        fwVerServer = ver!
-        NJPenCommManager.sharedInstance().fwVerServer = fwVerServer
-        if json == nil {
-            print("Error parsing JSON: \(e)")
-        }
-        if isEmpty(penFWVersion) || isEmpty(fwVerServer) {
-            return
-        }
-        animateProgressView(true, with: "")
-        indicator.stopAnimating()
-        if penFWVersion.compare(fwVerServer) == .orderedAscending {
-            let alert = UIAlertView(title: "Firmware Update", message: "Would you like to update the firmware?", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
-            alert.tag = 0
-            alert.show()
-        }
-        else {
-            let alert = UIAlertView(title: "", message: "Pen Firmware version is up-to-date", delegate: self, cancelButtonTitle: "OK", otherButtonTitles: "")
-            alert.tag = 1
-            alert.show()
-        }
-    }
-    
-    func alertView(_ alertView: UIAlertView, clickedButtonat buttonIndex: Int) {
-        if alertView.tag == 0 {
-            if buttonIndex == alertView.firstOtherButtonIndex {
-                startFirmwareUpdate()
-            }
-            else if buttonIndex == alertView.cancelButtonIndex {
-                
-            }
-        }
-        else if alertView.tag == 1 {
-            
-        }
-        
-    }
- */
 }

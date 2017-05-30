@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class NJInputPasswordViewController: UIViewController {
-    /*
+    
     var currentPin: String = ""
     var savePin: String = ""
 
@@ -159,6 +159,5 @@ class NJInputPasswordViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
- */
     
 }

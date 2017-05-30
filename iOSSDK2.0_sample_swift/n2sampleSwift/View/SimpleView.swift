@@ -12,9 +12,9 @@ import CoreGraphics
 
 public class SimpleView: UIView {
     
+    var offPage : NJPage?
     var tempPath :UIBezierPath!
     var lines : [CGPoint] = []
-    
     var path :UIBezierPath!
     
     override init(frame: CGRect) {
@@ -34,6 +34,7 @@ public class SimpleView: UIView {
     }
     
     let scale :CGFloat = 10
+    
     public func begin(_ x: CGFloat, _ y: CGFloat) {
         var currentLocation: CGPoint = CGPoint()
         currentLocation.x = x * scale
@@ -55,20 +56,18 @@ public class SimpleView: UIView {
     
     public func end(){
         print("dotData End")
-//        draw(self.frame)
-//        tempPath.stroke()
-//        tempPath.removeAllPoints()
         setNeedsDisplay()
-        return
     }
     
     public override func draw(_ rect: CGRect) {
         print("dotData draw line")
         drawlinewithrealtime()
+        drawAllStroke()
     }
     
     func drawlinewithrealtime(){
         tempPath.stroke()
+//        drawline()
     }
     
     func drawline(){
@@ -101,7 +100,33 @@ public class SimpleView: UIView {
         }
         path.stroke()
         lines.removeAll()
+    }
+    
+    func drawAllStroke() {
+        var bb = UIBezierPath(rect: self.frame)
+        bb.move(to: CGPoint(x: 0, y: 0))
+        bb.addLine(to: CGPoint(x: 100, y: 100))
+        bb.stroke()
         
+        if let strokeArray  = offPage?.strokes{
+            for st in strokeArray{
+                drawStroke(st)
+            }
+            print("draw all Stroke")
+        }
+        setNeedsDisplay()
+    }
+    
+    func drawStroke(_ st : NJStroke){
+        var bp = UIBezierPath(rect: self.frame)
+        for i in 0..<st.dataCount{
+            if i == 0{
+                bp.move(to: CGPoint(x: CGFloat(st.point_x[i])*scale, y: CGFloat(st.point_y[i])*scale))
+            }else{
+                bp.addLine(to :CGPoint(x: CGFloat(st.point_x[i])*scale, y: CGFloat(st.point_y[i])*scale))
+            }
+        }
+        bp.stroke()
     }
     
     

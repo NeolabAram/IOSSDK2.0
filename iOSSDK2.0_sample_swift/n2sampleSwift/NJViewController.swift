@@ -20,11 +20,9 @@ enum BT_STATUS : Int {
 
 class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDelegate, NJPenCommParserStartDelegate, NJPenCommParserCommandHandler, NJPenCommManagerNewPeripheral, MFMailComposeViewControllerDelegate {
     
-    
     @IBOutlet weak var statusMessage: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var progressLabel: UILabel!
-    
     
     var isCanvasCloseBtnPressed: Bool = false
     var pageCanvasController: UIViewController?
@@ -35,35 +33,33 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
     var activePageNumber: Int = 0
     var cPage: NJPage?
     var timer: Timer?
-    var discoveredPeripherals = [Any]()
-    var macArray = [Any]()
-    var serviceIdArray = [Any]()
+    var discoveredPeripherals = [CBPeripheral]()
+    var macArray = [String]()
+    var serviceIdArray = [String]()
     var color: UIColor?
     var useHover: UInt16 = 0
     var isNoteInfoInstalled: Bool = false
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.pencommManager = NJPenCommManager.sharedInstance()
         isCanvasCloseBtnPressed = false
         let menuBtn = UIButton(frame: CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(46), height: CGFloat(44)))
-        //-20
         menuBtn.setImage(UIImage(named: "btn_Navigation Drawer.png"), for: .normal)
         menuBtn.addTarget(self, action: #selector(self.menuBtnPressed), for: .touchUpInside)
-        let menuButtonView = UIView(frame: CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(46.0), height: CGFloat(44.0)))
-        menuButtonView.addSubview(menuBtn)
         
-        let revealMenuBarButtonItem = UIBarButtonItem(customView: menuButtonView)
+        let revealMenuBarButtonItem = UIBarButtonItem(customView: menuBtn)
         navigationItem.leftBarButtonItem = revealMenuBarButtonItem
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
         processStepInstallNewNotebookInfos()
+        
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(self.writingOnCanvasStart), name: NSNotification.Name(rawValue:"NJPenCommParserPageChangedNotification"), object: nil)
         nc.addObserver(self, selector: #selector(self.btStatusChanged), name: NSNotification.Name(rawValue: "NJPenCommManagerPenConnectionStatusChangeNotification"), object: nil)
         nc.addObserver(self, selector: #selector(self.penPasswordCompareSuccess), name: NSNotification.Name(rawValue: "NJPenCommParserPenPasswordSutupSuccess"), object: nil)
+        
         if (pencommManager.hasPenRegistered) {
             statusMessage.text = "Neo Pen is not connected."
         }
@@ -71,15 +67,12 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
             statusMessage.text = "Neo Pen is not registered."
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.pencommManager.setPenCommParserStartDelegate(self)
         self.pencommManager.setPenCommParserCommandHandler(self)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        isCanvasCloseBtnPressed = true
     }
     
     func processStepInstallNewNotebookInfos() {
@@ -98,8 +91,8 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
                 let fileURL = URL(fileURLWithPath: path )
                 let fileNameWithEX: String = (path as AnyObject).lastPathComponent
                 let filename : String = (NSURL(fileURLWithPath: fileNameWithEX).deletingPathExtension?.relativePath)!
-
-                    //(path as AnyObject).lastPathComponent.deletingPathExtension
+                
+                //(path as AnyObject).lastPathComponent.deletingPathExtension
                 if !filename.hasPrefix("note_") {
                     continue
                 }
@@ -125,7 +118,7 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
                 (section,owner) = NJPage.SectionOwner(fromNotebookId: notebookId)
                 print("Usenote id \(notebookId)")
                 print("Usenote section: + \(section) owner \(owner)" )
-
+                
                 let keyName: String = NPPaperManager.keyName(forNotebookId: UInt(notebookId), section: UInt(section), owner: UInt(owner))
                 NPPaperManager.sharedInstance().installNotebookInfo(forKeyName: keyName, zipFilePath: fileURL, deleteExisting: shouldDeleteExisiting)
                 DispatchQueue.main.sync(execute: {() -> Void in
@@ -144,23 +137,17 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
     func setBtStatus(btStatus: BT_STATUS) {
         switch btStatus {
         case .DISCONNECTED:
-//            connectButton.setTitle("Connect", for: .normal)
             statusMessage.text = "Neo Pen is not connected."
         case .CONNECTING:
-//            connectButton.setTitle("Connecting", for: .normal)
             statusMessage.text = "Scanning Neo Pen."
         case .CONNECTED:
-//            connectButton.setTitle("Disconnect", for: .normal)
             let mac: String = pencommManager.regUuid
             let protocolVersion: String = pencommManager.protocolVersion
             let subName: String = pencommManager.subName
             statusMessage.text = "Neo Pen is connected."
             print("mac : \(mac) portocolVersion \(protocolVersion) subName: \(subName) ")
         case .UNREGISTERED:
-//            connectButton.setTitle("Register", for: .normal)
             statusMessage.text = "Neo Pen is not registered."
-        default:
-            break
         }
         self.btStatus = btStatus
     }
@@ -169,35 +156,23 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
         super.didReceiveMemoryWarning()
     }
     
-//    @IBAction func actionButton(_ sender: Any) {
-//        let actionSheet = UIActionSheet(title: "Menu", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: "Do something else", otherButtonTitles: "connect", "disconnect")
-//        actionSheet.show(from: sender as! UIBarButtonItem, animated: true)
-//        if (btStatus == .DISCONNECTED) || (btStatus == .UNREGISTERED) {
-//            pencommManager?.btStart()
-//            btStatus = .CONNECTING
-//        }
-//        else if btStatus == .CONNECTED {
-//            pencommManager?.disConnect()
-//        }
-//        
-//    }
     
     //MARK: Notification
     func writingOnCanvasStart(notification: Notification) {
-        print("writingOnCanvasStart")
+        print("Notification writingOnCanvasStart")
         if isCanvasCloseBtnPressed {
             pageCanvasController = nil
             isCanvasCloseBtnPressed = false
         }
         if pageCanvasController == nil {
             print("pageCanvasController present")
-//            pageCanvasController = NJPageCanvasController(nibName: nil, bundle: nil)
-//            pageCanvasController?.parentController = self
-//            pageCanvasController?.activeNotebookId = activeNotebookId
-//            pageCanvasController?.activePageNumber = activePageNumber
-//            pageCanvasController?.canvasPage = cPage
+            //            pageCanvasController = NJPageCanvasController(nibName: nil, bundle: nil)
+            //            pageCanvasController?.parentController = self
+            //            pageCanvasController?.activeNotebookId = activeNotebookId
+            //            pageCanvasController?.activePageNumber = activePageNumber
+            //            pageCanvasController?.canvasPage = cPage
             if (color != nil) {
-//                pageCanvasController?.penColor = convertUIColor(toAlpahRGB: color!)
+                //                pageCanvasController?.penColor = convertUIColor(toAlpahRGB: color!)
             }
             pageCanvasController = SimpleViewController(nibName: nil, bundle: nil)
             present(pageCanvasController!, animated: true, completion: nil)
@@ -205,12 +180,16 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
     }
     
     func btStatusChanged(notification: Notification) {
+        print("Notification btStatusChanged")
+
         let penConnctionStatus = notification.userInfo?["info"] as? Int
         checkBtStatus(penConnctionStatus!)
         print("btStatusChanged \(String(describing: notification.userInfo?["info"]))")
     }
     
     func checkBtStatus(_ penConnectionStatus: Int) {
+        print("Notification checkBtStatus")
+
         if penConnectionStatus == NJPenCommManPenConnectionStatus.connected.rawValue{
             btStatus = .CONNECTED
             self.pencommManager.setAllNoteIdList()
@@ -229,10 +208,13 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
         
     }
     
+    //MARK: - EXAMPLE -
     func menuBtnPressed(_ sender: UIBarButtonItem) {
+        
         let alertAction = UIAlertController(title: "Menu", message: nil, preferredStyle: .alert)
         alertAction.popoverPresentationController?.sourceView = self.view
-        var firstTitle = pencommManager.hasPenRegistered ? "Connect" :"Register"
+        let firstTitle = pencommManager.hasPenRegistered ? "Connect" :"Register"
+        
 
         //Connect
         let connectAction = UIAlertAction(title: firstTitle, style: .default, handler: { (UIAlertAction) in
@@ -243,13 +225,6 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
         })
         alertAction.addAction(connectAction)
         
-        //Disconnect
-        let disconnectAction = UIAlertAction(title: "Disconnect", style: .destructive, handler: { (UIAlertAction) in
-            self.pencommManager.disConnect()
-            self.pencommManager.setPenPasswordDelegate(nil)
-            self.btStatus = .DISCONNECTED
-        })
-        alertAction.addAction(disconnectAction)
         
         //Unregster
         let unregistAction = UIAlertAction(title: "Pen Unregistration", style: .destructive, handler: { (UIAlertAction) in
@@ -257,51 +232,6 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
             self.btStatus = .UNREGISTERED
         })
         alertAction.addAction(unregistAction)
-        
-        //TODO: Blue Test
-        let btAction = UIAlertAction(title: "Bluetooth", style: .default, handler: { (UIAlertAction) in
-            let story = UIStoryboard(name: "BTLEStoryboard", bundle: nil)
-            let vc = story.instantiateViewController(withIdentifier: "BluetoothController") as! BluetoothController
-            self.navigationController?.pushViewController(vc, animated: true)
-        })
-        alertAction.addAction(btAction)
-        
-        // Pen Status
-        let penStatusAction = UIAlertAction(title: "Pen Status", style: .destructive, handler: { (UIAlertAction) in
-            if self.btStatus == .CONNECTED {
-                self.pencommManager.setPenStatusDelegate(self)
-                self.pencommManager.setPenState()
-            }
-        })
-        alertAction.addAction(penStatusAction)
-        
-        // Transferable Note ID
-        let transferalbeNoteAction = UIAlertAction(title: "Transferable Note ID", style: .destructive, handler: { (UIAlertAction) in
-            if self.btStatus == .CONNECTED {
-                let notebookId: Int = 610
-                let sectionId: Int = 3
-                let ownerId: Int = 27
-                NPPaperManager.sharedInstance().reqAdd(usingNote: UInt(notebookId), section: UInt(sectionId), owner: UInt(ownerId))
-                self.pencommManager.setNoteIdListFromPList()
-            }
-        })
-        alertAction.addAction(transferalbeNoteAction)
-
-        let canvasAction = UIAlertAction(title: "Change canvas Color", style: .destructive, handler: { (UIAlertAction) in
-            if self.btStatus == .CONNECTED {
-                self.color = UIColor.red
-            }
-        })
-        alertAction.addAction(canvasAction)
-
-        //Pen Tip Color
-        let pentipAction = UIAlertAction(title: "Pen Tip Color", style: .destructive, handler: { (UIAlertAction) in
-            if self.btStatus == .CONNECTED {
-                let penColor: UInt32 = self.convertUIColor(toAlpahRGB: UIColor.blue)
-                self.pencommManager.setPenStateWithRGB(penColor)
-            }
-        })
-        alertAction.addAction(pentipAction)
         
         //BT list
         let btlistAction = UIAlertAction(title: "BT List", style: .destructive, handler: { (UIAlertAction) in
@@ -311,80 +241,118 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
             self.startScanTimer(3.0)
         })
         alertAction.addAction(btlistAction)
-
-        // Battery and Memory
-        let batteryMemoryNoteAction = UIAlertAction(title: "Battery Level and Memory Space", style: .destructive, handler: { (UIAlertAction) in
-            if self.btStatus == .CONNECTED {
-                self.getPenBatteryLevelAndMemoryUsedSpace()
-            }
+        
+        if self.btStatus == .CONNECTED {
+            
+            //Disconnect
+            let disconnectAction = UIAlertAction(title: "Disconnect", style: .destructive, handler: { (UIAlertAction) in
+                self.pencommManager.disConnect()
+                self.pencommManager.setPenPasswordDelegate(nil)
+                self.btStatus = .DISCONNECTED
+            })
+            alertAction.addAction(disconnectAction)
+            
+            
+            //Setting
+            let settingAction = UIAlertAction(title: "Setting Pen", style: .destructive, handler: { (UIAlertAction) in
+                if self.btStatus == .CONNECTED {
+                    self.pencommManager.setPenStatusDelegate(self)
+                    let mainStoryboard = UIStoryboard(name: "MainSwift", bundle: nil)
+                    let penInfoViewController = mainStoryboard.instantiateViewController(withIdentifier: "NJSettingPenController") as! NJSettingPenController
+                    self.navigationController?.pushViewController(penInfoViewController, animated: false)
+                }
+            })
+            alertAction.addAction(settingAction)
+            
+            //OfflineData List
+            let offlineDataListAction = UIAlertAction(title: "OfflineData list", style: .destructive, handler: { (UIAlertAction) in
+                if self.btStatus == .CONNECTED {
+                    let mainStoryboard = UIStoryboard(name: "MainSwift", bundle: nil)
+                    let offlineSyncViewController: NJOfflineSyncViewController = mainStoryboard.instantiateViewController(withIdentifier: "OffSyncVC") as! NJOfflineSyncViewController
+                    self.navigationController?.pushViewController(offlineSyncViewController, animated: false)
+                }
+            })
+            alertAction.addAction(offlineDataListAction)
+            
+            // pen Firmaware Update
+            let firmwareUpdateAction = UIAlertAction(title: "Pen Firmware Update", style: .destructive, handler: { (UIAlertAction) in
+                if self.btStatus == .CONNECTED {
+                    let mainStoryboard = UIStoryboard(name: "MainSwift", bundle: nil)
+                    let fwUpdateViewController = mainStoryboard.instantiateViewController(withIdentifier: "FWUpdateVC") as! NJFWUpdateViewController
+                    self.navigationController?.pushViewController(fwUpdateViewController, animated: false)
+                }
+            })
+            alertAction.addAction(firmwareUpdateAction)
+            
+            // Pen Status
+            let penStatusAction = UIAlertAction(title: "Pen Status", style: .destructive, handler: { (UIAlertAction) in
+                if self.btStatus == .CONNECTED {
+                    self.pencommManager.setPenStatusDelegate(self)
+                    self.pencommManager.setPenState()
+                }
+            })
+            
+            alertAction.addAction(penStatusAction)
+            
+            // Transferable Note ID
+            let transferalbeNoteAction = UIAlertAction(title: "Transferable Note ID", style: .destructive, handler: { (UIAlertAction) in
+                if self.btStatus == .CONNECTED {
+                    let notebookId: Int = 610
+                    let sectionId: Int = 3
+                    let ownerId: Int = 27
+                    NPPaperManager.sharedInstance().reqAdd(usingNote: UInt(notebookId), section: UInt(sectionId), owner: UInt(ownerId))
+                    self.pencommManager.setNoteIdListFromPList()
+                }
+            })
+            alertAction.addAction(transferalbeNoteAction)
+            
+            let canvasAction = UIAlertAction(title: "Change canvas Color", style: .destructive, handler: { (UIAlertAction) in
+                if self.btStatus == .CONNECTED {
+                    self.color = UIColor.red
+                }
+            })
+            alertAction.addAction(canvasAction)
+            
+            //Pen Tip Color
+            let pentipAction = UIAlertAction(title: "Pen Tip Color", style: .destructive, handler: { (UIAlertAction) in
+                if self.btStatus == .CONNECTED {
+                    let penColor: UInt32 = self.convertUIColor(toAlpahRGB: UIColor.blue)
+                    self.pencommManager.setPenStateWithRGB(penColor)
+                }
+            })
+            alertAction.addAction(pentipAction)
+            
+            // Battery and Memory
+            let batteryMemoryNoteAction = UIAlertAction(title: "Battery Level and Memory Space", style: .destructive, handler: { (UIAlertAction) in
+                if self.btStatus == .CONNECTED {
+                    self.getPenBatteryLevelAndMemoryUsedSpace()
+                }
+            })
+            alertAction.addAction(batteryMemoryNoteAction)
+        }
+        
+        //TODO: Blue Test
+        let btAction = UIAlertAction(title: "Bluetooth", style: .default, handler: { (UIAlertAction) in
+            let story = UIStoryboard(name: "BTLEStoryboard", bundle: nil)
+            let vc = story.instantiateViewController(withIdentifier: "BluetoothController") as! BluetoothController
+            self.navigationController?.pushViewController(vc, animated: true)
         })
-        alertAction.addAction(batteryMemoryNoteAction)
+        alertAction.addAction(btAction)
 
         //BT ID
         let btidAction = UIAlertAction(title: "BT ID", style: .destructive, handler: { (UIAlertAction) in
-            let btIDList: [Any] = ["NWP-F110", "NWP-F120"]
+            let btIDList: [String] = ["NWP-F110", "NWP-F120"]
             self.pencommManager.setBTIDForPenConnection(btIDList)
         })
         alertAction.addAction(btidAction)
 
+        
         // Cancel
         let cancel = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
         alertAction.addAction(cancel)
         present(alertAction, animated: false, completion: nil)
     }
     
-    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonat buttonIndex: Int) {
-        let choice: String = actionSheet.buttonTitle(at: buttonIndex)!
-        if buttonIndex == actionSheet.destructiveButtonIndex {
-            
-        }
-        else if (choice == "Connect") || (choice == "Register") {
-            pencommManager.handleNewPeripheral = nil
-            pencommManager.setPenPasswordDelegate(self)
-            pencommManager.btStart()
-            btStatus = .CONNECTING
-        }
-        else if (choice == "Disconnect") {
-            pencommManager.disConnect()
-            pencommManager.setPenPasswordDelegate(nil)
-            btStatus = .DISCONNECTED
-        }
-        else if (choice == "Pen Unregistration") {
-            pencommManager.resetPenRegistration()
-            btStatus = .UNREGISTERED
-        }
-        else if (choice == "Setting") {
-            if btStatus == .CONNECTED {
-                pencommManager.setPenStatusDelegate(self)
-                let penInfoViewController = NJPenInfoViewController(nibName: nil, bundle: nil)
-                navigationController?.pushViewController(penInfoViewController, animated: false)
-            }
-        }
-        else if (choice == "OfflineData list") {
-//            if btStatus == .CONNECTED {
-//                let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//                let offlineSyncViewController: NJOfflineSyncViewController = mainStoryboard.instantiateViewController(withIdentifier: "OffSyncVC") as! NJOfflineSyncViewController
-//                offlineSyncViewController.isShowOfflineFileList = true
-//                navigationController?.pushViewController(offlineSyncViewController, animated: false)
-//            }
-        }
-        else if (choice == "Show OfflineData") {
-//            if btStatus == .CONNECTED {
-//                var mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//                var offlineSyncViewController: NJOfflineSyncViewController = mainStoryboard.instantiateViewController(withIdentifier: "OffSyncVC") as! NJOfflineSyncViewController
-//                offlineSyncViewController.isShowOfflineFileList = false
-//                offlineSyncViewController.parentController = self
-//                navigationController?.pushViewController(offlineSyncViewController, animated: false)
-//            }
-        }
-        else if (choice == "Pen Firmware Update") {
-//            if btStatus == .CONNECTED {
-//                var mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//                var fwUpdateViewController: NJFWUpdateViewController = mainStoryboard.instantiateViewController(withIdentifier: "FWUpdateVC") as! NJFWUpdateViewController
-//                navigationController?.pushViewController(fwUpdateViewController, animated: false)
-//            }
-        }
-    }
     
     func startScanTimer(_ duration: CGFloat) {
         if timer == nil {
@@ -400,22 +368,23 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
     
     func discoveredPeripheralsAndConnect() {
         var foundPeripheral: CBPeripheral?
-        var penName: String
         stopScanTimer()
         print("discoveredPeripheralsAndConnect")
-        discoveredPeripherals = pencommManager.discoveredPeripherals as! [Any]
-        macArray = pencommManager.macArray as! [Any]
-        serviceIdArray = pencommManager.serviceIdArray as! [Any]
+        discoveredPeripherals = pencommManager.discoveredPeripherals as! [CBPeripheral]
+        macArray = pencommManager.macArray as! [String]
+        serviceIdArray = pencommManager.serviceIdArray as! [String]
         if discoveredPeripherals.count > 0 {
             //example, if index 0 of discoveredPeripherals should be connected
             let index: Int = 0
             var serviceUUID: String = ""
             if serviceIdArray.count > 0 {
-                serviceUUID = (serviceIdArray[0] as? String)!
+                serviceUUID = serviceIdArray[0]
             }
             // 1.try macAddr first
-            foundPeripheral = discoveredPeripherals[0] as! CBPeripheral
-            penName = (foundPeripheral?.name)!
+            foundPeripheral = discoveredPeripherals[0]
+            if let penName = foundPeripheral?.name {
+                print ("PenName: \(penName)")
+            }
             if (serviceUUID == "19F0") || (serviceUUID == "19F1") {
                 print("Pen SDK2.0")
             }
@@ -436,12 +405,9 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
         }
     }
     
+    //MARK: - NJPenStatusDelegate -
     func penStatusData(_ data: UnsafeMutablePointer<PenStateStruct>!) {
-        print("penStatusData :")
-    }
-    
-    func penStatusData(penStatus: PenStateStruct) {
-        NSLog("viewController penstatus")
+        let penStatus = data.pointee
         NSLog("penStatus \(penStatus.penStatus), timezoneOffset \(penStatus.timezoneOffset), timeTick \(penStatus.timeTick)")
         NSLog("pressureMax \(penStatus.pressureMax), battery \(penStatus.battLevel), memory \(penStatus.memoryUsed)")
         NSLog("autoPwrOffTime \(penStatus.autoPwrOffTime), penPressure \(penStatus.penPressure)")
@@ -491,39 +457,35 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
             }
         }
         
-        var defaults = UserDefaults.standard
-        var savedPenAutoPower: Bool = defaults.bool(forKey: "penAutoPower")
+        let defaults = UserDefaults.standard
+        let savedPenAutoPower: Bool = defaults.bool(forKey: "penAutoPower")
         if penAutoPower != savedPenAutoPower {
             defaults.set(penAutoPower, forKey: "penAutoPower")
-            defaults.synchronize()
         }
-        var savedPenSound: Bool = defaults.bool(forKey: "penSound")
+        let savedPenSound: Bool = defaults.bool(forKey: "penSound")
         if penSound != savedPenSound {
             defaults.set(penSound, forKey: "penSound")
-            defaults.synchronize()
         }
-        var penPressure = Int(penStatus.penPressure)
-        var savedPenPressure = defaults.object(forKey: "penPressure") as! Int
+        let penPressure = Int(penStatus.penPressure)
+        let savedPenPressure = defaults.integer(forKey: "penPressure")
         if savedPenPressure != penPressure {
             defaults.set(penPressure, forKey: "penPressure")
-            defaults.synchronize()
         }
-        var autoPwrOff = Int(penStatus.autoPwrOffTime)
-        var savedAutoPwrOff = defaults.object(forKey: "autoPwrOff") as! Int
+        let autoPwrOff = Int(penStatus.autoPwrOffTime)
+        let savedAutoPwrOff = defaults.integer(forKey: "autoPwrOff")
         if savedAutoPwrOff != autoPwrOff {
             defaults.set(autoPwrOff, forKey: "autoPwrOff")
-            defaults.synchronize()
         }
         if pencommManager.isPenSDK2 {
             if (penStatus.battLevel & 0x80) == 0x80 {
                 if (penStatus.battLevel & 0x7f) == 100 {
                     print("Battery is fully charged")
                 }
-                print("Battery is being charged")
+                print("Battery is being charged \(penStatus.battLevel)")
                 return
             }
         }
-        
+        print("penStatus Finish")
     }
     
     func getPenBatteryLevelAndMemoryUsedSpace() {
@@ -536,7 +498,7 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
     
     //NJPenPasswordDelegate
     func penPasswordRequest(_ data: UnsafeMutablePointer<PenPasswordRequestStruct>!) {
-
+        
         let request : PenPasswordRequestStruct = PenPasswordRequestStruct()//data as PenPasswordRequestStruct
         var password: String = MyFunctions.loadPasswd()
         let resetCount = Int(request.resetCount)
@@ -562,15 +524,15 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
             }
             else {
                 let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let inputPasswordViewController: NJInputPasswordViewController? = mainStoryboard.instantiateViewController(withIdentifier: "inputPWVC") as! NJInputPasswordViewController
-                present(inputPasswordViewController!, animated: true, completion: { _ in })
+                let inputPasswordViewController = mainStoryboard.instantiateViewController(withIdentifier: "inputPWVC") as! NJInputPasswordViewController
+                present(inputPasswordViewController
+                    , animated: true, completion: { _ in })
             }
         }
     }
-
     
     func penPasswordCompareSuccess(_ notification: Notification) {
-        print("setBTComparePassword success")
+        print("Notification setBTComparePassword success")
     }
     
     func convertUIColor(toAlpahRGB color: UIColor) -> UInt32 {
@@ -590,9 +552,8 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
         let penColor: UInt32 = (alpah << 24) | (red << 16) | (green << 8) | blue
         return penColor
     }
-
-    //NJPenCommParserStartDelegate
     
+    //MARK: - NJPenCommParserStartDelegate -
     func activeNoteId(forFirstStroke noteId: Int32, pageNum pageNumber: Int32, sectionId section: Int32, ownderId owner: Int32) {
         print("NJPenCommParserStartDelegate")
     }
@@ -612,9 +573,9 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
         NJPenCommManager.sharedInstance().setNoteIdListFromPList()
     }
     
-    //NJPenCommParserCommandHandler
-    func findApplicableSymbols(param: String, action: String, andName name: String) {
-        //NSLog(@"param:%@, action:%@, name:%@",param, action, name);
+    //MARK:  - NJPenCommParserCommandHandler -
+    func findApplicableSymbols(_ param: String, action: String, andName name: String) {
+        print("param:\(param), action:\(action), name:\(name)");
     }
     
     func sendEmailWithPdf() {
@@ -641,7 +602,7 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
             alert.addAction(OKAction)
             
             self.present(alert, animated: true, completion:nil)
-
+            
         }
     }
     
@@ -655,8 +616,6 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
             print("Mail sent")
         case .failed:
             print("Mail sent failure: \(String(describing: error?.localizedDescription))")
-        default:
-            break
         }
         
         dismiss(animated: true, completion: {() -> Void in

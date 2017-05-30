@@ -13,7 +13,7 @@ import CoreGraphics
 let MAX_NODE_NUMBER = 1024
 
 class NJPage: NSObject {
-    var strokes = [Any]()
+    var strokes : [NJStroke] = []
     var isPageHasChanged: Bool = false
     var bounds = CGRect.zero
     var image: UIImage?
@@ -36,7 +36,6 @@ class NJPage: NSObject {
     var owner : Int = 27
     
     deinit {
-//        strokes = nil
         renderingPath = nil
         paperInfo = nil
     }
@@ -45,7 +44,6 @@ class NJPage: NSObject {
         super.init()
         self.notebookId = notebookId
         self.pageNumber = pageNumber
-        strokes = [Any]()
         (section,owner) = NJPage.SectionOwner(fromNotebookId: notebookId)
         //from both plist and nproj
         paperInfo = NJNotebookPaperInfo.sharedInstance().getNoteForNotebook( Int32(notebookId), pageNum: Int32(Int(pageNumber)), section: Int32(Int(section)), owner: Int32(Int(owner)))
@@ -139,7 +137,7 @@ class NJPage: NSObject {
             let yRatio: Float = Float(bounds.size.height / paperSize.height)
             let screenRatio: Float = (xRatio > yRatio) ? yRatio : xRatio
             for i in 0..<strokes.count {
-                let stroke: NJStroke? = strokes[i] as! NJStroke
+                let stroke: NJStroke? = strokes[i] 
                 stroke?.render(withScale: CGFloat(screenRatio))
             }
             let newImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()

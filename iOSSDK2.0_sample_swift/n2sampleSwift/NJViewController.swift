@@ -53,7 +53,15 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
-        processStepInstallNewNotebookInfos()
+        if !isNoteInfoInstalled {
+            progressView.isHidden = false
+            progressLabel.isHidden = false
+            progressView.progress = 0.0
+            MetaData.processStepInstallNewNotebookInfos()
+            self.progressView.isHidden = true
+            self.progressLabel.isHidden = true
+        }
+
         
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(self.writingOnCanvasStart), name: NSNotification.Name(rawValue:"NJPenCommParserPageChangedNotification"), object: nil)
@@ -75,64 +83,6 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
         isCanvasCloseBtnPressed = true
     }
     
-    func processStepInstallNewNotebookInfos() {
-        if isNoteInfoInstalled {
-            isNoteInfoInstalled = true
-            return
-        }
-        progressView.isHidden = false
-        progressLabel.isHidden = false
-        progressView.progress = 0.0
-        DispatchQueue.global(qos: .default).async(execute: {() -> Void in
-            let notebookInfos = Bundle.main.paths(forResourcesOfType: "zip", inDirectory: "books_2016_02")
-            let tot: Int = notebookInfos.count
-            var count: Int = 0
-            for path in notebookInfos {
-                let fileURL = URL(fileURLWithPath: path )
-                let fileNameWithEX: String = (path as AnyObject).lastPathComponent
-                let filename : String = (NSURL(fileURLWithPath: fileNameWithEX).deletingPathExtension?.relativePath)!
-                
-                //(path as AnyObject).lastPathComponent.deletingPathExtension
-                if !filename.hasPrefix("note_") {
-                    continue
-                }
-                var notebookId: Int = 0
-                let tokens: [String] = filename.components(separatedBy: "_")
-                var shouldDeleteExisiting: Bool = true
-                if tokens.count > 3 || tokens.count < 2 {
-                    continue
-                }
-                if tokens.count == 3 {
-                    shouldDeleteExisiting = (Int(tokens[2]) == 0) ? true : false
-                    notebookId = Int(tokens[1])!
-                }
-                else if tokens.count == 2 {
-                    notebookId = Int(tokens[1])!
-                }
-                
-                if notebookId <= 0 {
-                    continue
-                }
-                var section: Int = 3
-                var owner: Int = 27
-                (section,owner) = NJPage.SectionOwner(fromNotebookId: notebookId)
-                print("Usenote id \(notebookId)")
-                print("Usenote section: + \(section) owner \(owner)" )
-                
-                let keyName: String = NPPaperManager.keyName(forNotebookId: UInt(notebookId), section: UInt(section), owner: UInt(owner))
-                NPPaperManager.sharedInstance().installNotebookInfo(forKeyName: keyName, zipFilePath: fileURL, deleteExisting: shouldDeleteExisiting)
-                DispatchQueue.main.sync(execute: {() -> Void in
-                    count += 1
-                    let progressValue = Float(count)/Float(tot)
-                    self.progressView.setProgress(progressValue, animated: false)
-                    if self.progressView.progress == 1.0 {
-                        self.progressView.isHidden = true
-                        self.progressLabel.isHidden = true
-                    }
-                })
-            }
-        })
-    }
     
     func setBtStatus(btStatus: BT_STATUS) {
         switch btStatus {

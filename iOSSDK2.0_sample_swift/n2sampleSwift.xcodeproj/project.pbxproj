@@ -39,6 +39,7 @@
 		249128781ECAADBD00CD3647 /* NJStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128771ECAADBD00CD3647 /* NJStroke.swift */; };
 		249E64151ED808E000071C4D /* NNPowerOffTimeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249E64141ED808E000071C4D /* NNPowerOffTimeController.swift */; };
 		249E64171ED8111800071C4D /* NNSensorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249E64161ED8111800071C4D /* NNSensorController.swift */; };
+		24FC01F61EDD64A30011FF7B /* MetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FC01F51EDD64A30011FF7B /* MetaData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		249128771ECAADBD00CD3647 /* NJStroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJStroke.swift; path = Models/NJStroke.swift; sourceTree = "<group>"; };
 		249E64141ED808E000071C4D /* NNPowerOffTimeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NNPowerOffTimeController.swift; path = Controllers/NNPowerOffTimeController.swift; sourceTree = "<group>"; };
 		249E64161ED8111800071C4D /* NNSensorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NNSensorController.swift; path = Controllers/NNSensorController.swift; sourceTree = "<group>"; };
+		24FC01F51EDD64A30011FF7B /* MetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetaData.swift; path = Util/MetaData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				24886EF51ECBE0070046A0CD /* Extension.swift */,
+				24FC01F51EDD64A30011FF7B /* MetaData.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				2491286C1ECAAD6B00CD3647 /* NJOfflineSyncViewController.swift in Sources */,
 				249E64171ED8111800071C4D /* NNSensorController.swift in Sources */,
 				2472E01F1ED2E0280009E753 /* SimpleViewController.swift in Sources */,
+				24FC01F61EDD64A30011FF7B /* MetaData.swift in Sources */,
 				249128761ECAADAA00CD3647 /* NJPage.swift in Sources */,
 				2490C2911ECD92290046203D /* BluetoothController.swift in Sources */,
 				249128781ECAADBD00CD3647 /* NJStroke.swift in Sources */,
@@ -422,6 +426,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = K2APH36C6M;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -448,6 +453,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = K2APH36C6M;
 				FRAMEWORK_SEARCH_PATHS = (

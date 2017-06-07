@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Sample3/Sample3.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:NISDK3/NISDK3.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:iOSSDK2.0_NISDK/NISDK.xcodeproj">
    </FileRef>
    <FileRef

@@ -13,22 +13,15 @@
 		24879B361ED69B210064251E /* NJSettingPenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24879B351ED69B210064251E /* NJSettingPenController.swift */; };
 		24886EF61ECBE0070046A0CD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24886EF51ECBE0070046A0CD /* Extension.swift */; };
 		24886EF81ECC2EE40046A0CD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 24886EF71ECC2EE40046A0CD /* libz.tbd */; };
-		24886EFA1ECC381A0046A0CD /* books_2016_02 in Resources */ = {isa = PBXBuildFile; fileRef = 24886EF91ECC381A0046A0CD /* books_2016_02 */; };
 		2490C28F1ECD91E80046203D /* BTLEStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2490C28E1ECD91E80046203D /* BTLEStoryboard.storyboard */; };
 		2490C2911ECD92290046203D /* BluetoothController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2490C2901ECD92290046203D /* BluetoothController.swift */; };
 		249127D61ECA9D3000CD3647 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249127D51ECA9D3000CD3647 /* AppDelegate.swift */; };
-		249127DD1ECA9D3000CD3647 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249127DC1ECA9D3000CD3647 /* Assets.xcassets */; };
 		249127E01ECA9D3000CD3647 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 249127DE1ECA9D3000CD3647 /* LaunchScreen.storyboard */; };
 		2491280A1ECA9E3E00CD3647 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 249128091ECA9E3E00CD3647 /* CoreGraphics.framework */; };
 		2491281B1ECAA7B700CD3647 /* MainSwift.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2491281A1ECAA7B700CD3647 /* MainSwift.storyboard */; };
 		2491281D1ECAA91100CD3647 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2491281C1ECAA91100CD3647 /* UIKit.framework */; };
 		2491281F1ECAA91C00CD3647 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2491281E1ECAA91C00CD3647 /* Foundation.framework */; };
 		2491282A1ECAABB400CD3647 /* NJViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128291ECAABB400CD3647 /* NJViewController.swift */; };
-		249128561ECAAC6700CD3647 /* MemoNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128511ECAAC6700CD3647 /* MemoNote.pdf */; };
-		249128571ECAAC6700CD3647 /* NeoPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128521ECAAC6700CD3647 /* NeoPDF.pdf */; };
-		249128581ECAAC6700CD3647 /* PlainNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128531ECAAC6700CD3647 /* PlainNote.pdf */; };
-		249128591ECAAC6700CD3647 /* PocketNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128541ECAAC6700CD3647 /* PocketNote.pdf */; };
-		2491285A1ECAAC6700CD3647 /* SpringNote.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 249128551ECAAC6700CD3647 /* SpringNote.pdf */; };
 		249128641ECAAD1500CD3647 /* NJPageCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128631ECAAD1500CD3647 /* NJPageCanvasView.swift */; };
 		249128661ECAAD2D00CD3647 /* NJChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128651ECAAD2D00CD3647 /* NJChangePasswordViewController.swift */; };
 		249128681ECAAD3D00CD3647 /* NJFWUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128671ECAAD3D00CD3647 /* NJFWUpdateViewController.swift */; };
@@ -39,6 +32,9 @@
 		249128781ECAADBD00CD3647 /* NJStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249128771ECAADBD00CD3647 /* NJStroke.swift */; };
 		249E64151ED808E000071C4D /* NNPowerOffTimeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249E64141ED808E000071C4D /* NNPowerOffTimeController.swift */; };
 		249E64171ED8111800071C4D /* NNSensorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249E64161ED8111800071C4D /* NNSensorController.swift */; };
+		249EFA1D1EE14C72007516C9 /* MetaFile.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249EFA1C1EE14C72007516C9 /* MetaFile.xcassets */; };
+		24C687DA1EDFFF6500652C51 /* PDFController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C687D91EDFFF6500652C51 /* PDFController.swift */; };
+		24C687DC1EE0072B00652C51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24C687DB1EE0072B00652C51 /* Assets.xcassets */; };
 		24FC01F61EDD64A30011FF7B /* MetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FC01F51EDD64A30011FF7B /* MetaData.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,12 +45,10 @@
 		24879B351ED69B210064251E /* NJSettingPenController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NJSettingPenController.swift; sourceTree = "<group>"; };
 		24886EF51ECBE0070046A0CD /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = Util/Extension.swift; sourceTree = "<group>"; };
 		24886EF71ECC2EE40046A0CD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		24886EF91ECC381A0046A0CD /* books_2016_02 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = books_2016_02; sourceTree = "<group>"; };
 		2490C28E1ECD91E80046203D /* BTLEStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BTLEStoryboard.storyboard; path = BTLE/BTLEStoryboard.storyboard; sourceTree = "<group>"; };
 		2490C2901ECD92290046203D /* BluetoothController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BluetoothController.swift; path = BTLE/BluetoothController.swift; sourceTree = "<group>"; };
 		249127D21ECA9D3000CD3647 /* n2sampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = n2sampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		249127D51ECA9D3000CD3647 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		249127DC1ECA9D3000CD3647 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		249127DF1ECA9D3000CD3647 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		249127E11ECA9D3000CD3647 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		249128091ECA9E3E00CD3647 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -63,11 +57,6 @@
 		2491281E1ECAA91C00CD3647 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		249128251ECAAB4200CD3647 /* n2sampleSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "n2sampleSwift-Bridging-Header.h"; sourceTree = "<group>"; };
 		249128291ECAABB400CD3647 /* NJViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NJViewController.swift; sourceTree = "<group>"; };
-		249128511ECAAC6700CD3647 /* MemoNote.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = MemoNote.pdf; path = background/MemoNote.pdf; sourceTree = "<group>"; };
-		249128521ECAAC6700CD3647 /* NeoPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = NeoPDF.pdf; path = background/NeoPDF.pdf; sourceTree = "<group>"; };
-		249128531ECAAC6700CD3647 /* PlainNote.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = PlainNote.pdf; path = background/PlainNote.pdf; sourceTree = "<group>"; };
-		249128541ECAAC6700CD3647 /* PocketNote.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = PocketNote.pdf; path = background/PocketNote.pdf; sourceTree = "<group>"; };
-		249128551ECAAC6700CD3647 /* SpringNote.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = SpringNote.pdf; path = background/SpringNote.pdf; sourceTree = "<group>"; };
 		249128631ECAAD1500CD3647 /* NJPageCanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJPageCanvasView.swift; path = View/NJPageCanvasView.swift; sourceTree = "<group>"; };
 		249128651ECAAD2D00CD3647 /* NJChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJChangePasswordViewController.swift; path = Controllers/NJChangePasswordViewController.swift; sourceTree = "<group>"; };
 		249128671ECAAD3D00CD3647 /* NJFWUpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJFWUpdateViewController.swift; path = Controllers/NJFWUpdateViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +67,9 @@
 		249128771ECAADBD00CD3647 /* NJStroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJStroke.swift; path = Models/NJStroke.swift; sourceTree = "<group>"; };
 		249E64141ED808E000071C4D /* NNPowerOffTimeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NNPowerOffTimeController.swift; path = Controllers/NNPowerOffTimeController.swift; sourceTree = "<group>"; };
 		249E64161ED8111800071C4D /* NNSensorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NNSensorController.swift; path = Controllers/NNSensorController.swift; sourceTree = "<group>"; };
+		249EFA1C1EE14C72007516C9 /* MetaFile.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MetaFile.xcassets; sourceTree = "<group>"; };
+		24C687D91EDFFF6500652C51 /* PDFController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PDFController.swift; path = PDF/PDFController.swift; sourceTree = "<group>"; };
+		24C687DB1EE0072B00652C51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		24FC01F51EDD64A30011FF7B /* MetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetaData.swift; path = Util/MetaData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,6 +127,7 @@
 		249127D41ECA9D3000CD3647 /* n2sampleSwift */ = {
 			isa = PBXGroup;
 			children = (
+				24C687D81EDFFF2500652C51 /* PDFnProj */,
 				2490C28D1ECD91D10046203D /* BTLE */,
 				2491282C1ECAAC0C00CD3647 /* Models */,
 				2491284C1ECAAC3E00CD3647 /* Views */,
@@ -144,7 +137,6 @@
 				249128291ECAABB400CD3647 /* NJViewController.swift */,
 				249127D51ECA9D3000CD3647 /* AppDelegate.swift */,
 				2491281A1ECAA7B700CD3647 /* MainSwift.storyboard */,
-				249127DC1ECA9D3000CD3647 /* Assets.xcassets */,
 				249127DE1ECA9D3000CD3647 /* LaunchScreen.storyboard */,
 				249127E11ECA9D3000CD3647 /* Info.plist */,
 				249128251ECAAB4200CD3647 /* n2sampleSwift-Bridging-Header.h */,
@@ -201,14 +193,18 @@
 		249128501ECAAC5B00CD3647 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				24886EF91ECC381A0046A0CD /* books_2016_02 */,
-				249128511ECAAC6700CD3647 /* MemoNote.pdf */,
-				249128521ECAAC6700CD3647 /* NeoPDF.pdf */,
-				249128531ECAAC6700CD3647 /* PlainNote.pdf */,
-				249128541ECAAC6700CD3647 /* PocketNote.pdf */,
-				249128551ECAAC6700CD3647 /* SpringNote.pdf */,
+				24C687DB1EE0072B00652C51 /* Assets.xcassets */,
+				249EFA1C1EE14C72007516C9 /* MetaFile.xcassets */,
 			);
 			name = Resource;
+			sourceTree = "<group>";
+		};
+		24C687D81EDFFF2500652C51 /* PDFnProj */ = {
+			isa = PBXGroup;
+			children = (
+				24C687D91EDFFF6500652C51 /* PDFController.swift */,
+			);
+			name = PDFnProj;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,15 +268,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				249128571ECAAC6700CD3647 /* NeoPDF.pdf in Resources */,
+				249EFA1D1EE14C72007516C9 /* MetaFile.xcassets in Resources */,
 				249127E01ECA9D3000CD3647 /* LaunchScreen.storyboard in Resources */,
-				249128591ECAAC6700CD3647 /* PocketNote.pdf in Resources */,
-				249128581ECAAC6700CD3647 /* PlainNote.pdf in Resources */,
-				249127DD1ECA9D3000CD3647 /* Assets.xcassets in Resources */,
+				24C687DC1EE0072B00652C51 /* Assets.xcassets in Resources */,
 				2491281B1ECAA7B700CD3647 /* MainSwift.storyboard in Resources */,
-				24886EFA1ECC381A0046A0CD /* books_2016_02 in Resources */,
-				249128561ECAAC6700CD3647 /* MemoNote.pdf in Resources */,
-				2491285A1ECAAC6700CD3647 /* SpringNote.pdf in Resources */,
 				2490C28F1ECD91E80046203D /* BTLEStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,6 +291,7 @@
 				249128681ECAAD3D00CD3647 /* NJFWUpdateViewController.swift in Sources */,
 				2491286E1ECAAD7700CD3647 /* NJPageCanvasController.swift in Sources */,
 				249127D61ECA9D3000CD3647 /* AppDelegate.swift in Sources */,
+				24C687DA1EDFFF6500652C51 /* PDFController.swift in Sources */,
 				249E64151ED808E000071C4D /* NNPowerOffTimeController.swift in Sources */,
 				24886EF61ECBE0070046A0CD /* Extension.swift in Sources */,
 				249128641ECAAD1500CD3647 /* NJPageCanvasView.swift in Sources */,

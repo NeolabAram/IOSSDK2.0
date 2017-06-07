@@ -295,6 +295,13 @@ class NJViewController: UIViewController, NJPenStatusDelegate, NJPenPasswordDele
             self.pencommManager.setBTIDForPenConnection(btIDList)
         })
         alertAction.addAction(btidAction)
+        
+        //BT ID
+        let pdfAction = UIAlertAction(title: "PDF Sample", style: .destructive, handler: { (UIAlertAction) in
+            let VC = PDFController()
+            self.navigationController?.pushViewController(VC, animated: true)
+        })
+        alertAction.addAction(pdfAction)
 
         
         // Cancel

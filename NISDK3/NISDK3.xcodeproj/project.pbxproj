@@ -7,13 +7,67 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2448CCF61EE7C91F00507C1E /* PenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CCF51EE7C91F00507C1E /* PenController.swift */; };
+		2448CCFB1EE7CB0700507C1E /* NoteBookInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CCFA1EE7CB0700507C1E /* NoteBookInfo.swift */; };
+		2448CCFD1EE7CB1800507C1E /* PaperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CCFC1EE7CB1800507C1E /* PaperInfo.swift */; };
+		2448CCFF1EE7CB2A00507C1E /* PUIInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CCFE1EE7CB2A00507C1E /* PUIInfo.swift */; };
+		2448CD011EE7CB8800507C1E /* PenCommParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD001EE7CB8800507C1E /* PenCommParser.swift */; };
+		2448CD031EE7CBB600507C1E /* PaperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD021EE7CBB600507C1E /* PaperController.swift */; };
+		2448CD061EE7CC0800507C1E /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD051EE7CC0800507C1E /* Common.swift */; };
+		2448CD081EE7CC2B00507C1E /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD071EE7CC2B00507C1E /* Config.swift */; };
+		2448CD0A1EE7CC5D00507C1E /* NoteBookIdStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD091EE7CC5D00507C1E /* NoteBookIdStore.swift */; };
+		2448CD0C1EE7CCF100507C1E /* VoiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD0B1EE7CCF100507C1E /* VoiceController.swift */; };
+		2448CD0F1EE7CD2900507C1E /* LinearFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD0E1EE7CD2900507C1E /* LinearFilter.swift */; };
+		2448CD111EE7CD3700507C1E /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD101EE7CD3700507C1E /* Media.swift */; };
+		2448CD131EE7CD4400507C1E /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD121EE7CD4400507C1E /* Node.swift */; };
+		2448CD151EE7CD5500507C1E /* Transformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD141EE7CD5500507C1E /* Transformation.swift */; };
+		2448CD171EE7CD6D00507C1E /* VoiceMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD161EE7CD6D00507C1E /* VoiceMemo.swift */; };
+		2448CD1B1EE7CDBC00507C1E /* PDFPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD1A1EE7CDBC00507C1E /* PDFPageRenderer.swift */; };
+		2448CD1D1EE7CDD200507C1E /* XMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD1C1EE7CDD200507C1E /* XMLParser.swift */; };
+		2448CD1F1EE7CE1700507C1E /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD1E1EE7CE1700507C1E /* PageController.swift */; };
+		2448CD211EE7CFAD00507C1E /* N.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD201EE7CFAD00507C1E /* N.swift */; };
+		2448CD261EE7D97D00507C1E /* PDFPageConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD241EE7D83B00507C1E /* PDFPageConverter.swift */; };
+		2448CD291EE7DF3C00507C1E /* DeviceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD281EE7DF3C00507C1E /* DeviceProtocol.swift */; };
 		24A577F61EDEAAFB0028FFDA /* NISDK3.h in Headers */ = {isa = PBXBuildFile; fileRef = 24A577E81EDEAAFB0028FFDA /* NISDK3.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		24C959DE1EEE6DA90029AAA3 /* SymbolChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C959DD1EEE6DA90029AAA3 /* SymbolChecker.swift */; };
+		24C959E01EEE90F80029AAA3 /* PenCommOffline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C959DF1EEE90F80029AAA3 /* PenCommOffline.swift */; };
+		24E32D001EE9581100B96DDD /* Pen2CommPaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E32CFF1EE9581100B96DDD /* Pen2CommPaser.swift */; };
+		24E67D9E1EE9154B0083E2D6 /* PenMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E67D9D1EE9154B0083E2D6 /* PenMessage.swift */; };
+		24E67DA01EE9188A0083E2D6 /* PenMessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E67D9F1EE9188A0083E2D6 /* PenMessageType.swift */; };
+		24E67DA21EE9203A0083E2D6 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E67DA11EE9203A0083E2D6 /* Dot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2448CCF51EE7C91F00507C1E /* PenController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenController.swift; path = Pen/PenController.swift; sourceTree = "<group>"; };
+		2448CCFA1EE7CB0700507C1E /* NoteBookInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteBookInfo.swift; path = Model/NoteBookInfo.swift; sourceTree = "<group>"; };
+		2448CCFC1EE7CB1800507C1E /* PaperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaperInfo.swift; path = Model/PaperInfo.swift; sourceTree = "<group>"; };
+		2448CCFE1EE7CB2A00507C1E /* PUIInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PUIInfo.swift; path = Model/PUIInfo.swift; sourceTree = "<group>"; };
+		2448CD001EE7CB8800507C1E /* PenCommParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenCommParser.swift; path = Pen/PenCommParser.swift; sourceTree = "<group>"; };
+		2448CD021EE7CBB600507C1E /* PaperController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaperController.swift; path = Pen/PaperController.swift; sourceTree = "<group>"; };
+		2448CD051EE7CC0800507C1E /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
+		2448CD071EE7CC2B00507C1E /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Config.swift; path = Common/Config.swift; sourceTree = "<group>"; };
+		2448CD091EE7CC5D00507C1E /* NoteBookIdStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteBookIdStore.swift; path = Model/NoteBookIdStore.swift; sourceTree = "<group>"; };
+		2448CD0B1EE7CCF100507C1E /* VoiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VoiceController.swift; path = Model/VoiceController.swift; sourceTree = "<group>"; };
+		2448CD0E1EE7CD2900507C1E /* LinearFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinearFilter.swift; path = Model/LinearFilter.swift; sourceTree = "<group>"; };
+		2448CD101EE7CD3700507C1E /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Media.swift; path = Model/Media.swift; sourceTree = "<group>"; };
+		2448CD121EE7CD4400507C1E /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Node.swift; path = Model/Node.swift; sourceTree = "<group>"; };
+		2448CD141EE7CD5500507C1E /* Transformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Transformation.swift; path = Model/Transformation.swift; sourceTree = "<group>"; };
+		2448CD161EE7CD6D00507C1E /* VoiceMemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VoiceMemo.swift; path = Model/VoiceMemo.swift; sourceTree = "<group>"; };
+		2448CD1A1EE7CDBC00507C1E /* PDFPageRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PDFPageRenderer.swift; path = Util/PDFPageRenderer.swift; sourceTree = "<group>"; };
+		2448CD1C1EE7CDD200507C1E /* XMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = XMLParser.swift; path = Util/XMLParser.swift; sourceTree = "<group>"; };
+		2448CD1E1EE7CE1700507C1E /* PageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PageController.swift; path = Util/PageController.swift; sourceTree = "<group>"; };
+		2448CD201EE7CFAD00507C1E /* N.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = N.swift; path = Util/N.swift; sourceTree = "<group>"; };
+		2448CD241EE7D83B00507C1E /* PDFPageConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PDFPageConverter.swift; path = Util/PDFPageConverter.swift; sourceTree = "<group>"; };
+		2448CD281EE7DF3C00507C1E /* DeviceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceProtocol.swift; path = Pen/DeviceProtocol.swift; sourceTree = "<group>"; };
 		24A577E51EDEAAF90028FFDA /* NISDK3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NISDK3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		24A577E81EDEAAFB0028FFDA /* NISDK3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NISDK3.h; sourceTree = "<group>"; };
 		24A577E91EDEAAFB0028FFDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		24C959DD1EEE6DA90029AAA3 /* SymbolChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SymbolChecker.swift; path = Util/SymbolChecker.swift; sourceTree = "<group>"; };
+		24C959DF1EEE90F80029AAA3 /* PenCommOffline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenCommOffline.swift; path = Pen/PenCommOffline.swift; sourceTree = "<group>"; };
+		24E32CFF1EE9581100B96DDD /* Pen2CommPaser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pen2CommPaser.swift; path = Pen/Pen2CommPaser.swift; sourceTree = "<group>"; };
+		24E67D9D1EE9154B0083E2D6 /* PenMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenMessage.swift; path = Common/PenMessage.swift; sourceTree = "<group>"; };
+		24E67D9F1EE9188A0083E2D6 /* PenMessageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenMessageType.swift; path = Pen/PenMessageType.swift; sourceTree = "<group>"; };
+		24E67DA11EE9203A0083E2D6 /* Dot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Dot.swift; path = Model/Dot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +81,69 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2448CCF21EE7C8CB00507C1E /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				2448CD281EE7DF3C00507C1E /* DeviceProtocol.swift */,
+				2448CCF51EE7C91F00507C1E /* PenController.swift */,
+				2448CD001EE7CB8800507C1E /* PenCommParser.swift */,
+				24E32CFF1EE9581100B96DDD /* Pen2CommPaser.swift */,
+				2448CD021EE7CBB600507C1E /* PaperController.swift */,
+				24E67D9D1EE9154B0083E2D6 /* PenMessage.swift */,
+				24E67D9F1EE9188A0083E2D6 /* PenMessageType.swift */,
+				24C959DF1EEE90F80029AAA3 /* PenCommOffline.swift */,
+			);
+			name = Device;
+			sourceTree = "<group>";
+		};
+		2448CCF41EE7C8DC00507C1E /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				24C959DD1EEE6DA90029AAA3 /* SymbolChecker.swift */,
+				2448CD241EE7D83B00507C1E /* PDFPageConverter.swift */,
+				2448CD1A1EE7CDBC00507C1E /* PDFPageRenderer.swift */,
+				2448CD1C1EE7CDD200507C1E /* XMLParser.swift */,
+				2448CD1E1EE7CE1700507C1E /* PageController.swift */,
+				2448CD201EE7CFAD00507C1E /* N.swift */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
+		2448CCF91EE7CACF00507C1E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2448CD0D1EE7CD1300507C1E /* Page */,
+				2448CCFA1EE7CB0700507C1E /* NoteBookInfo.swift */,
+				2448CCFC1EE7CB1800507C1E /* PaperInfo.swift */,
+				2448CCFE1EE7CB2A00507C1E /* PUIInfo.swift */,
+				2448CD091EE7CC5D00507C1E /* NoteBookIdStore.swift */,
+				2448CD0B1EE7CCF100507C1E /* VoiceController.swift */,
+				24E67DA11EE9203A0083E2D6 /* Dot.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		2448CD041EE7CBE700507C1E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2448CD051EE7CC0800507C1E /* Common.swift */,
+				2448CD071EE7CC2B00507C1E /* Config.swift */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		2448CD0D1EE7CD1300507C1E /* Page */ = {
+			isa = PBXGroup;
+			children = (
+				2448CD0E1EE7CD2900507C1E /* LinearFilter.swift */,
+				2448CD101EE7CD3700507C1E /* Media.swift */,
+				2448CD121EE7CD4400507C1E /* Node.swift */,
+				2448CD141EE7CD5500507C1E /* Transformation.swift */,
+				2448CD161EE7CD6D00507C1E /* VoiceMemo.swift */,
+			);
+			name = Page;
+			sourceTree = "<group>";
+		};
 		24A577DB1EDEAAF90028FFDA = {
 			isa = PBXGroup;
 			children = (
@@ -46,6 +163,10 @@
 		24A577E71EDEAAF90028FFDA /* NISDK3 */ = {
 			isa = PBXGroup;
 			children = (
+				2448CD041EE7CBE700507C1E /* Common */,
+				2448CCF21EE7C8CB00507C1E /* Device */,
+				2448CCF91EE7CACF00507C1E /* Model */,
+				2448CCF41EE7C8DC00507C1E /* Util */,
 				24A577E81EDEAAFB0028FFDA /* NISDK3.h */,
 				24A577E91EDEAAFB0028FFDA /* Info.plist */,
 			);
@@ -97,6 +218,7 @@
 					24A577E41EDEAAF90028FFDA = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = K2APH36C6M;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -133,6 +255,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2448CD061EE7CC0800507C1E /* Common.swift in Sources */,
+				2448CD291EE7DF3C00507C1E /* DeviceProtocol.swift in Sources */,
+				2448CD261EE7D97D00507C1E /* PDFPageConverter.swift in Sources */,
+				2448CD011EE7CB8800507C1E /* PenCommParser.swift in Sources */,
+				2448CD081EE7CC2B00507C1E /* Config.swift in Sources */,
+				24C959E01EEE90F80029AAA3 /* PenCommOffline.swift in Sources */,
+				2448CCFB1EE7CB0700507C1E /* NoteBookInfo.swift in Sources */,
+				2448CD1F1EE7CE1700507C1E /* PageController.swift in Sources */,
+				2448CD0C1EE7CCF100507C1E /* VoiceController.swift in Sources */,
+				2448CCF61EE7C91F00507C1E /* PenController.swift in Sources */,
+				2448CD1B1EE7CDBC00507C1E /* PDFPageRenderer.swift in Sources */,
+				2448CD211EE7CFAD00507C1E /* N.swift in Sources */,
+				2448CD0F1EE7CD2900507C1E /* LinearFilter.swift in Sources */,
+				2448CCFF1EE7CB2A00507C1E /* PUIInfo.swift in Sources */,
+				2448CD031EE7CBB600507C1E /* PaperController.swift in Sources */,
+				24C959DE1EEE6DA90029AAA3 /* SymbolChecker.swift in Sources */,
+				2448CD0A1EE7CC5D00507C1E /* NoteBookIdStore.swift in Sources */,
+				2448CD111EE7CD3700507C1E /* Media.swift in Sources */,
+				2448CCFD1EE7CB1800507C1E /* PaperInfo.swift in Sources */,
+				24E67DA01EE9188A0083E2D6 /* PenMessageType.swift in Sources */,
+				2448CD131EE7CD4400507C1E /* Node.swift in Sources */,
+				24E67D9E1EE9154B0083E2D6 /* PenMessage.swift in Sources */,
+				2448CD171EE7CD6D00507C1E /* VoiceMemo.swift in Sources */,
+				2448CD151EE7CD5500507C1E /* Transformation.swift in Sources */,
+				24E67DA21EE9203A0083E2D6 /* Dot.swift in Sources */,
+				24E32D001EE9581100B96DDD /* Pen2CommPaser.swift in Sources */,
+				2448CD1D1EE7CDD200507C1E /* XMLParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +392,7 @@
 		24A577FA1EDEAAFB0028FFDA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = K2APH36C6M;
@@ -251,10 +401,13 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = NISDK3/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neolab.NISDK3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = "DEBUG SUPPORT_SDK2 SUPPORT_PEN_LOCALSUBNAME";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -262,6 +415,7 @@
 		24A577FB1EDEAAFB0028FFDA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = K2APH36C6M;
@@ -270,10 +424,12 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = NISDK3/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neolab.NISDK3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = "SUPPORT_PEN_LOCALSUBNAME SUPPORT_SDK2";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

@@ -79,11 +79,12 @@ class PDFController: UIViewController {
         return nil
     }
     
-    var version22 = true
-    var xmlTag = ""
+    var version22 :Bool = true
+    var xmlTag :String = ""
 }
 
 extension PDFController : XMLParserDelegate{
+    
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         print("didStartElement", elementName, attributeDict)
         xmlTag = elementName

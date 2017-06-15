@@ -7,13 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2414ADED1EEE9DF700C49176 /* NISDK3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24A578451EDEC6EF0028FFDA /* NISDK3.framework */; };
+		2414ADEE1EEE9DF700C49176 /* NISDK3.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 24A578451EDEC6EF0028FFDA /* NISDK3.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		24A578331EDEC6E10028FFDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A578321EDEC6E10028FFDA /* AppDelegate.swift */; };
 		24A578351EDEC6E10028FFDA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A578341EDEC6E10028FFDA /* ViewController.swift */; };
 		24A578381EDEC6E10028FFDA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24A578361EDEC6E10028FFDA /* Main.storyboard */; };
 		24A5783A1EDEC6E10028FFDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24A578391EDEC6E10028FFDA /* Assets.xcassets */; };
 		24A5783D1EDEC6E30028FFDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24A5783B1EDEC6E30028FFDA /* LaunchScreen.storyboard */; };
-		24A578461EDEC6EF0028FFDA /* NISDK3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24A578451EDEC6EF0028FFDA /* NISDK3.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2414ADEF1EEE9DF700C49176 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2414ADEE1EEE9DF700C49176 /* NISDK3.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		24A5782F1EDEC6E10028FFDA /* Sample3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample3.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24A578461EDEC6EF0028FFDA /* NISDK3.framework in Frameworks */,
+				2414ADED1EEE9DF700C49176 /* NISDK3.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +101,7 @@
 				24A5782B1EDEC6E10028FFDA /* Sources */,
 				24A5782C1EDEC6E10028FFDA /* Frameworks */,
 				24A5782D1EDEC6E10028FFDA /* Resources */,
+				2414ADEF1EEE9DF700C49176 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -277,6 +293,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = K2APH36C6M;
 				INFOPLIST_FILE = Sample3/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neolab.Sample3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -290,6 +307,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = K2APH36C6M;
 				INFOPLIST_FILE = Sample3/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neolab.Sample3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -316,6 +334,7 @@
 				24A578431EDEC6E30028FFDA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -283,7 +283,7 @@ class NJOfflineSyncViewController: UIViewController, UITableViewDataSource, UITa
             var tt :[Int] = []
         
             var dataSize = MemoryLayout<OffLineData2StrokeHeaderStruct>.size
-            var strokeArray = penData.subdata(in: dataPosition..<dataPosition+dataSize)
+            var strokeArray: Data = penData.subdata(in: dataPosition..<dataPosition+dataSize)
             strokeArray.withUnsafeBytes({ (bytes : UnsafePointer<OffLineData2StrokeHeaderStruct>) -> Void in
                 strokeHeader = UnsafePointer<OffLineData2StrokeHeaderStruct>(bytes).pointee
             })
@@ -291,7 +291,7 @@ class NJOfflineSyncViewController: UIViewController, UITableViewDataSource, UITa
             var dotdata = OffLineData2DotStruct()
             for i in 0..<Int(strokeHeader.nDotCount){
                 dataSize = MemoryLayout<OffLineData2DotStruct>.size
-                var dotArray = penData.subdata(in: dataPosition..<dataPosition+dataSize)
+                var dotArray: Data = penData.subdata(in: dataPosition..<dataPosition+dataSize)
                 dotArray.withUnsafeBytes({ (bytes : UnsafePointer<OffLineData2DotStruct>) -> Void in
                     dotdata = UnsafePointer<OffLineData2DotStruct>(bytes).pointee
                 })

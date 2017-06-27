@@ -14,7 +14,7 @@
     <a title="PenController Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (50% documented)</p>
+        <p><a href="../index.html"> Docs</a> (46% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -45,10 +45,16 @@
             <a href="../Enums.html">Enums</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Enums/DotType.html">DotType</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Enums/PenMessageType.html">PenMessageType</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/PenStatus.html">PenStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/UpNDown.html">UpNDown</a>
               </li>
             </ul>
           </li>
@@ -57,6 +63,29 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Protocols/DeviceDelegate.html">DeviceDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK315CHANGEDID2_DATA">CHANGEDID2_DATA</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/COMM_PENUP_DATA.html">COMM_PENUP_DATA</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK310DotStruct1">DotStruct1</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK310DotStruct2">DotStruct2</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK310DotStruct3">DotStruct3</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK34NPen">NPen</a>
               </li>
             </ul>
           </li>
@@ -152,10 +181,10 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Pen"></a>
-                <a name="//apple_ref/swift/Section/Pen" class="dashAnchor"></a>
-                <a href="#/Pen">
-                  <h3 class="section-name">Pen</h3>
+                <a name="/Public%20Bluetooth"></a>
+                <a name="//apple_ref/swift/Section/Public Bluetooth" class="dashAnchor"></a>
+                <a href="#/Public%20Bluetooth">
+                  <h3 class="section-name">Public Bluetooth</h3>
                 </a>
               </div>
               <ul>
@@ -172,8 +201,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Scan for peripherals - specifically for our service&rsquo;s 128bit CBUUID
+if time = 0 default scan Time</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scan</span><span class="p">(</span><span class="n">durationTime</span> <span class="nv">time</span> <span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -360,17 +398,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/SDK%20Common"></a>
-                <a name="//apple_ref/swift/Section/SDK Common" class="dashAnchor"></a>
-                <a href="#/SDK%20Common">
-                  <h3 class="section-name">SDK Common</h3>
-                </a>
-              </div>
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -434,6 +461,334 @@
                     <a name="/s:FC6NISDK313PenController12getFWVersionFT_SS"></a>
                     <a name="//apple_ref/swift/Method/getFWVersion()" class="dashAnchor"></a>
                     <a class="token" href="#/s:FC6NISDK313PenController12getFWVersionFT_SS">getFWVersion()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController22requestOfflineNoteListFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/requestOfflineNoteList()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController22requestOfflineNoteListFT_T_">requestOfflineNoteList()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Offline</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">requestOfflineNoteList</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController22requestOfflinePageListFT8pageListGSaVs6UInt32__T_"></a>
+                    <a name="//apple_ref/swift/Method/requestOfflinePageList(pageList:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController22requestOfflinePageListFT8pageListGSaVs6UInt32__T_">requestOfflinePageList(pageList:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController18requestOfflineDataFT11withOwnerIdVs6UInt326noteIdS1__Sb"></a>
+                    <a name="//apple_ref/swift/Method/requestOfflineData(withOwnerId:noteId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController18requestOfflineDataFT11withOwnerIdVs6UInt326noteIdS1__Sb">requestOfflineData(withOwnerId:noteId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController15setPenThicknessFSiT_"></a>
+                    <a name="//apple_ref/swift/Method/setPenThickness(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController15setPenThicknessFSiT_">setPenThickness(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController11setPasswordFSST_"></a>
+                    <a name="//apple_ref/swift/Method/setPassword(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController11setPasswordFSST_">setPassword(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController14changePasswordFT4fromSS2toSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/changePassword(from:to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController14changePasswordFT4fromSS2toSS_T_">changePassword(from:to:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController20setBTComparePasswordFSST_"></a>
+                    <a name="//apple_ref/swift/Method/setBTComparePassword(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController20setBTComparePasswordFSST_">setBTComparePassword(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController23sendUpdateFileInfoAtUrlFT5toPenV10Foundation3URL_T_"></a>
+                    <a name="//apple_ref/swift/Method/sendUpdateFileInfoAtUrl(toPen:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController23sendUpdateFileInfoAtUrlFT5toPenV10Foundation3URL_T_">sendUpdateFileInfoAtUrl(toPen:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController17setCancelFWUpdateFSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setCancelFWUpdate(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController17setCancelFWUpdateFSbT_">setCancelFWUpdate(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController20setCancelOfflineSyncFSbT_"></a>
+                    <a name="//apple_ref/swift/Method/setCancelOfflineSync(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController20setCancelOfflineSyncFSbT_">setCancelOfflineSync(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Offline cancel</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setCancelOfflineSync</span><span class="p">(</span><span class="n">_</span> <span class="nv">cancelOfflineSync</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController32getPenBattLevelAndMemoryUsedSizeFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/getPenBattLevelAndMemoryUsedSize()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController32getPenBattLevelAndMemoryUsedSizeFT_T_">getPenBattLevelAndMemoryUsedSize()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController11setPenStateFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/setPenState()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController11setPenStateFT_T_">setPenState()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController22setNoteIdListFromPListFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/setNoteIdListFromPList()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController22setNoteIdListFromPListFT_T_">setNoteIdListFromPList()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController16setAllNoteIdListFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/setAllNoteIdList()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController16setAllNoteIdListFT_T_">setAllNoteIdList()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Using Note Set</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setAllNoteIdList</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController34setNoteIdListSectionOwnerFromPListFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/setNoteIdListSectionOwnerFromPList()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController34setNoteIdListSectionOwnerFromPListFT_T_">setNoteIdListSectionOwnerFromPList()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC6NISDK313PenController15processPressureFSfSf"></a>
+                    <a name="//apple_ref/swift/Method/processPressure(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC6NISDK313PenController15processPressureFSfSf">processPressure(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -711,7 +1066,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-06-13)</p>
+          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-06-16)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

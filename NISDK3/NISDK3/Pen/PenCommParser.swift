@@ -10,16 +10,6 @@ import Foundation
 import CoreBluetooth
 
 
-
-//struct DotDataStruct{
-//    var x: Float = 0
-//    var y: Float = 0
-//    var pressure: Float = 0
-//    var diff_time: UInt8 = 0
-//}
-
-
-
 enum DOT_STATE : Int {
     case NONE
     case FIRST
@@ -60,7 +50,7 @@ enum FW_UPDATE_DATA_STATUS : Int {
 class PenCommParser: NSObject {
     
     let SEAL_SECTION_ID = 4
-    weak var penDelegate: DeviceDelegate?
+    weak var penDelegate: PenDelegate?
     weak var commManager : PenController!
     
     var offlineFileList = [AnyHashable: Any]()
@@ -78,7 +68,6 @@ class PenCommParser: NSObject {
     var cancelFWUpdate: Bool = false
     var cancelOfflineSync: Bool = false
     var passwdCounter: Int = 0
-    var activePageDocument: PageDocument?
     var battMemoryBlock = {((UInt8, UInt8) -> ()).self}
     
     var startX: Float = 0.0
@@ -137,9 +126,6 @@ class PenCommParser: NSObject {
     private var offlineDotData0 = OffLineDataDotStruct()
     private var offlineDotData1 = OffLineDataDotStruct()
     private var offlineDotData2 = OffLineDataDotStruct()
-    private var offline2DotData0 = OffLineData2DotStruct()
-    private var offline2DotData1 = OffLineData2DotStruct()
-    private var offline2DotData2 = OffLineData2DotStruct()
     private var offlineDotCheckState: OFFLINE_DOT_STATE = .NONE
     
     
@@ -150,7 +136,6 @@ class PenCommParser: NSObject {
     var idleTimer: Timer?
     var penStatus: PenStateStruct?
     var penState: PenStateStruct?
-    var penStatus2: PenState2Struct?
     var colorFromPen: UInt32 = 0
     var currentPageInfo: PageInfoType?
     var dataRowArray = [Any]()
@@ -187,7 +172,7 @@ class PenCommParser: NSObject {
     private var offlinePenColor: UInt32 = 0
     private var point_index: Int = 0
     
-
+    
     init(penCommController manager: PenController) {
         super.init()
         commManager = manager
@@ -222,7 +207,7 @@ class PenCommParser: NSObject {
         point_index = 0
     }
     
-    /*
+    
     func isDataIfReady() -> Bool {
         if penCommIdDataReady && penCommStrokeDataReady && penCommUpDownDataReady && penExchangeDataReady {
             return true
@@ -231,9 +216,11 @@ class PenCommParser: NSObject {
         }
     }
     
+    
+    //MARK: Send Data to Pen
     func sendPenPasswordReponseData() {
         if isDataIfReady() {
-            let password: String = Common.sharedInstance.getPassword()
+            //            let password: String = Common.sharedInstance.getPassword()
             //            setBTComparePassword(password)
         }
     }
@@ -244,35 +231,9 @@ class PenCommParser: NSObject {
                 //                setComparePasswordSDK2(passwd)
             }
             else {
-                //                setBTComparePassword(passwd)
+                setBTComparePassword(passwd)
             }
         }
-    }
-    
-    func reqPenDown(_ penDown: Bool) {
-        if point_count > 0 {
-            // both penDown YES and NO
-            //            if strokeHandler {
-            //                penColor = strokeHandler.setPenColor()
-            //            }
-            nodes = []
-            point_count = 0
-        }
-        if penDown == true {
-            N.Log("penDown YES")
-            // Just ignore timestamp from Pen. We use Audio timestamp from iPhone.
-            /* ken 2015.04.19*/
-            let timeInMiliseconds: UInt64 = (UInt64)(Date().timeIntervalSince1970 * 1000)
-            N.Log("Stroke start time \(timeInMiliseconds)")
-            startTime = timeInMiliseconds
-            dotCheckState = .FIRST
-        }
-        else {
-            N.Log("penDown NO")
-            dotCheckState = .NONE
-            isSendOneTime = true
-        }
-        self.penDown = penDown
     }
     
     func reqCancelFWUpdate(_ cancelFWUpdate: Bool) {
@@ -283,7 +244,6 @@ class PenCommParser: NSObject {
         self.cancelOfflineSync = cancelOfflineSync
     }
     
-    //MARK: - Received data
     func processPressure(_ pressure: Float) -> Float {
         var tempPressure: Float = 0
         if pressure < PRESSURE_V_MIN {
@@ -298,718 +258,349 @@ class PenCommParser: NSObject {
         return tempPressure
     }
     
-    /*
-    func parsePenStrokeData(_ data: [UInt8], withLength length: Int) {
-        let STROKE_PACKET_LEN: Int = 8
-        if penDown == false || sealReceived == true {
-            return
-        }
+    //MARK: - Received Pen data
+    func parsePenStrokeData(_ data: [UInt8]) {
+        let DotLen: Int = 8
         let packet_count: UInt8 = data[0]
-        let strokeDataLength: Int = length - 1
-        // data += 1
-        // 06-Oct-2014 by namSsan
-        // checkXcoord X,Y only called once for middle point of the stroke
-        //int mid = (pa)
-        var shouldCheck: Bool = false
-        let mid: Int = Int(packet_count) / 2
+        
         for i in 0..<Int(packet_count) {
-            if (STROKE_PACKET_LEN * (i + 1)) > strokeDataLength {
-                break
-            }
-            shouldCheck = false
-            if i == mid {
-                shouldCheck = true
-            }
-            parsePenStrokeData(data, withLength: STROKE_PACKET_LEN)
-            //self.data = data + STROKE_PACKET_LEN
+            let dotPacket = Array(data[i*DotLen+1..<i*DotLen+9])
+            parsePenDot(dotPacket)
         }
     }
-    */
     
-    /*
-    func parsePenStrokePacket(_ data: [UInt8], withLength length: Int) {
-        //set for NISDK
-        if commManager.isPenSDK2 {
-            var strokeData: COMM2_WRITE_DATA?
-            Data(data).withUnsafeBytes({ (bytes: UnsafePointer<COMM2_WRITE_DATA>) -> () in
-                strokeData = UnsafePointer<COMM2_WRITE_DATA>(bytes).pointee
-            })
-            let int_x = Float((strokeData?.x)!)
-            let int_y = Float((strokeData?.y)!)
-            let float_x = Float((strokeData?.f_x)!) * 0.01
-            let float_y = Float((strokeData?.f_y)!) * 0.01
-            let aDot: DotDataStruct = DotDataStruct(x: int_x + float_x - startX, y: int_y + float_y - startY, pressure: Float((strokeData?.force)!), diff_time: (strokeData?.diff_time)!)
-            N.Log("Raw X \(int_x + float_x), Y \(int_y + float_y), P \(aDot.pressure)")
+    func parsePenDot(_ d: [UInt8]) {
+        var dot = DotStruct1()
+        dot.diff_time = d[0]
+        dot.x = toUInt16(d[1], d[2])
+        dot.y = toUInt16(d[3], d[4])
+        dot.f_x = d[5]
+        dot.f_y = d[6]
+        dot.force = toUInt16(d[7], 0)
+        penDelegate?.penData(.Type1, dot as AnyObject)
 
-        }
-        else {
-            
-            var strokeData: COMM_WRITE_DATA?
-            Data(data).withUnsafeBytes({ (bytes: UnsafePointer<COMM_WRITE_DATA>) -> () in
-                strokeData = UnsafePointer<COMM_WRITE_DATA>(bytes).pointee
-            })
-            let int_x = Float((strokeData?.x)!)
-            let int_y = Float((strokeData?.y)!)
-            let float_x = Float((strokeData?.f_x)!) * 0.01
-            let float_y = Float((strokeData?.f_y)!) * 0.01
-            let aDot: DotDataStruct = DotDataStruct(x: int_x + float_x - startX, y: int_y + float_y - startY, pressure: Float((strokeData?.force)!), diff_time: (strokeData?.diff_time)!)
-            N.Log("Raw X \(int_x + float_x), Y \(int_y + float_y), P \(aDot.pressure)")
-        }
-    }
-     */
-    let DAILY_PLAN_START_PAGE_606 = 62
-    let DAILY_PLAN_END_PAGE_606 = 826
-    let DAILY_PLAN_START_PAGE_608 = 42
-    let DAILY_PLAN_END_PAGE_608 = 424
-    
-    
-    func parsePenUpDowneData(_ data: [UInt8], withLength length: Int) {
-        // see the setter for _penDown. It is doing something important.
-        var updownData: COMM_PENUP_DATA?
-        Data(data).withUnsafeBytes({ (bytes: UnsafePointer<COMM_PENUP_DATA>) -> () in
-            updownData = UnsafePointer<COMM_PENUP_DATA>(bytes).pointee
-        })
-        if updownData?.upDown == 0 {
-            penDown = true
-            node_count_pen = -1
-            node_count = 0
-            let color: UInt32? = updownData?.penColor
-            if (color! & 0xff000000) == 0x01000000 && (color! & 0x00ffffff) != 0x00ffffff && (color! & 0x00ffffff) != 0x00000000 {
-                penColor = color! | 0xff000000
-                // set Alpha to 255
-            }
-            N.Log("Pen color 0x\(UInt(penColor))")
-        }
-        else {
-            penDown = false
-        }
-        let time: UInt64? = updownData?.time
-        let timeNumber = Int(time!)
-        let color = Int(penColor)
-        let status: String = (penDown) ? "down" : "up"
-        let stroke: [AnyHashable: Any] = [
-            "type" : "updown",
-            "time" : timeNumber,
-            "status" : status,
-            "color" : color
-        ]
+        N.Log("data", dot)
     }
     
-    func parsePenNewIdData(_ data: [UInt8], withLength length: Int) {
-        var newIdData: COMM_CHANGEDID2_DATA?
-        Data(data).withUnsafeBytes({ (bytes: UnsafePointer<COMM_CHANGEDID2_DATA>) -> () in
-            newIdData = UnsafePointer<COMM_CHANGEDID2_DATA>(bytes).pointee
-        })
-        let section: UInt8? = UInt8((newIdData?.owner_id)! >> 24) & 0xff
-        let owner: UInt? = (newIdData?.owner_id)! & 0x00ffffff
-        let noteId: UInt32? = newIdData?.note_id
-        let pageNumber: UInt32? = newIdData?.page_id
-        N.Log("newIdData: \(String(describing: newIdData))")
-        // Handle seal if section is 4.
-        if Int(section!) == SEAL_SECTION_ID {
-            // Note ID is delivered as owner ID.
-            sealReceived = true
-            //To ignore stroke.
-            return
-        }
-        sealReceived = false
-        if !requestNewPageNotification && (activeNotebookId == Int(noteId)) && (activePaperNum == pageNumber) && (activeOwnerId == owner) && (activeSectionId == section) {
-            return
-        }
-        requestNewPageNotification = false
-        activeNotebookId = noteId
-        activePaperNum = pageNumber
-        activeOwnerId = owner
-        activeSectionId = section
-        N.Log("New Id Data noteId \(UInt(noteId)), pageNumber \(UInt(pageNumber))")
-        paperInfo = NJNotebookPaperInfo.sharedInstance().getNotePaperInfo(forNotebook: Int(noteId), pageNum: Int(pageNumber), section: Int(section), owner: Int(owner))
-        startX = paperInfo.startX
-        startY = paperInfo.startY
-        if canvasStartDelegate {
-            DispatchQueue.main.async(execute: {() -> Void in
-                canvasStartDelegate.activeNoteId(forFirstStroke: Int(noteId), pageNum: Int(pageNumber), sectionId: Int(section), ownderId: Int(owner))
-            })
-        }
-        DispatchQueue.main.async(execute: {() -> Void in
-            if strokeHandler != nil {
-                strokeHandler.notifyPageChanging()
-                strokeHandler.activeNoteId(Int(noteId), pageNum: Int(pageNumber), sectionId: Int(section), ownderId: Int(owner))
-            }
-            NotificationCenter.default.post(name: NJPenCommParserPageChangedNotification, object: nil, userInfo: nil)
-        })
+    func parsePenNewIdData(_ data: [UInt8]) {
+        let newIdData = PageNewId.init(data)
+        penDelegate?.penData(.PIdChange, newIdData as AnyObject)
     }
     
-    func parsePenStatusData(_ data: [UInt8], withLength length: Int) {
-        Data(data).withUnsafeBytes { (bytes: UnsafePointer<PenStateStruct>) -> () in
-            penStatus = UnsafePointer<PenStateStruct>(bytes).pointee
-        }
+    func parsePenUpDowneData(_ data: [UInt8]) {
+        var updownData = PenUpDown()
+        updownData.time = toUInt64(data, at: 0)
+        updownData.upDown = UpNDown(rawValue: data[8]) ?? .Up
+        updownData.penColor = (toUInt32(data, at: 9) | 0xff000000).toUIColor()
         
-        N.Log("Penstate: \(penStatus)")
+        penDelegate?.penData(.UpDown, updownData as AnyObject)
+    }
+    
+    func parsePenStatusData(_ data: [UInt8]) {
+        var pen = PenStateStruct()
+        pen.version = data[0]
+        pen.penStatus = data[1]
+        pen.timezoneOffset = toUInt32(data, at: 2)
+        pen.timeTick = toUInt64(data, at: 6)
+        pen.maxPressure = UInt16(data[14])
+        pen.battLevel = data[15]
+        pen.memoryUsed = data[16]
+        pen.colorState = (toUInt32(data, at: 17) | 0xff000000).toUIColor()
+        pen.usePenTipOnOff = OnOff.value(ProtoColV1: data[21])
+        pen.useAccelerator = OnOff.value(ProtoColV1: data[22])
+        pen.useHover = OnOff.value(ProtoColV1: data[23])
+        pen.beepOnOff = OnOff.value(ProtoColV1: data[24])
+        pen.autoPwrOffTime = toUInt16(data[25], data[26])
+        N.Log("Pen Sensitive", toUInt16(data[27], data[28]))
+        pen.reserved = Array(data[29..<40])
+        N.Log("Pen Statue Ver1", pen)
         
-        //SDK2.0 later
-        if !commManager.isPenSDK2 {
-            pressureMax = Int(penStatus!.pressureMax)
-        }
-        //SDK2.0
-        if commManager.isPenSDK2 {
-            if penStatus2?.offlineOnOff == 0 {
-                let pOfflineOnOff: UInt8 = 1
-                setPenState2(PENSTATETYPE_OFFLINESAVE, andValue: pOfflineOnOff)
-            }
-        }
-        DispatchQueue.main.async(execute: {() -> Void in
-            penStatusDelegate.penStatusData(penStatus)
-        })
+    }
+    
+    //MARK: Offline 2AC2
+    func parseOfflineFileList(_ data: [UInt8]) {
+//        let status: UInt8 = data[0] // 0: NextPacket, 1: End
+//        let (section, ownerId) = toSetionOwner(toUInt32(data, at: 1))
+//        let noteCount = data[5]
+//        var noteArray: [UInt32] = []
+//        for i in 0..<Int(noteCount){
+//            let noteId = toUInt32(data, at: i*4 + 6)
+//            noteArray.append(noteId)
+//        }
+//        let msg = PenMessage.init(.OFFLINE_DATA_NOTE_LIST, data: (section,ownerId,noteArray) as AnyObject)
+//        penDelegate?.deviceMessage(msg)
+//        N.Log("parseOfflineFileList Status", status)
+        //TODO: status 데이터를 연결해서 받아야 할 지도 모름
+    }
 
-    }
-    
-    
-    func parseOfflineFileList(_ data: [UInt8], withLength length: Int) {
-        let fileList: OfflineFileListStruct? = (data as? OfflineFileListStruct)
-        let noteCount: Int? = min(fileList?.noteCount, 10)
-        let section: UInt8? = (fileList?.sectionOwnerId >> 24) & 0xff
-        let ownerId: UInt32? = fileList?.sectionOwnerId & 0x00ffffff
-        let notebookInfo = NJNotebookPaperInfo.sharedInstance()
-        //exclude owner 28
-        let sectionOwnerStr = String(format: "%05tu_%05tu", Int(section), Int(ownerId))
-        if notebookInfo.hasInfo(forSectionId: Int(section), ownerId: Int(ownerId)) {
-            DispatchQueue.main.async(execute: {() -> Void in
-                if !isEmpty(offlineDataDelegate) && offlineDataDelegate.responds(to: Selector("offlineDataDidReceiveNoteListCount:ForSectionOwnerId:")) {
-                    offlineDataDelegate.offlineDataDidReceiveNoteListCount(noteCount, forSectionOwnerId: fileList?.sectionOwnerId)
-                }
-            })
-        }
-        #if FW_UPDATE_TEST
-            do {
-                let paths: [Any] = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-                let documentDirectory: String = paths[0]
-                let updateFilePath: String = URL(fileURLWithPath: documentDirectory).appendingPathComponent("Update.zip").absoluteString
-                let url = URL(fileURLWithPath: updateFilePath)
-                sendUpdateFileInfo(at: url)
-            }
-        #endif
-        if noteCount == 0 {
-            return
-        }
-        //exclude owner 28
-        if notebookInfo.hasInfo(forSectionId: Int(section), ownerId: Int(ownerId)) {
-            if section == SEAL_SECTION_ID {
-                //Just ignore for offline data
-                requestDelOfflineFile(fileList?.sectionOwnerId)
-            }
-            else {
-                let sectionOwnerId = Int(fileList?.sectionOwnerId)
-                var noteArray: [Any]? = (offlineFileList[sectionOwnerId] as? [Any])
-                if noteArray == nil {
-                    noteArray = [Any]() /* capacity: noteCount */
-                    offlineFileList[sectionOwnerId] = noteArray
-                }
-                N.Log("OfflineFileList owner : \(sectionOwnerId)")
-                for i in 0..<noteCount {
-                    let noteId = Int(fileList?.noteId[i])
-                    N.Log("OfflineFileList note : \(noteId)")
-                    noteArray?.append(noteId)
-                }
-            }
-        }
-        if fileList?.status == 0 {
-            N.Log("More offline File List remained")
-        }
-        else {
-            if offlineFileList.keys.count > 0 {
-                N.Log("Getting offline File List finished")
-                DispatchQueue.main.async(execute: {() -> Void in
-                    if !isEmpty(offlineDataDelegate) && offlineDataDelegate.responds(to: #selector(self.offlineDataDidReceiveNoteList)) {
-                        offlineDataDelegate.offlineDataDidReceiveNote(offlineFileList)
-                    }
-                })
-            }
-        }
-    }
-    
     func requestNextOfflineNote() -> Bool {
-        offlineFileProcessing = true
-        var needNext: Bool = true
-        let enumerator: NSEnumerator? = offlineFileList.keyEnumerator()
-        while needNext {
-            let ownerId = enumerator?.nextObject()
-            if ownerId == nil {
-                offlineFileProcessing = false
-                N.Log("Offline data : no more file left")
-                return false
-            }
-            let noteList: [Any]? = (offlineFileList[ownerId] as? [Any])
-            if noteList?.count == 0 {
-                offlineFileList.removeValueForKey(ownerId)
-                continue
-            }
-            let noteId = (noteList?[0] as? NSNumber)
-            offlineOwnerIdRequested = (UInt32)
-            CUnsignedInt(ownerId)
-            offlineNoteIdRequested = (UInt32)
-            CUnsignedInt(noteId)
-            requestOfflineData(withOwnerId: offlineOwnerIdRequested, noteId: offlineNoteIdRequested)
-            needNext = false
-        }
+        //        offlineFileProcessing = true
+        //        var needNext: Bool = true
+        //        let enumerator: NSEnumerator? = offlineFileList.keyEnumerator()
+        //        while needNext {
+        //            let ownerId = enumerator?.nextObject()
+        //            if ownerId == nil {
+        //                offlineFileProcessing = false
+        //                N.Log("Offline data : no more file left")
+        //                return false
+        //            }
+        //            let noteList: [Any]? = (offlineFileList[ownerId] as? [Any])
+        //            if noteList?.count == 0 {
+        //                offlineFileList.removeValueForKey(ownerId)
+        //                continue
+        //            }
+        //            let noteId = (noteList?[0] as? NSNumber)
+        //            offlineOwnerIdRequested = (UInt32)
+        //            CUnsignedInt(ownerId)
+        //            offlineNoteIdRequested = (UInt32)
+        //            CUnsignedInt(noteId)
+        //            requestOfflineData(withOwnerId: offlineOwnerIdRequested, noteId: offlineNoteIdRequested)
+        //            needNext = false
+        //        }
         return true
     }
     
-    func didReceiveOfflineFile(forOwnerId ownerId: UInt32, noteId: UInt32) {
-        let ownerNumber = Int(offlineOwnerIdRequested)
-        let noteNumber = Int(offlineNoteIdRequested)
-        var noteList: [Any]? = (offlineFileList[ownerNumber] as? [Any])
-        if noteList == nil {
+    func parseOfflineFileListInfo(_ data: [UInt8]) {
+        var fileInfo = OfflineFileListInfoStruct()
+        fileInfo.fileCount = toUInt32(data, at: 0)
+        fileInfo.fileSize = toUInt32(data, at: 4)
+        offlineTotalDataSize = Int(fileInfo.fileSize)
+        offlineTotalDataReceived = 0
+        let msg = PenMessage.init(.OFFLINE_DATA_SEND_START, data: nil)
+        penDelegate?.penMessage(msg)
+    }
+    func parseOfflineFileInfoData(_ d: [UInt8]) {
+        if d.count != 13{
+            N.Log("Error")
             return
         }
-        let index: Int = (noteList? as NSArray).index(of: noteNumber)
-        if index == NSNotFound {
-            return
+        var fileInfo = OFFLINE_FILE_INFO_DATA()
+        fileInfo.type = d[0]
+        fileInfo.file_size = toUInt32(d, at: 1)
+        fileInfo.packet_count = toUInt16(d[5], d[6])
+        fileInfo.packet_size = toUInt16(d[7], d[8])
+        fileInfo.slice_count = toUInt16(d[9], d[10])
+        fileInfo.slice_size  = toUInt16(d[11], d[12])
+        if fileInfo.type == 1 {
+            N.Log("Offline File Info : Zip file")
         }
-        noteList?.remove(at: index)
+        else {
+            N.Log("Offline File Info : Normal file")
+        }
+        let fileSize: UInt32 = fileInfo.file_size
+        offlinePacketCount = Int(fileInfo.packet_count)
+        offlinePacketSize = Int(fileInfo.packet_size)
+        offlineSliceCount = Int(fileInfo.slice_count)
+        offlineSliceSize = Int(fileInfo.slice_size)
+        offlineSliceIndex = 0
+        N.Log("parseOfflineFileInfoData :", fileInfo)
+        offlineLastPacketIndex = Int(fileSize) / offlinePacketSize
+        let lastPacketSize: Int = Int(fileSize) % offlinePacketSize
+        if lastPacketSize == 0 {
+            offlineLastPacketIndex -= 1
+            offlineLastSliceIndex = offlineSliceCount - 1
+            offlineLastSliceSize = offlineSliceSize
+        }
+        else {
+            offlineLastSliceIndex = lastPacketSize / offlineSliceSize
+            offlineLastSliceSize = lastPacketSize % offlineSliceSize
+            if offlineLastSliceSize == 0 {
+                offlineLastSliceIndex -= 1
+                offlineLastSliceSize = offlineSliceSize
+            }
+        }
+        offlineData?.removeAll()
+        offlinePacketData = nil
+        offlineDataOffset = 0
+        offlineDataSize = Int(fileSize)
+        offlineFileAck(forType: 1, index: 0)
+        // 1 : header, index 0
+    }
+    func parseOfflineFileStatus(_ d: [UInt8]) {
+        var fileStatus = OfflineFileStatusStruct()
+        fileStatus.status = d[0]
+        if fileStatus.status == 1 {
+            N.Log("OfflineFileStatus success")
+            let msg = PenMessage.init(.OFFLINE_DATA_SEND_SUCCESS, data: nil)
+            penDelegate?.penMessage(msg)
+        }
+        else {
+            N.Log("OfflineFileStatus fail")
+            let msg = PenMessage.init(.OFFLINE_DATA_SEND_FAILURE, data: nil)
+            penDelegate?.penMessage(msg)
+        }
     }
     
-     //MARK: - Notification
-    func notifyOfflineDataStatus(_ status: OFFLINE_DATA_STATUS, percent: Float) {
-        DispatchQueue.main.async(execute: {() -> Void in
-            switch status{
-            case .offline_DATA_RECEIVE_START:
-                let msg = PenMessage.init(PenMessageType.OFFLINE_DATA_SEND_START, data: nil)
-                self.penDelegate?.onReceiveMessage(msg)
-            case .offline_DATA_RECEIVE_PROGRESSING:
-                let msg = PenMessage.init(PenMessageType.OFFLINE_DATA_SEND_STATUS, data: percent as AnyObject)
-                self.penDelegate?.onReceiveMessage(msg)
-            case .offline_DATA_RECEIVE_END:
-                let msg = PenMessage.init(PenMessageType.OFFLINE_DATA_SEND_SUCCESS, data: nil)
-                self.penDelegate?.onReceiveMessage(msg)
-            case .offline_DATA_RECEIVE_FAIL:
-                let msg = PenMessage.init(PenMessageType.OFFLINE_DATA_SEND_FAILURE, data: nil)
-                self.penDelegate?.onReceiveMessage(msg)
-            }
-        })
-    }
-    func notifyOfflineDataFileListDidReceive() {
-        DispatchQueue.main.async(execute: {() -> Void in
-            let msg = PenMessage.init(PenMessageType.OFFLINE_DATA_NOTE_LIST, data: self.offlineFileList as AnyObject)
-            self.penDelegate?.onReceiveMessage(msg)
-        })
-    }
-    func parseRequestUpdateFile(_ data: [UInt8], withLength length: Int) {
-        let request: RequestUpdateFileStruct? = (data as? RequestUpdateFileStruct)
+    //MARK: Pen Data Passer
+    func parseRequestUpdateFile(_ d: [UInt8]) {
+        var request = RequestUpdateFileStruct()
+        request.index = toUInt16(d[0], d[1])
         if !cancelFWUpdate {
-            sendUpdateFileData(at: request?.index)
+            sendUpdateFileData(at: request.index)
         }
     }
-    func parseUpdateFileStatus(_ data: [UInt8], withLength length: Int) {
-        let status: UpdateFileStatusStruct? = (data as? UpdateFileStatusStruct)
-        if status?.status == 1 {
-            notifyFWUpdateStatus(FW_UPDATE_DATA_RECEIVE_END, percent: 100)
+    func parseUpdateFileStatus(_ d: [UInt8]) {
+        var status = UpdateFileStatusStruct()
+        status.status = toUInt16(d[0], d[1])
+        if status.status == 1 {
+            let msg = PenMessage.init(.PEN_FW_UPGRADE_SUCCESS, data: nil)
+            penDelegate?.penMessage(msg)
         }
-        else if status?.status == 0 {
-            notifyFWUpdateStatus(FW_UPDATE_DATA_RECEIVE_FAIL, percent: 0.0)
-        }
-        else if status?.status == 3 {
+        else if status.status == 0 {
+            let msg = PenMessage.init(.PEN_FW_UPGRADE_FAILURE, data: nil)
+            penDelegate?.penMessage(msg)        }
+        else if status.status == 3 {
             N.Log("out of pen memory space")
         }
-        N.Log("parseUpdateFileStatus status \(status?.status)")
+        N.Log("parseUpdateFileStatus status \(status)")
     }
-    func notifyFWUpdate(_ status: FW_UPDATE_DATA_STATUS, percent: Float) {
-        DispatchQueue.main.async(execute: {() -> Void in
-            fwUpdateDelegate.fwUpdateDataReceive(status, percent: percent)
-        })
-    }
-    func parseReadyExchangeDataRequest(_ data: [UInt8], withLength length: Int) {
-        let request: ReadyExchangeDataRequestStruct? = (data as? ReadyExchangeDataRequestStruct)
-        if request?.ready == 0 {
+
+    func parseReadyExchangeDataRequest(_ d: [UInt8]) {
+        var request = ReadyExchangeDataRequestStruct()
+        request.ready = d[0]
+        if request.ready == 0 {
             isReadyExchangeSent = false
             N.Log("2AB5 was sent to App because a pen was turned off by itself.")
+        }else{
+            
         }
         if isReadyExchangeSent {
             N.Log("2AB4 was already sent to Pen. So, 2AB5 request is not proceeded again")
             return
         }
-        if !commManager.isPenSDK2 {
-            penExchangeDataReady = (request?.ready == 1)
-        }
-    }
-    */
-    func parseFWVersion(_ data: [UInt8], withLength length: Int) {
-        fwVersion = String(data: Data(data), encoding: .utf8)!  //String(bytes: data, length: length, encoding: String.Encoding.utf8)
-        print("parseFWVersion", fwVersion)
     }
     
-    /*
+    func parseFWVersion(_ data: [UInt8]) {
+        fwVersion = String(data: Data(data), encoding: .utf8) ?? fwVersion
+        N.Log("parseFWVersion", fwVersion)
+        //TODO: Password Default
+        setPenState()
+    }
+    
+    
     //MARK: - Send data
     func setPenState() {
-        let timeInMiliseconds: TimeInterval = Date().timeIntervalSince1970 * 1000
-        let localTimeZone = NSTimeZone.local()
-        let millisecondsFromGMT: Int = 1000 * localTimeZone.secondsFromGMT + localTimeZone.daylightSavingTimeOffset * 1000
-        var setPenStateData: SetPenStateStruct
-        setPenStateData.timeTick = (UInt64)
-        setPenStateData.timezoneOffset = (int32_t)
-        N.Log("set timezoneOffset \(setPenStateData.timezoneOffset), timeTick \(setPenStateData.timeTick)")
-        if penStatus {
-            let color: UInt32 = penStatus.colorState
-            setPenStateData.colorState = (color & 0x00ffffff) | (0x01000000)
-            setPenStateData.usePenTipOnOff = penStatus.usePenTipOnOff
-            setPenStateData.useAccelerator = penStatus.useAccelerator
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = penStatus.beepOnOff
-            setPenStateData.autoPwrOnTime = penStatus.autoPwrOffTime
-            setPenStateData.penPressure = penStatus.penPressure
-        }
-        else {
-            let color: UIColor? = nil
-            if color != nil {
-                var r: CGFloat
-                var g: CGFloat
-                var b: CGFloat
-                var a: CGFloat
-                color?.getRed(r, green: g, blue: b, alpha: a)
-                let ir: UInt32 = (UInt32)(r * 255)
-                let ig: UInt32 = (UInt32)(g * 255)
-                let ib: UInt32 = (UInt32)(b * 255)
-                let ia: UInt32 = (UInt32)(a * 255)
-                setPenStateData.colorState = (ia << 24) | (ir << 16) | (ig << 8) | (ib)
-            }
-            else {
-                setPenStateData.colorState = 0
-            }
-            setPenStateData.usePenTipOnOff = 1
-            setPenStateData.useAccelerator = 1
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = 1
-        }
-        let data = Data(bytes: setPenStateData, length: MemoryLayout<setPenStateData>.size)
+        let setPenStateData = SetPenStateStruct()
+        let data = Data(setPenStateData.toUInt8Array())
         commManager.writeSetPenState(data)
     }
     func setPenStateWithTimeTick() {
-        let timeInMiliseconds: TimeInterval = Date().timeIntervalSince1970 * 1000
-        let localTimeZone = NSTimeZone.local()
-        let millisecondsFromGMT: Int = 1000 * localTimeZone.secondsFromGMT + localTimeZone.daylightSavingTimeOffset * 1000
-        var setPenStateData: SetPenStateStruct
-        setPenStateData.timeTick = (UInt64)
-        setPenStateData.timezoneOffset = (int32_t)
-        N.Log("set timezoneOffset \(setPenStateData.timezoneOffset), timeTick \(setPenStateData.timeTick)")
-        if penStatus {
-            let color: UInt32 = penStatus.colorState
-            setPenStateData.colorState = (color & 0x00ffffff) | (0x01000000)
-            setPenStateData.usePenTipOnOff = penStatus.usePenTipOnOff
-            setPenStateData.useAccelerator = penStatus.useAccelerator
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = penStatus.beepOnOff
-            setPenStateData.autoPwrOnTime = penStatus.autoPwrOffTime
-            setPenStateData.penPressure = penStatus.penPressure
-            let data = Data(bytes: setPenStateData, length: MemoryLayout<setPenStateData>.size)
-            commManager.writeSetPenState(data)
-        }
-        else {
-            N.Log("setPenStateWithTimeTick, self.penStatus : nil")
-        }
+        let setPenStateData = SetPenStateStruct()
+        let data = Data(setPenStateData.toUInt8Array())
+        commManager.writeSetPenState(data)
     }
     func setPenStateWithPenPressure(_ penPressure: UInt16) {
-        let timeInMiliseconds: TimeInterval = Date().timeIntervalSince1970 * 1000
-        let localTimeZone = NSTimeZone.local()
-        let millisecondsFromGMT: Int = 1000 * localTimeZone.secondsFromGMT + localTimeZone.daylightSavingTimeOffset * 1000
-        var setPenStateData: SetPenStateStruct
-        setPenStateData.timeTick = (UInt64)
-        setPenStateData.timezoneOffset = (int32_t)
-        N.Log("set timezoneOffset \(setPenStateData.timezoneOffset), timeTick \(setPenStateData.timeTick)")
-        if penStatus {
-            let color: UInt32 = penStatus.colorState
-            setPenStateData.colorState = (color & 0x00ffffff) | (0x01000000)
-            setPenStateData.usePenTipOnOff = penStatus.usePenTipOnOff
-            setPenStateData.useAccelerator = penStatus.useAccelerator
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = penStatus.beepOnOff
-            setPenStateData.autoPwrOnTime = penStatus.autoPwrOffTime
-        }
+        var setPenStateData = SetPenStateStruct()
         setPenStateData.penPressure = penPressure
-        let data = Data(bytes: setPenStateData, length: MemoryLayout<setPenStateData>.size)
+        let data = Data(setPenStateData.toUInt8Array())
         commManager.writeSetPenState(data)
     }
     func setPenStateWithAutoPwrOffTime(_ autoPwrOff: UInt16) {
-        let timeInMiliseconds: TimeInterval = Date().timeIntervalSince1970 * 1000
-        let localTimeZone = NSTimeZone.local()
-        let millisecondsFromGMT: Int = 1000 * localTimeZone.secondsFromGMT + localTimeZone.daylightSavingTimeOffset * 1000
-        var setPenStateData: SetPenStateStruct
-        setPenStateData.timeTick = (UInt64)
-        setPenStateData.timezoneOffset = (int32_t)
-        N.Log("set timezoneOffset \(setPenStateData.timezoneOffset), timeTick \(setPenStateData.timeTick)")
-        if penStatus {
-            let color: UInt32 = penStatus.colorState
-            setPenStateData.colorState = (color & 0x00ffffff) | (0x01000000)
-            setPenStateData.usePenTipOnOff = penStatus.usePenTipOnOff
-            setPenStateData.useAccelerator = penStatus.useAccelerator
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = penStatus.beepOnOff
-            setPenStateData.penPressure = penStatus.penPressure
-        }
+        var setPenStateData = SetPenStateStruct()
         setPenStateData.autoPwrOnTime = autoPwrOff
-        let data = Data(bytes: setPenStateData, length: MemoryLayout<setPenStateData>.size)
+        let data = Data(setPenStateData.toUInt8Array())
         commManager.writeSetPenState(data)
     }
-    func setPenStateAutoPower(_ autoPower: UInt8, sound: UInt8) {
-        let timeInMiliseconds: TimeInterval = Date().timeIntervalSince1970 * 1000
-        let localTimeZone = NSTimeZone.local()
-        let millisecondsFromGMT: Int = 1000 * localTimeZone.secondsFromGMT + localTimeZone.daylightSavingTimeOffset * 1000
-        var setPenStateData: SetPenStateStruct
-        setPenStateData.timeTick = (UInt64)
-        setPenStateData.timezoneOffset = (int32_t)
-        N.Log("set timezoneOffset \(setPenStateData.timezoneOffset), timeTick \(setPenStateData.timeTick)")
-        if penStatus {
-            let color: UInt32 = penStatus.colorState
-            setPenStateData.colorState = (color & 0x00ffffff) | (0x01000000)
-            setPenStateData.usePenTipOnOff = autoPower
-            setPenStateData.useAccelerator = penStatus.useAccelerator
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = sound
-            setPenStateData.autoPwrOnTime = penStatus.autoPwrOffTime
-            setPenStateData.penPressure = penStatus.penPressure
-        }
-        else {
-            let color: UIColor? = nil
-            if color != nil {
-                var r: CGFloat
-                var g: CGFloat
-                var b: CGFloat
-                var a: CGFloat
-                color?.getRed(r, green: g, blue: b, alpha: a)
-                let ir: UInt32 = (UInt32)(r * 255)
-                let ig: UInt32 = (UInt32)(g * 255)
-                let ib: UInt32 = (UInt32)(b * 255)
-                let ia: UInt32 = (UInt32)(a * 255)
-                setPenStateData.colorState = (ia << 24) | (ir << 16) | (ig << 8) | (ib)
-            }
-            else {
-                setPenStateData.colorState = 0
-            }
-            setPenStateData.usePenTipOnOff = autoPower
-            setPenStateData.useAccelerator = 1
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = sound
-            setPenStateData.autoPwrOnTime = 15
-            setPenStateData.penPressure = 20
-        }
-        let data = Data(bytes: setPenStateData, length: MemoryLayout<setPenStateData>.size)
+    func setPenStateAutoPower(_ autoPower: OnOff) {
+        var setPenStateData = SetPenStateStruct()
+        setPenStateData.usePenTipOnOff = autoPower.rawValueV1()
+        let data = Data(setPenStateData.toUInt8Array())
         commManager.writeSetPenState(data)
     }
-    func setPenStateWithRGB(_ color: UInt32) {
-        let timeInMiliseconds: TimeInterval = Date().timeIntervalSince1970 * 1000
-        let localTimeZone = NSTimeZone.local()
-        let millisecondsFromGMT: Int = 1000 * localTimeZone.secondsFromGMT + localTimeZone.daylightSavingTimeOffset * 1000
-        var setPenStateData: SetPenStateStruct
-        setPenStateData.timeTick = (UInt64)
-        setPenStateData.timezoneOffset = (int32_t)
-        N.Log("set timezoneOffset \(setPenStateData.timezoneOffset), timeTick \(setPenStateData.timeTick)")
-        if penStatus {
-            N.Log("setPenStateWithRGB color 0x\(UInt(color))")
-            setPenStateData.colorState = (color & 0x00ffffff) | (0x01000000)
-            setPenStateData.usePenTipOnOff = penStatus.usePenTipOnOff
-            setPenStateData.useAccelerator = penStatus.useAccelerator
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = penStatus.beepOnOff
-            setPenStateData.autoPwrOnTime = penStatus.autoPwrOffTime
-            setPenStateData.penPressure = penStatus.penPressure
-        }
-        else {
-            N.Log("setPenStateWithRGB color 0x\(UInt(color))")
-            setPenStateData.colorState = (color & 0x00ffffff) | (0x01000000)
-            setPenStateData.usePenTipOnOff = 1
-            setPenStateData.useAccelerator = 1
-            setPenStateData.useHover = 2
-            setPenStateData.beepOnOff = 1
-            setPenStateData.autoPwrOnTime = 15
-            setPenStateData.penPressure = 20
-        }
-        let data = Data(bytes: setPenStateData, length: MemoryLayout<setPenStateData>.size)
+    
+    func requestSetPenAutoPowerSound(_ sound: OnOff){
+        var setPenStateData = SetPenStateStruct()
+        setPenStateData.beepOnOff = sound.rawValueV1()
+        let data = Data(setPenStateData.toUInt8Array())
         commManager.writeSetPenState(data)
     }
-    func setPenStateWithHover(_ useHover: UInt16) {
-        let timeInMiliseconds: TimeInterval = Date().timeIntervalSince1970 * 1000
-        let localTimeZone = NSTimeZone.local()
-        let millisecondsFromGMT: Int = 1000 * localTimeZone.secondsFromGMT + localTimeZone.daylightSavingTimeOffset * 1000
-        var setPenStateData: SetPenStateStruct
-        setPenStateData.timeTick = (UInt64)
-        setPenStateData.timezoneOffset = (int32_t)
-        N.Log("set timezoneOffset \(setPenStateData.timezoneOffset), timeTick \(setPenStateData.timeTick)")
-        if penStatus {
-            let color: UInt32 = penStatus.colorState
-            setPenStateData.colorState = (color & 0x00ffffff) | (0x01000000)
-            setPenStateData.usePenTipOnOff = penStatus.usePenTipOnOff
-            setPenStateData.useAccelerator = penStatus.useAccelerator
-            setPenStateData.beepOnOff = penStatus.beepOnOff
-            setPenStateData.autoPwrOnTime = penStatus.autoPwrOffTime
-            setPenStateData.penPressure = penStatus?.penPressure
-        }
-        setPenStateData.useHover = useHover
-        let data = Data(bytes: setPenStateData, length: MemoryLayout<setPenStateData>.size)
+    func setPenStateWithRGB(_ color: UIColor) {
+        var setPenStateData = SetPenStateStruct()
+        let colorState: UInt32 = (color.toUInt32() & 0x00ffffff) & 0x01000000
+        setPenStateData.colorState = colorState
+        let data = Data(setPenStateData.toUInt8Array())
         commManager.writeSetPenState(data)
     }
-    func convertRGB(toUIColor penTipColor: UInt32) -> UIColor {
-        let red: UInt8 = (UInt8)(penTipColor >> 16) & 0xff
-        let green: UInt8 = (UInt8)(penTipColor >> 8) & 0xff
-        let blue = UInt8(penTipColor) & 0xff
-        let color = UIColor(red: CGFloat(red / 255), green: CGFloat(green / 255), blue: CGFloat(blue / 255), alpha: CGFloat(1.0))
-        return color
+    func setPenStateWithHover(_ useHover: OnOff) {
+        var setPenStateData = SetPenStateStruct()
+        setPenStateData.useHover = useHover.rawValueV1()
+        let data = Data(setPenStateData.toUInt8Array())
+        commManager.writeSetPenState(data)
     }
-    */
+    
+    
     func setNoteIdList() {
-//        if canvasStartDelegate {
-//            DispatchQueue.main.async(execute: {() -> Void in
-//                canvasStartDelegate.setPenCommNoteIdList()
-//            })
-//        }
+        //        if canvasStartDelegate {
+        //            DispatchQueue.main.async(execute: {() -> Void in
+        //                canvasStartDelegate.setPenCommNoteIdList()
+        //            })
+        //        }
     }
-    /*
+    
     func setAllNoteIdList() {
-        var noteIdList: SetNoteIdListStruct
-        var data: Data?
-        //NISDK -
-        noteIdList.type = 3
-        let index: Int = 0
-        noteIdList.count = index
-        data = Data(bytes: noteIdList, length: MemoryLayout<noteIdList>.size)
+        let type: UInt8 = 0x03 // 1: note id 2: seciton and owner, 3: all
+        var d: [UInt8] = []
+        d.append(type)
+        let data = Data(d)
         commManager.writeNoteIdList(data)
     }
-    func setNoteIdListFromPList() {
-        var noteIdList: SetNoteIdListStruct
-        var data: Data?
-        var section_id: UInt8
-        var owner_id: UInt32
-        var noteIds: [Any]
-        let noteInfo = NPPaperManager.sharedInstance()
-        let notesSupported: [Any] = noteInfo.notesSupported()
-        if isEmpty(noteInfo.paperInfos) {
-            return
+    
+    func setUsingNotes(_ noteList: [UInt32]) {
+        let type: UInt8 = 0x01 // 1: note id 2: seciton and owner, 3: all
+        var d: [UInt8] = []
+        d.append(type)
+        d.append(UInt8(noteList.count))
+        for note in noteList{
+            d.append(contentsOf: note.toUInt8Array())
         }
-        let allKeyName: [Any] = noteInfo.paperInfos.keys
-        noteIdList.type = 1
-        // Note Id
-        for note: [AnyHashable: Any] in notesSupported {
-            section_id = CUnsignedChar((note["section"] as? NSNumber))
-            owner_id = (UInt32)
-            CUnsignedInt((note["owner"] as? NSNumber))
-            noteIds = (note["noteIds"] as? [Any])
-            noteIdList.params[0] = (section_id << 24) | owner_id
-            let noteIdCount = Int(noteIds.count)
-            var index: Int = 0
-            for i in 0..<noteIdCount {
-                noteIdList.params[index + 1] = (UInt32)
-                CUnsignedInt((noteIds[i] as? NSNumber))
-                N.Log("note id at \(i) : \(UInt(noteIdList.params[index + 1]))")
-                index += 1
-                if index == (NOTE_ID_LIST_SIZE - 1) {
-                    noteIdList.count = index
-                    data = Data(bytes: noteIdList, length: MemoryLayout<noteIdList>.size)
-                    commManager.writeNoteIdList(data)
-                    index = 0
-                }
-            }
-            if index != 0 {
-                noteIdList.count = index
-                data = Data(bytes: noteIdList, length: MemoryLayout<noteIdList>.size)
-                commManager.writeNoteIdList(data)
-            }
-        }
-        //Season note
-        noteIdList.type = 1
-        // Note Id
-        section_id = 0
-        owner_id = 19
-        noteIdList.params[0] = (section_id << 24) | owner_id
-        noteIdList.params[1] = 1
-        noteIdList.count = 1
-        data = Data(bytes: noteIdList, length: MemoryLayout<noteIdList>.size)
+        let data = Data(d)
         commManager.writeNoteIdList(data)
-        // To get Seal ID
-        noteIdList.type = 2
-        var noteId: UInt32
-        for note: [AnyHashable: Any] in notesSupported {
-            section_id = SEAL_SECTION_ID
-            // Fixed for seal
-            noteIds = (note["noteIds"] as? [Any])
-            let noteIdCount = Int(noteIds.count)
-            var index: Int = 0
-            for i in 0..<noteIdCount {
-                noteId = (UInt32)
-                CUnsignedInt((noteIds[i] as? NSNumber))
-                noteIdList.params[index] = (section_id << 24) | noteId
-                index += 1
-                if index == (NOTE_ID_LIST_SIZE) {
-                    noteIdList.count = index
-                    var data = Data(bytes: noteIdList, length: MemoryLayout<noteIdList>.size)
-                    commManager.writeNoteIdList(data)
-                    index = 0
-                }
-            }
-            if index != 0 {
-                noteIdList.count = index
-                data = Data(bytes: noteIdList, length: MemoryLayout<noteIdList>.size)
-                commManager.writeNoteIdList(data)
-            }
-        }
+
     }
-    func setNoteIdListSectionOwnerFromPList() {
-        var noteIdList: SetNoteIdListStruct
-        var data: Data?
-        var section_id: UInt8
-        var owner_id: UInt32
-        let noteInfo = NPPaperManager.sharedInstance()
-        let notesSupported: [Any] = noteInfo.notesSupported()
-        noteIdList.type = 2
-        let index: Int = 0
-        for note: [AnyHashable: Any] in notesSupported {
-            section_id = CUnsignedChar((note["section"] as? NSNumber))
-            owner_id = (UInt32)
-            CUnsignedInt((note["owner"] as? NSNumber))
-            noteIdList.params[index += 1] = (section_id << 24) | owner_id
+    
+    func setUsingSectionOwner(_ sectionOwnerList: [UInt32]) {
+        let type: UInt8 = 0x02 // 1: note id 2: seciton and owner, 3: all
+        var d: [UInt8] = []
+        d.append(type)
+        d.append(UInt8(sectionOwnerList.count))
+        for sectionOwner in sectionOwnerList{
+            d.append(contentsOf: sectionOwner.toUInt8Array())
         }
-        noteIdList.count = index
-        data = Data(bytes: noteIdList, length: MemoryLayout<noteIdList>.size)
+        let data = Data(d)
         commManager.writeNoteIdList(data)
     }
     func setPassword(_ pinNumber: String) {
-        var request: PenPasswordChangeRequestStruct
+        var request = PenPasswordChangeRequestStruct()
         //NSString *currentPassword = [MyFunctions loadPasswd];
-        let currentPassword: String = "0000"
-        let stringData: Data? = currentPassword.data(using: String.Encoding.utf8)
-        memcpy(request.prevPassword, stringData?.bytes, MemoryLayout<stringData>.size)
-        let newData: Data? = pinNumber.data(using: String.Encoding.utf8)
-        memcpy(request.newPassword, newData?.bytes, MemoryLayout<newData>.size)
-        for i in 0..<12 {
-            request.prevPassword[i + 4] = UInt8(nil)
-            request.newPassword[i + 4] = UInt8(nil)
-        }
-        let data = Data(bytes: request, length: MemoryLayout<PenPasswordChangeRequestStruct>.size)
+        request.prevPassword = "0000".toUInt8Array()
+        request.newPassword = pinNumber.toUInt8Array()
+        var d: [UInt8] = []
+        d.append(contentsOf: request.prevPassword)
+        d.append(contentsOf: request.newPassword)
+        let data = Data(d)
         commManager.writeSetPasswordData(data)
     }
     func changePassword(from curNumber: String, to pinNumber: String) {
-        var request: PenPasswordChangeRequestStruct
-        let stringData: Data? = curNumber.data(using: String.Encoding.utf8)
-        memcpy(request.prevPassword, stringData?.bytes, MemoryLayout<stringData>.size)
-        let newData: Data? = pinNumber.data(using: String.Encoding.utf8)
-        memcpy(request.newPassword, newData?.bytes, MemoryLayout<newData>.size)
-        for i in 0..<12 {
-            request.prevPassword[i + 4] = UInt8(nil)
-            request.newPassword[i + 4] = UInt8(nil)
-        }
-        let data = Data(bytes: request, length: MemoryLayout<PenPasswordChangeRequestStruct>.size)
+        var request = PenPasswordChangeRequestStruct()
+        //NSString *currentPassword = [MyFunctions loadPasswd];
+        request.prevPassword = curNumber.toUInt8Array()
+        request.newPassword = pinNumber.toUInt8Array()
+        var d: [UInt8] = []
+        d.append(contentsOf: request.prevPassword)
+        d.append(contentsOf: request.newPassword)
+        let data = Data(d)
         commManager.writeSetPasswordData(data)
     }
+    
     func setBTComparePassword(_ pinNumber: String) {
-        var response: PenPasswordResponseStruct
-        let stringData: Data? = pinNumber.data(using: String.Encoding.utf8)
-        memcpy(response.password, stringData?.bytes, MemoryLayout<stringData>.size)
-        for i in 0..<12 {
-            response.password[i + 4] = UInt8(nil)
-        }
-        let data = Data(bytes: response, length: MemoryLayout<PenPasswordResponseStruct>.size)
+        let data = Data(pinNumber.toUInt8Array())
         commManager.writePenPasswordResponseData(data)
     }
+    
     func writeReadyExchangeData(_ ready: Bool) {
-        var request: ReadyExchangeDataStruct
+        var request = ReadyExchangeDataStruct()
         request.ready = ready ? 1 : 0
-        let data = Data(bytes: request, length: MemoryLayout<ReadyExchangeDataStruct>.size)
+        let data = Data([request.ready])
         commManager.writeReadyExchangeData(data)
         if ready == true {
             //flag should be YES when 2AB4 (response App ready)
@@ -1021,7 +612,7 @@ class PenCommParser: NSObject {
             N.Log("isReadyExchangeSent set into NO because of disconnected signal")
         }
     }
-    */
+    
     func resetDataReady() {
         //reset isReadyExchangeSent flag when disconnected
         isReadyExchangeSent = false
@@ -1033,10 +624,6 @@ class PenCommParser: NSObject {
     }
     
     func requestOfflineFileList() -> Bool {
-        if commManager.isPenSDK2 {
-            requestOfflineFileList2()
-            return true
-        }
         if offlineFileProcessing {
             return false
         }
@@ -1047,93 +634,98 @@ class PenCommParser: NSObject {
         return true
     }
     
-    /*
-    func requestDelOfflineFile(_ sectionOwnerId: UInt32) -> Bool {
-        var request: RequestDelOfflineFileStruct
-        request.sectionOwnerId = sectionOwnerId
-        let data = Data(bytes: request, length: MemoryLayout<request>.size)
+    
+    func requestDelOfflineFile(_ sectionOwnerId: UInt32) {
+        let data = Data(sectionOwnerId.toUInt8Array())
         commManager.writeRequestDelOfflineFile(data)
-        return true
     }
-    func requestOfflineData(withOwnerId ownerId: UInt32, noteId: UInt32) -> Bool {
-        let noteList: [Any]? = (offlineFileList[Int(ownerId)] as? [Any])
-        if noteList == nil {
-            return false
+    
+    func requestOfflineData(SectionOwner: UInt32,_ noteList: [UInt32]) {
+        var d: [UInt8] = []
+        d.append(contentsOf: SectionOwner.toUInt8Array())
+        d.append(UInt8(noteList.count))
+        for note in noteList{
+            d.append(contentsOf: note.toUInt8Array())
         }
-        if (noteList? as NSArray).index(of: Int(noteId)) == NSNotFound {
-            return false
-        }
-        var request: RequestOfflineFileStruct
-        request.sectionOwnerId = ownerId
-        request.noteCount = 1
-        request.noteId[0] = noteId
-        let data = Data(bytes: request, length: MemoryLayout<request>.size)
+        let data = Data(d)
         commManager.writeRequestOfflineFile(data)
-        return true
     }
+    
     func offlineFileAck(forType type: UInt8, index: UInt8) {
-        var fileAck: OfflineFileAckStruct
-        fileAck.type = type
-        fileAck.index = index
-        let data = Data(bytes: fileAck, length: MemoryLayout<fileAck>.size)
+        let data = Data([type,index])
         commManager.writeOfflineFileAck(data)
     }
+    
+    
+    //MARK: Firmware update
     func sendUpdateFileInfo(at fileUrl: URL) {
+        var d: [UInt8] = []
         readUpdateData(from: fileUrl)
-        var fileInfo: UpdateFileInfoStruct
-        let fileName = "\\Update.zip"
-        memset(fileInfo.filePath, 0, MemoryLayout<fileInfo.filePath>.size)
-        memcpy(fileInfo.filePath, fileName, strlen(fileName))
-        fileInfo.fileSize = (UInt32)
-        updateFileData.length
-        let size = Float(fileInfo.fileSize()) / UPDATE_DATA_PACKET_SIZE
-        fileInfo.packetCount = ceilf(size)
-        fileInfo.packetSize = UPDATE_DATA_PACKET_SIZE
-        let data = Data(bytes: fileInfo, length: MemoryLayout<fileInfo>.size)
+        var fileName = Array("\\Update.zip".utf8)
+        let adcount = 52 - fileName.count
+        let dummy: [UInt8] = [UInt8](repeating: 0, count: adcount)
+        fileName.append(contentsOf: dummy)
+        var fileSize: UInt16 = 0
+//        guard fileSize = updateFileData?.count else{
+//            return
+//        }
+
+        let FWpacketCount: UInt16 = 0
+        let FWPacketSize: UInt16 = 0
+        d.append(contentsOf: fileName)
+        d.append(contentsOf: fileSize.toUInt8Array())
+        d.append(contentsOf: FWpacketCount.toUInt8Array())
+        d.append(contentsOf: FWPacketSize.toUInt8Array())
+
+        let data = Data(d)
         commManager.writeUpdateFileInfo(data)
     }
     func sendUpdateFileData(at index: UInt16) {
-        N.Log("sendUpdateFileDataAt \(index)")
-        var updateData: UpdateFileDataStruct
-        updateData.index = index
-        let range: NSRange
-        range.location = index * UPDATE_DATA_PACKET_SIZE
-        if (range.location + UPDATE_DATA_PACKET_SIZE) > updateFileData.length {
-            range.length = updateFileData.length - range.location
-        }
-        else {
-            range.length = UPDATE_DATA_PACKET_SIZE
-        }
-        if range.length > 0 {
-            updateFileData.getBytes(updateData.fileData, range: range)
-            let data = Data(bytes: updateData, length: (MemoryLayout<updateData.index>.size + range.length))
-            commManager.writeUpdateFileData(data)
-        }
-        let progress_percent = (Float(index)) / (Float(packetCount)) * 100.0
-        notifyFWUpdate(FW_UPDATE_DATA_RECEIVE_PROGRESSING, percent: progress_percent)
+//        N.Log("sendUpdateFileDataAt \(index)")
+//        var updateData: UpdateFileDataStruct
+//        updateData.index = index
+//        let range: NSRange
+//        range.location = index * UPDATE_DATA_PACKET_SIZE
+//        if (range.location + UPDATE_DATA_PACKET_SIZE) > updateFileData.length {
+//            range.length = updateFileData.length - range.location
+//        }
+//        else {
+//            range.length = UPDATE_DATA_PACKET_SIZE
+//        }
+//        if range.length > 0 {
+//            updateFileData.getBytes(updateData.fileData, range: range)
+//            let data = Data(bytes: updateData, length: (MemoryLayout<updateData.index>.size + range.length))
+//            commManager.writeUpdateFileData(data)
+//        }
+//        let progress_percent = (Float(index)) / (Float(packetCount)) * 100.0
+//        notifyFWUpdate(FW_UPDATE_DATA_RECEIVE_PROGRESSING, percent: progress_percent)
     }
     func readUpdateData(from fileUrl: URL) {
-        updateFileData = Data(contentsOf: fileUrl)
-        updateFilePosition = 0
+        do{
+            updateFileData = try Data(contentsOf: fileUrl)
+            updateFilePosition = 0
+        }catch{
+            
+        }
     }
     func sendUpdateFileInfoAtUrl(toPen fileUrl: URL) {
         cancelFWUpdate = false
         readUpdateData(from: fileUrl)
-        var fileInfo: UpdateFileInfoStruct
+        var fileInfo = UpdateFileInfoStruct()
         //char *fileName = "\\Update.zip";
-        let fileNameString: String = "\\\(fileUrl.path.lastPathComponent)"
-        let fileName = fileNameString.utf8
-        memset(fileInfo.filePath, 0, MemoryLayout<fileInfo.filePath>.size)
-        memcpy(fileInfo.filePath, fileName, strlen(fileName))
-        fileInfo.fileSize = (UInt32)
-        updateFileData.length
-        let size = Float(fileInfo.fileSize()) / UPDATE_DATA_PACKET_SIZE
-        fileInfo.packetCount = ceilf(size)
-        fileInfo.packetSize = UPDATE_DATA_PACKET_SIZE
-        packetCount = fileInfo.packetCount
-        let data = Data(bytes: fileInfo, length: MemoryLayout<fileInfo>.size)
-        commManager.writeUpdateFileInfo(data)
-        notifyFWUpdate(FW_UPDATE_DATA_RECEIVE_START, percent: 0.0)
+//        let fileNameString: String = "\\\(fileUrl.path.lastPathComponent)"
+//        let fileName = fileNameString.utf8
+//        memset(fileInfo.filePath, 0, MemoryLayout<fileInfo.filePath>.size)
+//        memcpy(fileInfo.filePath, fileName, strlen(fileName))
+//        fileInfo.fileSize = (UInt32)
+//        updateFileData.length
+//        let size = Float(fileInfo.fileSize()) / UPDATE_DATA_PACKET_SIZE
+//        fileInfo.packetCount = ceilf(size)
+//        fileInfo.packetSize = UPDATE_DATA_PACKET_SIZE
+//        packetCount = fileInfo.packetCount
+//        let data = Data(bytes: fileInfo, length: MemoryLayout<fileInfo>.size)
+//        commManager.writeUpdateFileInfo(data)
+//        notifyFWUpdate(FW_UPDATE_DATA_RECEIVE_START, percent: 0.0)
     }
     
     //////////////////////////////////////////////////////////////////
@@ -1142,28 +734,34 @@ class PenCommParser: NSObject {
     //             Pen Password
     //
     //////////////////////////////////////////////////////////////////
-    func parsePenPasswordRequest(_ data: [UInt8], withLength length: Int) {
-        let request: PenPasswordRequestStruct? = (data as? PenPasswordRequestStruct)
-        if penCommIdDataReady && penCommStrokeDataReady && penCommUpDownDataReady && penExchangeDataReady {
-            DispatchQueue.main.async(execute: {() -> Void in
-                penPasswordDelegate.penPasswordRequest(request)
-            })
+    func parsePenPasswordRequest(_ data: [UInt8]) {
+        var request = PenPasswordRequestStruct()
+        request.retryCount = data[0]
+        request.resetCount = data[1]
+        let msg = PenMessage.init(.PASSWORD_REQUEST, data: request as AnyObject)
+        penDelegate?.penMessage(msg)
+        N.Log("Password",request)
+        if request.resetCount == 0 {
+            setBTComparePassword("0000")
         }
     }
-    func parsePenPasswordChangeResponse(_ data: [UInt8], withLength length: Int) {
-        let response: PenPasswordChangeResponseStruct? = (data as? PenPasswordChangeResponseStruct)
-        if response?.passwordState == 0x00 {
+    func parsePenPasswordChangeResponse(_ data: [UInt8]) {
+        let res = data[0]
+        if res == 0x00 {
             N.Log("password change success")
-            commManager.hasPenPassword = true
+            let msg = PenMessage.init(.PASSWORD_SETUP_SUCCESS, data: nil)
+            penDelegate?.penMessage(msg)
         }
-        else if response?.passwordState == 0x01 {
+        else if res == 0x01 {
             N.Log("password change fail")
+            let msg = PenMessage.init(.PASSWORD_SETUP_FAILURE, data: nil)
+            penDelegate?.penMessage(msg)
+        }else if res == 0x02{
+            N.Log("password change fail format error")
+            let msg = PenMessage.init(.PASSWORD_SETUP_FAILURE, data: nil)
+            penDelegate?.penMessage(msg)
         }
-        let PasswordChangeResult: Bool? = (response?.passwordState) ? false : true
-        let info: [AnyHashable: Any] = ["result": Int(PasswordChangeResult)]
-        DispatchQueue.main.async(execute: {() -> Void in
-            NotificationCenter.default.post(name: NJPenCommParserPenPasswordSutupSuccess, object: nil, userInfo: info)
-        })
+
     }
-    */
+    
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2448CD271EE7DAAB00507C1E /* libNISDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 242286A41ED559D400009DC5 /* libNISDK.a */; };
+		244D61B61EF9048F004137B9 /* libNISDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 242286A41ED559D400009DC5 /* libNISDK.a */; };
 		2472E01D1ED2DEEC0009E753 /* SimpleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2472E01C1ED2DEEC0009E753 /* SimpleView.swift */; };
 		2472E01F1ED2E0280009E753 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2472E01E1ED2E0280009E753 /* SimpleViewController.swift */; };
 		24879B361ED69B210064251E /* NJSettingPenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24879B351ED69B210064251E /* NJSettingPenController.swift */; };
@@ -79,7 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2448CD271EE7DAAB00507C1E /* libNISDK.a in Frameworks */,
+				244D61B61EF9048F004137B9 /* libNISDK.a in Frameworks */,
 				24886EF81ECC2EE40046A0CD /* libz.tbd in Frameworks */,
 				2491281F1ECAA91C00CD3647 /* Foundation.framework in Frameworks */,
 				2491281D1ECAA91100CD3647 /* UIKit.framework in Frameworks */,

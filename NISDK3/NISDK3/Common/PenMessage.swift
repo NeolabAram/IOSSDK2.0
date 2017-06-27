@@ -11,9 +11,9 @@ import Foundation
 public class PenMessage{
     
     public var messageType : PenMessageType!
-    public var data : AnyObject?
+    public var data : Any?
     
-    convenience init(_ penMessageType: PenMessageType , data: AnyObject?) {
+    convenience init(_ penMessageType: PenMessageType , data: Any?) {
         self.init()
         messageType = penMessageType
         self.data = data

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2414ADED1EEE9DF700C49176 /* NISDK3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24A578451EDEC6EF0028FFDA /* NISDK3.framework */; };
 		2414ADEE1EEE9DF700C49176 /* NISDK3.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 24A578451EDEC6EF0028FFDA /* NISDK3.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		244D61B81EF90FE2004137B9 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244D61B71EF90FE2004137B9 /* Dummy.swift */; };
 		24A578331EDEC6E10028FFDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A578321EDEC6E10028FFDA /* AppDelegate.swift */; };
 		24A578351EDEC6E10028FFDA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A578341EDEC6E10028FFDA /* ViewController.swift */; };
 		24A578381EDEC6E10028FFDA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24A578361EDEC6E10028FFDA /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		244D61B71EF90FE2004137B9 /* Dummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		24A5782F1EDEC6E10028FFDA /* Sample3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24A578321EDEC6E10028FFDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24A578341EDEC6E10028FFDA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				24A578391EDEC6E10028FFDA /* Assets.xcassets */,
 				24A5783B1EDEC6E30028FFDA /* LaunchScreen.storyboard */,
 				24A5783E1EDEC6E30028FFDA /* Info.plist */,
+				244D61B71EF90FE2004137B9 /* Dummy.swift */,
 			);
 			path = Sample3;
 			sourceTree = "<group>";
@@ -125,6 +128,7 @@
 					24A5782E1EDEC6E10028FFDA = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = K2APH36C6M;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -166,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24A578351EDEC6E10028FFDA /* ViewController.swift in Sources */,
+				244D61B81EF90FE2004137B9 /* Dummy.swift in Sources */,
 				24A578331EDEC6E10028FFDA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

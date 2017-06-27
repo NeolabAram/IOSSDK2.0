@@ -16,35 +16,31 @@ public enum PenStatus : Int {
     case Connect
     case Disconnect
 }
-enum OfflineData : Int {
-    case Start
-    case Progressing
-    case End
-    case Fail
-}
-enum FirmWareUpdate : Int {
-    case Start
-    case Progressing
-    case End
-    case Fail
-}
+//enum OfflineData : Int {
+//    case Start
+//    case Progressing
+//    case End
+//    case Fail
+//}
+//enum FirmWareUpdate : Int {
+//    case Start
+//    case Progressing
+//    case End
+//    case Fail
+//}
 
-enum PenService : String{
-    case UUID = "E20A39F4-73F5-4BC4-A12F-17D1AD07A961"
-}
+//enum PenService : String{
+//    case UUID = "E20A39F4-73F5-4BC4-A12F-17D1AD07A961"
+//}
 
-enum PenCharacteristic : String{
-    case ReadUUID = "08590F7E-DB05-467E-8757-72F6FAEB13D4"
-    case WriteUUID = "C0C0C0C0-DEAD-F154-1319-740381000000"
-}
+//enum PenCharacteristic : String{
+//    case ReadUUID = "08590F7E-DB05-467E-8757-72F6FAEB13D4"
+//    case WriteUUID = "C0C0C0C0-DEAD-F154-1319-740381000000"
+//}
 
 let NOTIFY_MTU = 20
 
-class PageDocument{
-    //TODO: need to search
-}
-
-public struct NPen{
+public struct NPenInfo{
     var peripheral: CBPeripheral
     var macAddress: String = ""
     var name: String = ""
@@ -56,24 +52,26 @@ public struct NPen{
 public class PenController: NSObject {
     
     public static let sharedInstance = PenController()
+    weak var penDelegate: PenDelegate?
     var centralManager: CBCentralManager!
     var penCommParser: PenCommParser!
+    var pen2CommParser : Pen2CommParser!
     
     //SCAN
-    fileprivate var nPens = [NPen]()
+    fileprivate var nPens = [NPenInfo]()
     private var timer: Timer?
 
     //Connecte Pen
-    fileprivate var nPen: NPen?
+    var nPen: NPenInfo?
     var penConnectionStatus :PenStatus  = .None
     private var verInfoTimer: Timer?
     
     //SDK Version
-    public var isPenSDK2: Bool = true
+    public var isPenSDK2: Bool = false
     
     // Pen SDK2.0 Service
     var pen2Service: CBService?
-    var pen2Characteristics: [CBUUID] = []
+    var pen2Characteristics: [CBUUID] = [Pen2.PEN2_DATA_UUID,Pen2.PEN2_SET_DATA_UUID]
     var pen2SetDataCharacteristic: CBCharacteristic?
     
     // Pen Servce
@@ -117,45 +115,34 @@ public class PenController: NSObject {
     var deviceInfoService: CBService?
     var setRtcCharacteristic: CBCharacteristic?
 
-    private var bt_write_dispatch_queue :DispatchQueue!
-    private let bt_write_queue_lable = "bt_write_dispatch_queue"
+    var bt_write_dispatch_queue: DispatchQueue!
+    var bt_parsing_dispach_queue: DispatchQueue!
     
     var penConnectionStatusMsg = ""
     
     var isAutoConnection = false
     
+    var MTU = 0 //Maximum Transmission Unit
+    
     private override init() {
         super.init()
+        bt_write_dispatch_queue = DispatchQueue(label: "bt_write_dispatch_queue")
+        bt_parsing_dispach_queue = DispatchQueue(label: "data_paser_dispach_queue")
         
-        pen2Characteristics = [Pen2.PEN2_DATA_UUID,Pen2.PEN2_SET_DATA_UUID]
-        penCharacteristics = [Pen.STROKE_DATA_UUID, Pen.UPDOWN_DATA_UUID, Pen.ID_DATA_UUID]
-        
-        // Offline data Service
-        offlineCharacteristics = [Pen.REQUEST_OFFLINE_FILE_LIST_UUID, Pen.OFFLINE_FILE_LIST_UUID, Pen.REQUEST_DEL_OFFLINE_FILE_UUID]
-        
-        // Offline2 data Service
-        offline2Characteristics = [Pen2.OFFLINE2_FILE_INFO_UUID, Pen2.OFFLINE2_FILE_DATA_UUID,Pen2.OFFLINE2_FILE_LIST_INFO_UUID, Pen2.REQUEST_OFFLINE2_FILE_UUID, Pen2.OFFLINE2_FILE_STATUS_UUID, Pen2.OFFLINE2_FILE_ACK_UUID]
-        
-        // Update Service
-        updateCharacteristics = [Pen.UPDATE_FILE_INFO_UUID, Pen.REQUEST_UPDATE_FILE_UUID,Pen.UPDATE_FILE_DATA_UUID, Pen.UPDATE_FILE_STATUS_UUID]
-        
-        // System Service
-        systemCharacteristics = [Pen.PEN_STATE_UUID,Pen.SET_PEN_STATE_UUID,Pen.SET_NOTE_ID_LIST_UUID,Pen.READY_EXCHANGE_DATA_UUID,Pen.READY_EXCHANGE_DATA_REQUEST_UUID]
-
-        // System2 Service
-        system2Characteristics = [Pen2.PEN_PASSWORD_REQUEST_UUID,Pen2.PEN_PASSWORD_RESPONSE_UUID,Pen2.PEN_PASSWORD_CHANGE_REQUEST_UUID, Pen2.PEN_PASSWORD_CHANGE_RESPONSE_UUID]
-        
-        // Device Information Service
-        supportedServices = [Pen2.NEO_PEN2_SERVICE_UUID,Pen2.NEO_PEN2_SYSTEM_SERVICE_UUID,Pen.NEO_PEN_SERVICE_UUID,Pen.NEO_SYSTEM_SERVICE_UUID,Pen.NEO_OFFLINE_SERVICE_UUID,Pen2.NEO_OFFLINE2_SERVICE_UUID,Pen.NEO_UPDATE_SERVICE_UUID,Pen.NEO_DEVICE_INFO_SERVICE_UUID,Pen2.NEO_PEN2_SYSTEM_SERVICE_UUID]
-
-        bt_write_dispatch_queue = DispatchQueue(label: bt_write_queue_lable)
         initBluetooth()
         
+        //Protocol V2 Setting
+        pen2CommParser = Pen2CommParser(penCommController: self)
+        
+        //Protocol V1 Setting
+        initCharacteristics()
         penCommParser = PenCommParser(penCommController: self)
     }
     
-    public func setPenDelegate(_ delegate: DeviceDelegate) {
+    public func setPenDelegate(_ delegate: PenDelegate) {
+        self.penDelegate = delegate
         penCommParser?.penDelegate = delegate
+        pen2CommParser?.penDelegate = delegate
     }
     
     public func showLog(_ flag : Bool){
@@ -190,7 +177,7 @@ public class PenController: NSObject {
                 else {
                     if penCommParser.penDelegate != nil {
                         DispatchQueue.main.async(execute: {() -> Void in
-                            self.penCommParser.penDelegate?.deviceService(PenStatus.Connect, device: nil)
+                            self.penDelegate?.penBluetooth(.Connect, nil)
                         })
                     }
                 }
@@ -224,10 +211,6 @@ public class PenController: NSObject {
             nPen = nil
         }
         penConnectionStatus = .Disconnect
-        #if AUDIO_BACKGROUND_FOR_BT
-            let delegate: NJAppDelegate? = (UIApplication.shared.delegate as? NJAppDelegate)
-            delegate?.audioController?.stop()
-        #endif
     }
     
     public func connectPeripheral(_ peripheral: CBPeripheral) {
@@ -268,11 +251,6 @@ public class PenController: NSObject {
         verInfoTimer = nil
     }
     
-    @objc private func requestVersionInfo() {
-        stopTimerForVerInfoReq()
-        setVersionInfo()
-    }
-    
     @objc private func selectRSSI() {
         N.Log("Scan Stop")
 
@@ -292,7 +270,7 @@ public class PenController: NSObject {
             return
         }
         var maxRssi : Int = -90
-        var maxRssiPen: NPen?
+        var maxRssiPen: NPenInfo?
 
         for pen in nPens{
             if pen.rssi > maxRssi{
@@ -308,79 +286,7 @@ public class PenController: NSObject {
             nPen = selectedPen
             return
         }
-        
-        /*
-        var serviceUUID: String
-        var penLocalName: String
-        
-        // 1.try macAddr first
-        var uid: String = selectedPen.macAddress
-        
-        if serviceIdArray.count > rssiIndex {
-            serviceUUID = serviceIdArray[rssiIndex]
-        }
-        if penLocalNameArray.count > rssiIndex {
-            penLocalName = penLocalNameArray[rssiIndex].uppercased()
-            //NSLog(@"penLocalName: %@", penLocalName);
-        }
-        else {
-            N.Log("penLocalNameArray count \(UInt(penLocalNameArray.count)), rssiIndex:\(Int(rssiIndex))")
-        }
-        if uid.isEmpty {
-            // 2.if no macAddr (backwards-compatibility) try uuid
-            uid = (foundPeripheral?.identifier.uuidString)!
-        }
-        penName = foundPeripheral?.name
-        let pName: String? = foundPeripheral?.name?.uppercased()
-        #if SUPPORT_SDK2
-            if (serviceUUID == "19F0") || (serviceUUID == "19F1") {
-                isPenSDK2 = true
-                N.Log("PenSDK2.0 Pen registered")
-            }
-            else {
-                isPenSDK2 = false
-                N.Log("PenSDK1.0 Pen registered")
-            }
-        #else
-            isPenSDK2 = false
-        #endif
-        #if !SUPPORT_PEN_LOCALSUBNAME
-            regUuid = uid
-            hasPenRegistered = true
-            UserDefaults.standard.set(true, forKey: "penAutoPower")
-            connectPeripheral(at: rssiIndex)
-            N.Log("registration success uuid \(uid)")
-            //                    NotificationCenter.default.post(name: NJPenRegistrationNotification, object: nil, userInfo: nil)
-            return
-        #else
-            if btIDList.isEmpty {
-                regUuid = uid
-                isPenRegister = true
-                UserDefaults.standard.set(true, forKey: "penAutoPower")
-                connectPeripheral(at: rssiIndex)
-                N.Log("registration success uuid \(uid)")
-                //                        NotificationCenter.default.post(name: NJPenRegistrationNotification, object: nil, userInfo: nil)
-                return
-            }
-            else {
-                //NSLog(@"BT ID List %@",self.btIDList);
-                for btIDPermitted: String in btIDList {
-                    //NSLog(@"BT ID from BT ID List: %@, penLocalName: %@",btIDPermitted, penLocalName);
-                    if (penLocalName == btIDPermitted) {
-                        regUuid() = uid
-                        hasPenRegistered() = true
-                        UserDefaults.standard.set(true, forKey: "penAutoPower")
-                        connectPeripheral(at: rssiIndex)
-                        N.Log("registration success uuid \(uid)")
-                        NotificationCenter.default.post(name: NJPenRegistrationNotification, object: nil, userInfo: nil)
-                        return
-                    }
-                }
-            }
-        #endif
-        
-        */
-        // if we reached here --> we failed, and try the scan again
+
         N.Log("[selectRSSI] not found any eligible peripheral....")
         penConnectionStatusMsg = "This pen is not registered."
         penConnectionStatus = .Disconnect
@@ -426,171 +332,99 @@ public class PenController: NSObject {
             self.nPen?.peripheral.writeValue(data, for: self.pen2SetDataCharacteristic!, type: .withResponse)
         })
     }
-    func write(_ data: Data, to characteristic: CBCharacteristic) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            self.nPen?.peripheral.writeValue(data, for: characteristic, type: .withResponse)
-        })
-    }
-    func writeSetPenState(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            N.Log("gethere 3")
-            self.nPen?.peripheral.writeValue(data, for: self.setPenStateCharacteristic!, type: .withResponse)
-        })
-    }
-    func writeNoteIdList(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            self.nPen?.peripheral.writeValue(data, for: self.setNoteIdListCharacteristic!, type: .withResponse)
-        })
-    }
-    func writeReadyExchangeData(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            if self.readyExchangeDataCharacteristic != nil {
-                self.nPen?.peripheral.writeValue(data, for: self.readyExchangeDataCharacteristic!, type: .withResponse)
-            }
-        })
-    }
-    func writePenPasswordResponseData(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            if self.penPasswordResponseCharacteristic != nil {
-                N.Log("[PenCommMan -writePenPasswordResponseData] writing data to pen")
-                self.nPen?.peripheral.writeValue(data, for: self.penPasswordResponseCharacteristic!, type: .withResponse)
-            }
-        })
-    }
-    func writeSetPasswordData(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            if self.penPasswordChangeRequestCharacteristic != nil {
-                self.nPen?.peripheral.writeValue(data, for: self.penPasswordChangeRequestCharacteristic!, type: .withResponse)
-            }
-        })
-    }
-    func writeRequestOfflineFileList(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            self.nPen?.peripheral.writeValue(data, for: self.requestOfflineFileListCharacteristic!, type: .withResponse)
-        })
-    }
-    func writeRequestDelOfflineFile(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            self.nPen?.peripheral.writeValue(data, for: self.requestDelOfflineFileCharacteristic!, type: .withResponse)
-        })
-    }
-    func writeRequestOfflineFile(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            self.nPen?.peripheral.writeValue(data, for: self.requestOfflineFileCharacteristic!, type: .withResponse)
-        })
-    }
-    func writeOfflineFileAck(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            self.nPen?.peripheral.writeValue(data, for: self.offline2FileAckCharacteristic!, type: .withResponse)
-        })
-    }
-    func writeUpdateFileData(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            self.nPen?.peripheral.writeValue(data, for: self.updateFileDataCharacteristic!, type: .withResponse)
-        })
-    }
-    func writeUpdateFileInfo(_ data: Data) {
-        bt_write_dispatch_queue.async(execute: {() -> Void in
-            self.nPen?.peripheral.writeValue(data, for: self.sendUpdateFileInfoCharacteristic!, type: .withResponse)
-        })
-    }
+
     
     // MARK: - Public API
-    public func setPenStateWithRGB(_ color: UInt32) {
+    public func requestSetPenColor(_ color: UIColor) {
         if isPenSDK2 {
-            let tType: UInt8 = 0
-            //normal:0, eraser:1
-            //penCommParser.setPenState2WithTypeAndRGB(color, tType: UInt8(tType))
+            pen2CommParser.setPenStatePenLEDColor(color)
         }
         else {
-            //penCommParser.setPenStateWithRGB(color)
+            penCommParser.setPenStateWithRGB(color)
         }
     }
     
-    public func setPenStateWithPenPressure(_ penPressure: UInt16) {
+    public func requestSetPenPressure(_ penPressure: UInt16) {
         if isPenSDK2 {
-            let type: RequestPenStateType = .PenPresure
-            //penCommParser.setPenStateWithPenPressure(penPressure)
+            pen2CommParser.requestSetPenPressure(penPressure)
         }
         else {
-            //penCommParser.setPenStateWithPenPressure(penPressure)
+            penCommParser.setPenStateWithPenPressure(penPressure)
         }
     }
     
-    public func setPenStateWithAutoPwrOffTime(_ autoPwrOff: UInt16) {
+    public func setPenStateWithAutoPwrOffTime(_ minute: UInt16) {
         if isPenSDK2 {
-            //penCommParser.setPenState2WithTypeAndAutoPwrOffTime(autoPwrOff)
+            pen2CommParser.requestSetPenAutoPowerOffTime(minute)
         }
         else {
-            //penCommParser.setPenStateWithAutoPwrOffTime(autoPwrOff)
+            penCommParser.setPenStateWithAutoPwrOffTime(minute)
         }
     }
     
-    public func setPenStateAutoPower(_ autoPower: UInt8, sound: UInt8) {
+    public func setPenStateAutoPower(_ onoff: OnOff) {
         if isPenSDK2 {
-            var type: RequestPenStateType
-            if sound == 0xff {
-                type = .AutoPowerOn
-                //penCommParser.setPenState2(UInt8(type.rawValue), andValue: autoPower)
-            }
-            else if autoPower == 0xff {
-                type = .BeepOnOff
-                //penCommParser.setPenState2(UInt8(type.rawValue), andValue: sound)
-            }
+            pen2CommParser.requestSetPenAutoPowerOn(onoff)
         }
         else {
-            //penCommParser.setPenStateAutoPower(autoPower, sound: sound)
+            penCommParser.setPenStateAutoPower(onoff)
         }
     }
     
-    public func setPenStateWithHover(_ useHover: UInt16) {
+    public func requestSetPenAutoPowerSound(_ onoff: OnOff){
         if isPenSDK2 {
-            //penCommParser.setPenState2WithTypeAndHover(UInt8(useHover))
+            pen2CommParser.requestSetPenBeep(onoff)
         }
         else {
-            //penCommParser.setPenStateWithHover(useHover)
+            penCommParser.requestSetPenAutoPowerSound(onoff)
+        }
+    }
+    
+    public func setPenStateWithHover(_ onOff: OnOff) {
+        if isPenSDK2 {
+            pen2CommParser.requestSetPenHober(onOff)
+        }
+        else {
+            penCommParser.setPenStateWithHover(onOff)
         }
     }
     
     public func setPenStateWithTimeTick() {
         if isPenSDK2 {
-            //penCommParser.setPenState2WithTypeAndTimeStamp()
+            pen2CommParser.requestSetPenTime()
         }
         else {
-            //penCommParser.setPenStateWithTimeTick()
+            penCommParser.setPenStateWithTimeTick()
         }
-    }
-    
-    public func getPenStateWithBatteryLevel() -> UInt8 {
-        return penCommParser.batteryLevel
-    }
-    
-    public func getPenStateWithMemoryUsed() -> UInt8 {
-        return penCommParser.memoryUsed
-    }
-    
-    public func getFWVersion() -> String {
-        return penCommParser.fwVersion
     }
     
     /// Offline
     public func requestOfflineNoteList(){
-        self.penCommParser.requestOfflineFileList2()
+        self.pen2CommParser.requestOfflineNoteList()
     }
     
-    public func requestOfflinePageList(pageList: [UInt32]){
-        self.penCommParser.requestOfflineFileList2()
+    /// Not support Protocol 1.0
+    public func requestOfflinePageList(_ section : UInt8,_ owner : UInt32,_ note: UInt32){
+        if isPenSDK2{
+            self.pen2CommParser.requestOfflinePageList(section, owner, note)
+        }else{
+            N.Log("Not support")
+        }
     }
     
-    public func requestOfflineData(withOwnerId ownerId: UInt32, noteId: UInt32) -> Bool {
+    public func requestOfflineData(_ section : UInt8,_ owner : UInt32,_ note: UInt32) {
         if isPenSDK2
         {
-            let selectedPagesArray = [UInt32]()
-            return true //penCommParser.requestOfflineData2(withOwnerId: ownerId, noteId: noteId, pageId: selectedPagesArray)
+           pen2CommParser.requestOfflineData(section, owner, note, nil)
         }
         else {
-            return true
-//            return penCommParser.requestOfflineData(withOwnerId: ownerId, noteId: noteId)
+             penCommParser.requestOfflineData(SectionOwner: owner, [note])
+        }
+    }
+    
+    public func requestDeleteOfflineData(_ section : UInt8,_ owner : UInt32,_ note: [UInt32]){
+        if isPenSDK2{
+            pen2CommParser.requestDeleteOfflineData(section, owner, note)
         }
     }
     
@@ -600,83 +434,91 @@ public class PenController: NSObject {
     
     public func setPassword(_ pinNumber: String) {
         if isPenSDK2 {
-            penCommParser.setPasswordSDK2(pinNumber)
+            pen2CommParser.requestPasswordSDK2(pinNumber)
         }
         else {
-//            penCommParser.setPassword(pinNumber)
+            penCommParser.setPassword(pinNumber)
         }
     }
     
-    public func changePassword(from curNumber: String, to pinNumber: String) {
+    public func requestchangePassword(from curNumber: String, to pinNumber: String) {
         if isPenSDK2 {
-            penCommParser.setChangePasswordSDK2From(curNumber, to: pinNumber)
+            pen2CommParser.requestChangePasswordSDK2From(curNumber, to: pinNumber)
         }
         else {
-//            penCommParser.changePassword(from: curNumber, to: pinNumber)
+            penCommParser.changePassword(from: curNumber, to: pinNumber)
         }
     }
     
-    public func setBTComparePassword(_ pinNumber: String) {
+    public func requestComparePassword(_ pinNumber: String) {
         if isPenSDK2 {
-            penCommParser.setComparePasswordSDK2(pinNumber)
+            pen2CommParser.requestComparePasswordSDK2(pinNumber)
         }
         else {
-//            penCommParser.setBTComparePassword(pinNumber)
+            penCommParser.setBTComparePassword(pinNumber)
         }
     }
     
     public func sendUpdateFileInfoAtUrl(toPen fileUrl: URL) {
         if isPenSDK2 {
-//            penCommParser.sendUpdateFileInfo2(at: (fileUrl as? URL)!)
+//            pen2CommParser.sendUpdateFileInfo2(at: (fileUrl as? URL)!)
         }
         else {
-//            penCommParser.sendUpdateFileInfoAtUrl(toPen: (fileUrl as? URL)!)
+            penCommParser.sendUpdateFileInfoAtUrl(toPen: (fileUrl as? URL)!)
         }
     }
     
     public func setCancelFWUpdate(_ cancelFWUpdate: Bool) {
-//        penCommParser.setCancelFWUpdate(cancelFWUpdate)
+        if isPenSDK2 {
+            pen2CommParser.cancelFWUpdate = cancelFWUpdate
+        }else{
+            penCommParser.cancelFWUpdate = cancelFWUpdate
+        }
     }
     
     /// Offline cancel
     public func setCancelOfflineSync(_ cancelOfflineSync: Bool) {
-//        penCommParser.setCancelOfflineSync(cancelOfflineSync)
+        if isPenSDK2 {
+            pen2CommParser.cancelOfflineSync = cancelOfflineSync
+        }else{
+            penCommParser.cancelOfflineSync = cancelOfflineSync
+        }
     }
     
     public func getPenBattLevelAndMemoryUsedSize() {
         if isPenSDK2 {
-            penCommParser.setRequestPenState()
+            pen2CommParser.requestPenSettingInfo()
         }
         else {
-//            penCommParser.setPenStateWithTimeTick()
+            penCommParser.setPenStateWithTimeTick()
         }
     }
 
     public func setPenState() {
         if isPenSDK2 {
-            penCommParser.setRequestPenState()
+            pen2CommParser.requestPenSettingInfo()
         }
         else {
-//            penCommParser.setPenState()
+            penCommParser.setPenState()
         }
     }
     
-    public func setNoteIdListFromPList() {
+    public func requestUsingNote(SectionOwnerNoteList list :[(UInt8,UInt32,UInt32)]) {
         if isPenSDK2 {
-//            penCommParser.setNoteIdListFromPList2()
+//            pen2CommParser.requestUsingNote(list)
         }
         else {
-//            penCommParser.setNoteIdListFromPList()
+//            penCommParser.setUsingNotes(list[2])
         }
     }
     
     /// Using Note Set
     public func setAllNoteIdList() {
         if isPenSDK2 {
-            penCommParser.setAllNoteIdList2()
+            pen2CommParser.requestUsingAllNote()
         }
         else {
-//            penCommParser.setAllNoteIdList()
+            penCommParser.setAllNoteIdList()
         }
     }
     
@@ -694,8 +536,9 @@ public class PenController: NSObject {
     }
     
     //MARK: - SDK 2.0 -
-    public func setVersionInfo() {
-        penCommParser.setVersionInfo()
+    public func requestVersionInfo() {
+        stopTimerForVerInfoReq()
+        pen2CommParser.requestVersionInfo()
     }
     
     public func protocolVersion() -> String {
@@ -727,6 +570,7 @@ extension PenController: CBPeripheralDelegate {
         for service: CBService in peripheral.services! {
             N.Log("Service UUID : \(service.uuid.uuidString)")
             if service.uuid.isEqual(Pen2.NEO_PEN2_SERVICE_UUID) {
+                isPenSDK2 = true
                 pen2Service = service
                 peripheral.discoverCharacteristics(pen2Characteristics, for: service)
             }
@@ -734,7 +578,7 @@ extension PenController: CBPeripheralDelegate {
                 systemService = service
                 peripheral.discoverCharacteristics(systemCharacteristics, for: service)
             }
-            else if service.uuid.isEqual(Pen2.NEO_SYSTEM2_SERVICE_UUID) {
+            else if service.uuid.isEqual(Pen.NEO_SYSTEM2_SERVICE_UUID) {
                 system2Service = service
                 peripheral.discoverCharacteristics(system2Characteristics, for: service)
             }
@@ -747,7 +591,7 @@ extension PenController: CBPeripheralDelegate {
                 offlineService = service
                 peripheral.discoverCharacteristics(offlineCharacteristics, for: service)
             }
-            else if service.uuid.isEqual(Pen2.NEO_OFFLINE2_SERVICE_UUID) {
+            else if service.uuid.isEqual(Pen.NEO_OFFLINE2_SERVICE_UUID) {
                 offline2Service = service
                 peripheral.discoverCharacteristics(offline2Characteristics, for: service)
             }
@@ -816,11 +660,11 @@ extension PenController: CBPeripheralDelegate {
                         penCommParser.penCommIdDataReady = true
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
-                    else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_INFO_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.OFFLINE2_FILE_INFO_UUID) {
                         N.Log("offlineFileInfoUuid")
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
-                    else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_DATA_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.OFFLINE2_FILE_DATA_UUID) {
                         N.Log("offlineFileDataUuid")
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
@@ -865,19 +709,19 @@ extension PenController: CBPeripheralDelegate {
             for characteristic: CBCharacteristic in characters {
                 // And check if it's the right one
                 if system2Characteristics.contains(characteristic.uuid) {
-                    if characteristic.uuid.isEqual(Pen2.PEN_PASSWORD_REQUEST_UUID) {
+                    if characteristic.uuid.isEqual(Pen.PEN_PASSWORD_REQUEST_UUID) {
                         N.Log("penPasswordRequestUuid")
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
-                    else if characteristic.uuid.isEqual(Pen2.PEN_PASSWORD_RESPONSE_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.PEN_PASSWORD_RESPONSE_UUID) {
                         N.Log("penPasswordResponseUuid")
                         penPasswordResponseCharacteristic = characteristic
                     }
-                    else if characteristic.uuid.isEqual(Pen2.PEN_PASSWORD_CHANGE_REQUEST_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.PEN_PASSWORD_CHANGE_REQUEST_UUID) {
                         N.Log("penPasswordChangeRequestUuid")
                         penPasswordChangeRequestCharacteristic = characteristic
                     }
-                    else if characteristic.uuid.isEqual(Pen2.PEN_PASSWORD_CHANGE_RESPONSE_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.PEN_PASSWORD_CHANGE_RESPONSE_UUID) {
                         N.Log("penPasswordChangeResponseUuid")
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
@@ -892,27 +736,27 @@ extension PenController: CBPeripheralDelegate {
             for characteristic: CBCharacteristic in characters {
                 // And check if it's the right one
                 if offline2Characteristics.contains(characteristic.uuid) {
-                    if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_INFO_UUID) {
+                    if characteristic.uuid.isEqual(Pen.OFFLINE2_FILE_INFO_UUID) {
                         N.Log("offlineFileInfoUuid")
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
-                    else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_DATA_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.OFFLINE2_FILE_DATA_UUID) {
                         N.Log("offlineFileDataUuid")
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
-                    else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_LIST_INFO_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.OFFLINE2_FILE_LIST_INFO_UUID) {
                         N.Log("offlineFileListInfoUuid")
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
-                    else if characteristic.uuid.isEqual(Pen2.REQUEST_OFFLINE2_FILE_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.REQUEST_OFFLINE2_FILE_UUID) {
                         N.Log("requestOfflineFileUuid")
                         requestOfflineFileCharacteristic = characteristic
                     }
-                    else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_STATUS_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.OFFLINE2_FILE_STATUS_UUID) {
                         N.Log("offlineFileStatusUuid")
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
-                    else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_ACK_UUID) {
+                    else if characteristic.uuid.isEqual(Pen.OFFLINE2_FILE_ACK_UUID) {
                         N.Log("offline2FileAckUuid")
                         offline2FileAckCharacteristic = characteristic
                     }
@@ -1011,78 +855,18 @@ extension PenController: CBPeripheralDelegate {
             N.Log("Data is empty")
             return
         }
+        
         let dataLength = received_data.count
         let packet = [UInt8](received_data)
 //        N.Log("Pen Data", packet[1], CMD(rawValue: packet[1]))
-        if characteristic.uuid.isEqual(Pen2.PEN2_DATA_UUID) {
-//            N.Log("Received: pen2DataUuid data");
-            penCommParser.parsePen2Data(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.STROKE_DATA_UUID) {
-            //penCommParser.parsePenStrokeData(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.UPDOWN_DATA_UUID) {
-            N.Log("Received: updown")
-//            writeSetPenState = true
-            //penCommParser.parsePenStrokeData(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.ID_DATA_UUID) {
-            N.Log("Received: id data")
-            //penCommParser.parsePenNewIdData(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.OFFLINE_FILE_LIST_UUID) {
-            N.Log("Received: offline file data");
-            //penCommParser.parseOfflineFileData(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_LIST_INFO_UUID) {
-            N.Log("Received: offline file info data")
-            //penCommParser.parseOfflineFileInfoData(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.PEN_STATE_UUID) {
-            N.Log("Received: pen status data")
-            penConnectionStatusMsg = NSLocalizedString("BT_PEN_CONNECTED", comment: "")
-            penConnectionStatus = .Connect
-            //penCommParser.parsePenStatusData(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.OFFLINE_FILE_LIST_UUID) {
-            N.Log("Received: offline File list")
-            //penCommParser.parseOfflineFileList(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_LIST_INFO_UUID) {
-            N.Log("Received: offline File List info")
-            //penCommParser.parseOfflineFileListInfo(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen2.OFFLINE2_FILE_STATUS_UUID) {
-            N.Log("Received: offline File Status")
-            //penCommParser.parseOfflineFileStatus(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.REQUEST_UPDATE_FILE_UUID) {
-            N.Log("Received: request update file")
-            //penCommParser.parseRequestUpdateFile(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.UPDATE_FILE_STATUS_UUID) {
-            N.Log("Received: update file status ")
-            //penCommParser.parseUpdateFileStatus(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.READY_EXCHANGE_DATA_REQUEST_UUID) {
-            N.Log("Received: readyExchangeDataRequestUuid")
-            //penCommParser.parseReadyExchangeDataRequest(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen2.PEN_PASSWORD_REQUEST_UUID) {
-            N.Log("Received: penPasswordRequestUuid")
-            //penCommParser.parsePenPasswordRequest(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen2.PEN_PASSWORD_CHANGE_RESPONSE_UUID) {
-            N.Log("Received: penPasswordResponseUuid")
-            //penCommParser.parsePenPasswordChangeResponse(packet, withLength: dataLength)
-        }
-        else if characteristic.uuid.isEqual(Pen.FW_VERSION_UUID) {
-            N.Log("Received: FW version")
-            penCommParser.parseFWVersion(packet, withLength: dataLength)
-        }
-        else {
-            N.Log("Un-handled data characteristic.UUID \(characteristic.uuid.uuidString)")
-            return
+        switch characteristic.uuid {
+        case Pen2.PEN2_DATA_UUID:
+            //N.Log("Received: pen2DataUuid data");
+            bt_parsing_dispach_queue.async{
+                self.pen2CommParser.parsePen2Data(packet, withLength: dataLength)
+            }
+        default:
+            receiveDataV1(characteristic.uuid, packet)
         }
     }
     /** The peripheral letting us know whether our subscribe/unsubscribe happened or not
@@ -1094,7 +878,7 @@ extension PenController: CBPeripheralDelegate {
         // Notification has started
         if characteristic.isNotifying {
             N.Log("Notification began on \(characteristic)")
-            penCommParser.penDelegate?.deviceService(.Connect, device: self.nPen)
+            self.penDelegate?.penBluetooth(.Connect, self.nPen)
         }
         else {
             // so disconnect from the peripheral
@@ -1109,49 +893,24 @@ extension PenController: CBPeripheralDelegate {
             return
         }
         if characteristic == pen2SetDataCharacteristic {
-            N.Log("Pen2.0 Data Write successful")
-//            if IS_OS_9_OR_LATER && mtuReadRetry += 1 < 5 {
-//                mtu() = peripheral.maximumWriteValueLength(forType: CBCharacteristicWriteWithoutResponse)
-//                N.Log("MTU \(mtu())")
-//            }
-        }
-        else if characteristic == setPenStateCharacteristic {
-            N.Log("Set Pen Status successful")
-        }
-        else if characteristic == requestOfflineFileListCharacteristic {
-            N.Log("requestOfflineFileList successful")
-        }
-        else if characteristic == sendUpdateFileInfoCharacteristic {
-            N.Log("sendUpdateFileInfoCharacteristic successful")
-        }
-        else if characteristic == updateFileDataCharacteristic {
-            N.Log("updateFileDataCharacteristic successful")
-        }
-        else if characteristic == offline2FileAckCharacteristic {
-            N.Log("offline2FileAckCharacteristic successful")
-        }
-        else if characteristic == setNoteIdListCharacteristic {
-            N.Log("setNoteIdListCharacteristic successful")
-        }
-        else if characteristic == requestOfflineFileCharacteristic {
-            N.Log("requestOfflineFileCharacteristic successful")
-        }
-        else if characteristic == requestDelOfflineFileCharacteristic {
-            N.Log("requestDelOfflineFileCharacteristic successful")
-        }
-        else {
-            N.Log("Unknown characteristic \(characteristic.uuid) didWriteValueForCharacteristic successful")
+//            N.Log("Pen2.0 Data Write successful")
+            if #available(iOS 9.0, *) {
+                MTU = peripheral.maximumWriteValueLength(for: .withoutResponse)
+            } else {
+                // Fallback on earlier versions
+            }
+        }else{
+            subscribeCharacteristicV1(characteristic)
         }
     }
 }
 
 // MARK: - CBCentralManagerDelegate -
-extension PenController: CBCentralManagerDelegate {
+extension PenController: CBCentralManagerDelegate { 
     /** This callback comes whenever a peripheral that is advertising the NEO_PEN_SERVICE_UUID is discovered.
      *  We check the RSSI, to make sure it's close enough that we're interested in it, and if it is,
      *  we start the connection process
      */
-    
     fileprivate func initBluetooth(){
         centralManager = CBCentralManager(delegate: self, queue: (DispatchQueue(label: "kr.neolab.penBT")), options: [CBCentralManagerOptionShowPowerAlertKey: true])
     }
@@ -1183,9 +942,11 @@ extension PenController: CBCentralManagerDelegate {
         }
         penConnectionStatus = .ScanStart
 
-        let serviceUUIDs: [CBUUID]? = (advertisementData["kCBAdvDataServiceUUIDs"] as? [CBUUID])
+       guard let serviceUUIDs = (advertisementData["kCBAdvDataServiceUUIDs"] as? [CBUUID]) else{
+            return
+        }
 
-        if !((serviceUUIDs?.contains(Pen.NEO_PEN_SERVICE_UUID))! || (serviceUUIDs?.contains(Pen2.NEO_PEN2_SERVICE_UUID))!) {
+        if !(serviceUUIDs.contains(Pen.NEO_PEN_SERVICE_UUID) || serviceUUIDs.contains(Pen2.NEO_PEN2_SERVICE_UUID)) {
             return
         }
         
@@ -1194,12 +955,12 @@ extension PenController: CBCentralManagerDelegate {
                 return
             }
         }
-        let rssi = Int(RSSI) //rssiArray.append(RSSI)
+        let rssi = Int(RSSI)
         
-        var tempPen = NPen(peripheral: peripheral, macAddress: "", name: "", subName: "", protocolVersion: "", rssi: rssi)
+        var tempPen = NPenInfo(peripheral: peripheral, macAddress: "", name: "", subName: "", protocolVersion: "", rssi: rssi)
         
         if  let macAddrObj = advertisementData["kCBAdvDataManufacturerData"]{
-            tempPen.macAddress = getMacAddr(fromString: macAddrObj) // String.init(describing: macAddrStr)// macAddrStr as! String
+            tempPen.macAddress = getMacAddr(fromString: macAddrObj)
         }
 //        N.Log("MAC after", tempPen.macAddress)
 
@@ -1208,9 +969,9 @@ extension PenController: CBCentralManagerDelegate {
         }
 
         nPens.append(tempPen)
-        self.penCommParser.penDelegate?.deviceService(.Discover, device: tempPen)
+        self.penDelegate?.penBluetooth(.Discover, tempPen as AnyObject)
         
-        if (serviceUUIDs?.contains(Pen.NEO_PEN_SERVICE_UUID))! {
+        if serviceUUIDs.contains(Pen.NEO_PEN_SERVICE_UUID) {
             N.Log("found service 18F5")
         }
         else {
@@ -1266,16 +1027,10 @@ extension PenController: CBCentralManagerDelegate {
         penConnectionStatusMsg = "NULL"
         penCommParser.resetDataReady()
         penConnectionStatus = .Disconnect
-//        #if AUDIO_BACKGROUND_FOR_BT
-//            let delegate: NJAppDelegate? = (UIApplication.shared.delegate as? NJAppDelegate)
-//            delegate?.audioController?.stop()
-//        #endif
-//        writeActiveState = false
-//        if !isEmpty(handleNewPeripheral) {
-//            DispatchQueue.main.async(execute: {() -> Void in
-//                handleNewPeripheral.connectionResult(false)
-//            })
-//        }
+        
+        let msg = PenMessage.init(.PEN_DISCONNECTED, data: nil)
+        penDelegate?.penMessage(msg)
+    
     }
     
 }

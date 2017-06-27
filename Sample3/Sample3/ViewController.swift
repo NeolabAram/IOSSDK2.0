@@ -10,6 +10,7 @@ import UIKit
 import NISDK3
 import CoreBluetooth
 
+
 class ViewController: UIViewController {
 
 
@@ -17,13 +18,13 @@ class ViewController: UIViewController {
     
     var Penstatus: PenStatus = PenStatus.None
     
-    var penList: [NPen] = []
+    var penList: [NPenInfo] = []
         
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -81,8 +82,8 @@ class ViewController: UIViewController {
             })
             alertAction.addAction(settingAction)
             
-            //OfflineData List
-            let offlineDataListAction = UIAlertAction(title: "OfflineData list", style: .destructive, handler: { (UIAlertAction) in
+            //Offline Note List
+            let offlineNoteListAction = UIAlertAction(title: "Offline Note list", style: .destructive, handler: { (UIAlertAction) in
                 self.pen.requestOfflineNoteList()
                 //                if self.btStatus == .CONNECTED {
 //                    let mainStoryboard = UIStoryboard(name: "MainSwift", bundle: nil)
@@ -90,7 +91,28 @@ class ViewController: UIViewController {
 //                    self.navigationController?.pushViewController(offlineSyncViewController, animated: false)
 //                }
             })
-            alertAction.addAction(offlineDataListAction)
+            alertAction.addAction(offlineNoteListAction)
+            
+            //Offline Page List
+            let offlinePageListAction = UIAlertAction(title: "Offline Page list", style: .destructive, handler: { (UIAlertAction) in
+                self.pen.requestOfflinePageList(3, 27, 601)
+
+            })
+            alertAction.addAction(offlinePageListAction)
+            
+            //Offline data
+            let offlineDataAction = UIAlertAction(title: "Offline Data", style: .destructive, handler: { (UIAlertAction) in
+                self.pen.requestOfflineData(3, 27, 601)
+            })
+            alertAction.addAction(offlineDataAction)
+            
+            
+            //Offline data
+            let offlineDeleteAction = UIAlertAction(title: "Offline Delete", style: .destructive, handler: { (UIAlertAction) in
+                self.pen.requestDeleteOfflineData(3, 27, [601,602])
+                
+            })
+            alertAction.addAction(offlineDeleteAction)
             
             // pen Firmaware Update
             let firmwareUpdateAction = UIAlertAction(title: "Pen Firmware Update", style: .destructive, handler: { (UIAlertAction) in
@@ -159,52 +181,52 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: DeviceDelegate {
+extension ViewController: PenDelegate {
     
     func setDelegate(){
         self.pen.setPenDelegate(self)
     }
     
     //MARK: - DeviceDelegate - 
-    func dataDot(_ type: DotType, _ data: Any) {
+    func penData(_ type: DotType, _ data: Any?) {
         switch type {
         case .UpDown:
-            if let updown = data as? COMM_PENUP_DATA{
+            if let updown = data as? PenUpDown{
                 if updown.upDown == .Down{
                     firstDot = true
                 }
             }
         case .Type1:
             if firstDot {
-                print(data)
+                print(data as Any)
                 firstDot = false
             }
         default:
-            print(type, data)
+            print(type, data as Any)
 
         }
     }
 
     
-    func deviceMessage(_ msg: PenMessage){
+    func penMessage(_ msg: PenMessage) {
         guard let type = msg.messageType else{
             return
         }
         switch type {
         case .PEN_STATUS:
-            print("pen msg", type, msg.data)
+            print("pen msg", type, msg.data as Any)
 
         default:
-            print("pen msg", type, msg.data)
+            print("pen msg", type, msg.data as Any)
         }
     }
     
-    func deviceService(_ status: PenStatus, device: NPen?){
-        print(Penstatus, status, device)
+    func penBluetooth(_ status: PenStatus, _ data: Any?) {
+        print(status, data as Any)
         self.Penstatus = status
         switch self.Penstatus {
         case .Discover:
-            if let dev = device{
+            if let dev = data as? NPenInfo{
                 self.penList.append(dev)
             }
             break
@@ -212,6 +234,7 @@ extension ViewController: DeviceDelegate {
             self.view.setNeedsDisplay()
             self.pen.setAllNoteIdList()
         case .Disconnect:
+            self.view.setNeedsDisplay()
             break
         case .None:
             break

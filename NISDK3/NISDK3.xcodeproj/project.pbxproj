@@ -7,14 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		241CFDA51EFA70FF003F2F54 /* PenServiceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241CFDA41EFA70FF003F2F54 /* PenServiceV1.swift */; };
 		2448CCF61EE7C91F00507C1E /* PenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CCF51EE7C91F00507C1E /* PenController.swift */; };
 		2448CCFB1EE7CB0700507C1E /* NoteBookInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CCFA1EE7CB0700507C1E /* NoteBookInfo.swift */; };
 		2448CCFD1EE7CB1800507C1E /* PaperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CCFC1EE7CB1800507C1E /* PaperInfo.swift */; };
 		2448CCFF1EE7CB2A00507C1E /* PUIInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CCFE1EE7CB2A00507C1E /* PUIInfo.swift */; };
 		2448CD011EE7CB8800507C1E /* PenCommParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD001EE7CB8800507C1E /* PenCommParser.swift */; };
 		2448CD031EE7CBB600507C1E /* PaperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD021EE7CBB600507C1E /* PaperController.swift */; };
-		2448CD061EE7CC0800507C1E /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD051EE7CC0800507C1E /* Common.swift */; };
-		2448CD081EE7CC2B00507C1E /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD071EE7CC2B00507C1E /* Config.swift */; };
+		2448CD061EE7CC0800507C1E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD051EE7CC0800507C1E /* UserInfo.swift */; };
+		2448CD081EE7CC2B00507C1E /* NeoPenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD071EE7CC2B00507C1E /* NeoPenService.swift */; };
 		2448CD0A1EE7CC5D00507C1E /* NoteBookIdStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD091EE7CC5D00507C1E /* NoteBookIdStore.swift */; };
 		2448CD0C1EE7CCF100507C1E /* VoiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD0B1EE7CCF100507C1E /* VoiceController.swift */; };
 		2448CD0F1EE7CD2900507C1E /* LinearFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD0E1EE7CD2900507C1E /* LinearFilter.swift */; };
@@ -28,24 +29,31 @@
 		2448CD211EE7CFAD00507C1E /* N.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD201EE7CFAD00507C1E /* N.swift */; };
 		2448CD261EE7D97D00507C1E /* PDFPageConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD241EE7D83B00507C1E /* PDFPageConverter.swift */; };
 		2448CD291EE7DF3C00507C1E /* DeviceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448CD281EE7DF3C00507C1E /* DeviceProtocol.swift */; };
+		244D61B51EF8DA3A004137B9 /* libz.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 244D61B41EF8DA3A004137B9 /* libz.1.tbd */; };
+		2487F1221EF3D6DB004CDBBB /* RequestStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487F1211EF3D6DB004CDBBB /* RequestStruct.swift */; };
+		2487F1241EF3D6F0004CDBBB /* ResponseStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487F1231EF3D6F0004CDBBB /* ResponseStruct.swift */; };
+		2487F1261EF3D8AE004CDBBB /* ExtionsionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487F1251EF3D8AE004CDBBB /* ExtionsionUtil.swift */; };
+		2487F1281EF3D8CA004CDBBB /* FunctionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487F1271EF3D8CA004CDBBB /* FunctionUtil.swift */; };
+		24A07D151EF7B21D003C063E /* Deflate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A07D141EF7B21D003C063E /* Deflate.swift */; };
+		24A07D181EF7CC05003C063E /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A07D171EF7CC05003C063E /* Stroke.swift */; };
 		24A577F61EDEAAFB0028FFDA /* NISDK3.h in Headers */ = {isa = PBXBuildFile; fileRef = 24A577E81EDEAAFB0028FFDA /* NISDK3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24C959DE1EEE6DA90029AAA3 /* SymbolChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C959DD1EEE6DA90029AAA3 /* SymbolChecker.swift */; };
 		24C959E01EEE90F80029AAA3 /* PenCommOffline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C959DF1EEE90F80029AAA3 /* PenCommOffline.swift */; };
 		24E32D001EE9581100B96DDD /* Pen2CommPaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E32CFF1EE9581100B96DDD /* Pen2CommPaser.swift */; };
 		24E67D9E1EE9154B0083E2D6 /* PenMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E67D9D1EE9154B0083E2D6 /* PenMessage.swift */; };
 		24E67DA01EE9188A0083E2D6 /* PenMessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E67D9F1EE9188A0083E2D6 /* PenMessageType.swift */; };
-		24E67DA21EE9203A0083E2D6 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E67DA11EE9203A0083E2D6 /* Dot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		241CFDA41EFA70FF003F2F54 /* PenServiceV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenServiceV1.swift; path = Pen/PenServiceV1.swift; sourceTree = "<group>"; };
 		2448CCF51EE7C91F00507C1E /* PenController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenController.swift; path = Pen/PenController.swift; sourceTree = "<group>"; };
 		2448CCFA1EE7CB0700507C1E /* NoteBookInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteBookInfo.swift; path = Model/NoteBookInfo.swift; sourceTree = "<group>"; };
 		2448CCFC1EE7CB1800507C1E /* PaperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaperInfo.swift; path = Model/PaperInfo.swift; sourceTree = "<group>"; };
 		2448CCFE1EE7CB2A00507C1E /* PUIInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PUIInfo.swift; path = Model/PUIInfo.swift; sourceTree = "<group>"; };
 		2448CD001EE7CB8800507C1E /* PenCommParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenCommParser.swift; path = Pen/PenCommParser.swift; sourceTree = "<group>"; };
 		2448CD021EE7CBB600507C1E /* PaperController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaperController.swift; path = Pen/PaperController.swift; sourceTree = "<group>"; };
-		2448CD051EE7CC0800507C1E /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
-		2448CD071EE7CC2B00507C1E /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Config.swift; path = Common/Config.swift; sourceTree = "<group>"; };
+		2448CD051EE7CC0800507C1E /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserInfo.swift; path = Common/UserInfo.swift; sourceTree = "<group>"; };
+		2448CD071EE7CC2B00507C1E /* NeoPenService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NeoPenService.swift; path = Common/NeoPenService.swift; sourceTree = "<group>"; };
 		2448CD091EE7CC5D00507C1E /* NoteBookIdStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteBookIdStore.swift; path = Model/NoteBookIdStore.swift; sourceTree = "<group>"; };
 		2448CD0B1EE7CCF100507C1E /* VoiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VoiceController.swift; path = Model/VoiceController.swift; sourceTree = "<group>"; };
 		2448CD0E1EE7CD2900507C1E /* LinearFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinearFilter.swift; path = Model/LinearFilter.swift; sourceTree = "<group>"; };
@@ -59,6 +67,14 @@
 		2448CD201EE7CFAD00507C1E /* N.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = N.swift; path = Util/N.swift; sourceTree = "<group>"; };
 		2448CD241EE7D83B00507C1E /* PDFPageConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PDFPageConverter.swift; path = Util/PDFPageConverter.swift; sourceTree = "<group>"; };
 		2448CD281EE7DF3C00507C1E /* DeviceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceProtocol.swift; path = Pen/DeviceProtocol.swift; sourceTree = "<group>"; };
+		244D61B41EF8DA3A004137B9 /* libz.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.tbd; path = usr/lib/libz.1.tbd; sourceTree = SDKROOT; };
+		24825A271EF8ABD4001AD8B0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2487F1211EF3D6DB004CDBBB /* RequestStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestStruct.swift; path = Pen/RequestStruct.swift; sourceTree = "<group>"; };
+		2487F1231EF3D6F0004CDBBB /* ResponseStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseStruct.swift; path = Pen/ResponseStruct.swift; sourceTree = "<group>"; };
+		2487F1251EF3D8AE004CDBBB /* ExtionsionUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExtionsionUtil.swift; path = Util/ExtionsionUtil.swift; sourceTree = "<group>"; };
+		2487F1271EF3D8CA004CDBBB /* FunctionUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FunctionUtil.swift; path = Util/FunctionUtil.swift; sourceTree = "<group>"; };
+		24A07D141EF7B21D003C063E /* Deflate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Deflate.swift; path = Util/Deflate.swift; sourceTree = "<group>"; };
+		24A07D171EF7CC05003C063E /* Stroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stroke.swift; path = Model/Stroke.swift; sourceTree = "<group>"; };
 		24A577E51EDEAAF90028FFDA /* NISDK3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NISDK3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		24A577E81EDEAAFB0028FFDA /* NISDK3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NISDK3.h; sourceTree = "<group>"; };
 		24A577E91EDEAAFB0028FFDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -67,7 +83,6 @@
 		24E32CFF1EE9581100B96DDD /* Pen2CommPaser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pen2CommPaser.swift; path = Pen/Pen2CommPaser.swift; sourceTree = "<group>"; };
 		24E67D9D1EE9154B0083E2D6 /* PenMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenMessage.swift; path = Common/PenMessage.swift; sourceTree = "<group>"; };
 		24E67D9F1EE9188A0083E2D6 /* PenMessageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PenMessageType.swift; path = Pen/PenMessageType.swift; sourceTree = "<group>"; };
-		24E67DA11EE9203A0083E2D6 /* Dot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Dot.swift; path = Model/Dot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,16 +90,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				244D61B51EF8DA3A004137B9 /* libz.1.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2448CCF21EE7C8CB00507C1E /* Device */ = {
+		2448CCF21EE7C8CB00507C1E /* Pen */ = {
 			isa = PBXGroup;
 			children = (
 				2448CD281EE7DF3C00507C1E /* DeviceProtocol.swift */,
+				2487F1211EF3D6DB004CDBBB /* RequestStruct.swift */,
+				2487F1231EF3D6F0004CDBBB /* ResponseStruct.swift */,
 				2448CCF51EE7C91F00507C1E /* PenController.swift */,
 				2448CD001EE7CB8800507C1E /* PenCommParser.swift */,
 				24E32CFF1EE9581100B96DDD /* Pen2CommPaser.swift */,
@@ -92,8 +110,9 @@
 				24E67D9D1EE9154B0083E2D6 /* PenMessage.swift */,
 				24E67D9F1EE9188A0083E2D6 /* PenMessageType.swift */,
 				24C959DF1EEE90F80029AAA3 /* PenCommOffline.swift */,
+				241CFDA41EFA70FF003F2F54 /* PenServiceV1.swift */,
 			);
-			name = Device;
+			name = Pen;
 			sourceTree = "<group>";
 		};
 		2448CCF41EE7C8DC00507C1E /* Util */ = {
@@ -105,6 +124,9 @@
 				2448CD1C1EE7CDD200507C1E /* XMLParser.swift */,
 				2448CD1E1EE7CE1700507C1E /* PageController.swift */,
 				2448CD201EE7CFAD00507C1E /* N.swift */,
+				2487F1251EF3D8AE004CDBBB /* ExtionsionUtil.swift */,
+				2487F1271EF3D8CA004CDBBB /* FunctionUtil.swift */,
+				24A07D141EF7B21D003C063E /* Deflate.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -118,7 +140,7 @@
 				2448CCFE1EE7CB2A00507C1E /* PUIInfo.swift */,
 				2448CD091EE7CC5D00507C1E /* NoteBookIdStore.swift */,
 				2448CD0B1EE7CCF100507C1E /* VoiceController.swift */,
-				24E67DA11EE9203A0083E2D6 /* Dot.swift */,
+				24A07D171EF7CC05003C063E /* Stroke.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -126,8 +148,8 @@
 		2448CD041EE7CBE700507C1E /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				2448CD051EE7CC0800507C1E /* Common.swift */,
-				2448CD071EE7CC2B00507C1E /* Config.swift */,
+				2448CD051EE7CC0800507C1E /* UserInfo.swift */,
+				2448CD071EE7CC2B00507C1E /* NeoPenService.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -144,11 +166,21 @@
 			name = Page;
 			sourceTree = "<group>";
 		};
+		24A07D111EF7A654003C063E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				244D61B41EF8DA3A004137B9 /* libz.1.tbd */,
+				24825A271EF8ABD4001AD8B0 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		24A577DB1EDEAAF90028FFDA = {
 			isa = PBXGroup;
 			children = (
 				24A577E71EDEAAF90028FFDA /* NISDK3 */,
 				24A577E61EDEAAF90028FFDA /* Products */,
+				24A07D111EF7A654003C063E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,7 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				2448CD041EE7CBE700507C1E /* Common */,
-				2448CCF21EE7C8CB00507C1E /* Device */,
+				2448CCF21EE7C8CB00507C1E /* Pen */,
 				2448CCF91EE7CACF00507C1E /* Model */,
 				2448CCF41EE7C8DC00507C1E /* Util */,
 				24A577E81EDEAAFB0028FFDA /* NISDK3.h */,
@@ -255,12 +287,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2448CD061EE7CC0800507C1E /* Common.swift in Sources */,
+				2448CD061EE7CC0800507C1E /* UserInfo.swift in Sources */,
+				2487F1241EF3D6F0004CDBBB /* ResponseStruct.swift in Sources */,
 				2448CD291EE7DF3C00507C1E /* DeviceProtocol.swift in Sources */,
 				2448CD261EE7D97D00507C1E /* PDFPageConverter.swift in Sources */,
+				24A07D181EF7CC05003C063E /* Stroke.swift in Sources */,
 				2448CD011EE7CB8800507C1E /* PenCommParser.swift in Sources */,
-				2448CD081EE7CC2B00507C1E /* Config.swift in Sources */,
+				24A07D151EF7B21D003C063E /* Deflate.swift in Sources */,
+				2448CD081EE7CC2B00507C1E /* NeoPenService.swift in Sources */,
 				24C959E01EEE90F80029AAA3 /* PenCommOffline.swift in Sources */,
+				2487F1261EF3D8AE004CDBBB /* ExtionsionUtil.swift in Sources */,
+				241CFDA51EFA70FF003F2F54 /* PenServiceV1.swift in Sources */,
 				2448CCFB1EE7CB0700507C1E /* NoteBookInfo.swift in Sources */,
 				2448CD1F1EE7CE1700507C1E /* PageController.swift in Sources */,
 				2448CD0C1EE7CCF100507C1E /* VoiceController.swift in Sources */,
@@ -272,14 +309,15 @@
 				2448CD031EE7CBB600507C1E /* PaperController.swift in Sources */,
 				24C959DE1EEE6DA90029AAA3 /* SymbolChecker.swift in Sources */,
 				2448CD0A1EE7CC5D00507C1E /* NoteBookIdStore.swift in Sources */,
+				2487F1281EF3D8CA004CDBBB /* FunctionUtil.swift in Sources */,
 				2448CD111EE7CD3700507C1E /* Media.swift in Sources */,
 				2448CCFD1EE7CB1800507C1E /* PaperInfo.swift in Sources */,
 				24E67DA01EE9188A0083E2D6 /* PenMessageType.swift in Sources */,
+				2487F1221EF3D6DB004CDBBB /* RequestStruct.swift in Sources */,
 				2448CD131EE7CD4400507C1E /* Node.swift in Sources */,
 				24E67D9E1EE9154B0083E2D6 /* PenMessage.swift in Sources */,
 				2448CD171EE7CD6D00507C1E /* VoiceMemo.swift in Sources */,
 				2448CD151EE7CD5500507C1E /* Transformation.swift in Sources */,
-				24E67DA21EE9203A0083E2D6 /* Dot.swift in Sources */,
 				24E32D001EE9581100B96DDD /* Pen2CommPaser.swift in Sources */,
 				2448CD1D1EE7CDD200507C1E /* XMLParser.swift in Sources */,
 			);
@@ -392,6 +430,7 @@
 		24A577FA1EDEAAFB0028FFDA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
@@ -399,6 +438,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = NISDK3/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -415,6 +458,7 @@
 		24A577FB1EDEAAFB0028FFDA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
@@ -422,6 +466,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = NISDK3/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

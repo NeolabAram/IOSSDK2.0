@@ -14,7 +14,7 @@
     <a title="DeviceDelegate Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (50% documented)</p>
+        <p><a href="../index.html"> Docs</a> (46% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -45,10 +45,16 @@
             <a href="../Enums.html">Enums</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Enums/DotType.html">DotType</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Enums/PenMessageType.html">PenMessageType</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/PenStatus.html">PenStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/UpNDown.html">UpNDown</a>
               </li>
             </ul>
           </li>
@@ -57,6 +63,29 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Protocols/DeviceDelegate.html">DeviceDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK315CHANGEDID2_DATA">CHANGEDID2_DATA</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/COMM_PENUP_DATA.html">COMM_PENUP_DATA</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK310DotStruct1">DotStruct1</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK310DotStruct2">DotStruct2</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK310DotStruct3">DotStruct3</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:V6NISDK34NPen">NPen</a>
               </li>
             </ul>
           </li>
@@ -75,9 +104,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP6NISDK314DeviceDelegate7dataDotFCS_3DotT_"></a>
-                    <a name="//apple_ref/swift/Method/dataDot(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP6NISDK314DeviceDelegate7dataDotFCS_3DotT_">dataDot(_:)</a>
+                    <a name="/s:FP6NISDK314DeviceDelegate7dataDotFTOS_7DotTypeP__T_"></a>
+                    <a name="//apple_ref/swift/Method/dataDot(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP6NISDK314DeviceDelegate7dataDotFTOS_7DotTypeP__T_">dataDot(_:_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -85,8 +114,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Pen Data, UpDown, PageID</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">dataDot</span><span class="p">(</span><span class="n">_</span> <span class="nv">type</span> <span class="p">:</span> <span class="kt"><a href="../Enums/DotType.html">DotType</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Any</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -104,8 +141,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Pen Status</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">deviceMessage</span><span class="p">(</span><span class="n">_</span> <span class="nv">msg</span><span class="p">:</span> <span class="kt"><a href="../Classes/PenMessage.html">PenMessage</a></span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -113,9 +158,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP6NISDK314DeviceDelegate13deviceServiceFTOS_9PenStatus6deviceGSqCSo12CBPeripheral__T_"></a>
+                    <a name="/s:FP6NISDK314DeviceDelegate13deviceServiceFTOS_9PenStatus6deviceGSqVS_4NPen__T_"></a>
                     <a name="//apple_ref/swift/Method/deviceService(_:device:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP6NISDK314DeviceDelegate13deviceServiceFTOS_9PenStatus6deviceGSqCSo12CBPeripheral__T_">deviceService(_:device:)</a>
+                    <a class="token" href="#/s:FP6NISDK314DeviceDelegate13deviceServiceFTOS_9PenStatus6deviceGSqVS_4NPen__T_">deviceService(_:device:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -123,8 +168,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Bluetooth Event</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">deviceService</span><span class="p">(</span><span class="n">_</span> <span class="nv">status</span><span class="p">:</span> <span class="kt"><a href="../Enums/PenStatus.html">PenStatus</a></span><span class="p">,</span> <span class="nv">device</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:V6NISDK34NPen">NPen</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -134,7 +187,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-06-13)</p>
+          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-06-16)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

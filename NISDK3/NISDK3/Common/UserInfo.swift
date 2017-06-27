@@ -1,5 +1,5 @@
 //
-//  Common.swift
+//  UserInfo.swift
 //  NISDK3
 //
 //  Created by Aram Moon on 2017. 6. 7..
@@ -8,8 +8,8 @@
 
 import Foundation
 
-class Common {
-    static let sharedInstance = Common()
+class UserInfo {
+    static let sharedInstance = UserInfo()
     
     private let passwordKey = "N2PenPassword"
     private let penRegister = "N2PenRegister"
